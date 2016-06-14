@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+      http://www.springframework.org/schema/context   
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/mvc  
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx.xsd 
+      http://www.springframework.org/schema/util 
+      http://www.springframework.org/schema/util/spring-util-3.1.xsd
+      http://www.springframework.org/schema/data/jpa 
+      http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+      http://www.springframework.org/schema/aop 
+      http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+      "
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc">
+
+	<!-- 自动读取。适配文件 start -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<!-- <value>classpath:log4j.properties</value> -->
+				<!-- <value>classpath:conf.properties</value> <value>classpath:redis.properties</value> -->
+				<!-- 可以适当增加个数据库 -->
+			</list>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="com.qlz" />
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="packagesToScan" value="com.qlz.entities"></property>
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+		<property name="persistenceProvider" ref="persistenceProvider" />
+		<property name="persistenceUnitName" value="demo"></property>
+		<property name="jpaProperties">
+			<props>
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<!-- 关联查询时fetch 的深度 -->
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<!-- 关联查询时fetch 的大小 -->
+				<prop key="hibernate.jdbc.fetch_size">18</prop>
+				<!-- 批最操作的大小 -->
+				<prop key="hibernate.jdbc.batch_size">300</prop>
+				<!-- 更新表结构 模式 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- 打印语句 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- 格式化打印的语句 -->
+				<prop key="hibernate.format_sql">true</prop>
+				<!-- 较验模式 -->
+				<prop key="javax.persistence.validation.mode">none</prop>
+				<!-- 二级缓存相关 -->
+
+				<!-- <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
+					</prop> -->
+			<!-- 	<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop> -->
+
+				<!-- <prop key="hibernate.generate_statistics">true</prop> -->
+				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop> <prop 
+					key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
+					</prop> <prop key="hibernate.cache.provider_class ">org.hibernate.cache.EhCacheProvider</prop> 
+					<prop key="hibernate.cache.use_query_cache">true</prop> <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop> -->
+
+			</props>
+		</property>
+		<!-- <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"></property> -->
+	</bean>
+
+
+	<!-- 用于指定持久化实现厂商类 -->
+	<bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
+	<!-- 用于设置JPA实现厂商的特定属性 -->
+	<bean id="jpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="showSql" value="true"></property>
+		<property name="database" value="MYSQL"></property>
+	</bean>
+	<!-- 用于指定一些高级特性 -->
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+
+
+	<!-- 数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc_driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc_url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc_username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc_password}</value>
+		</property>
+		<!-- 连接池最大使用连接数 -->
+		<property name="maxActive">
+			<value>20</value>
+		</property>
+		<!-- 初始化连接大小 -->
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait">
+			<value>60000</value>
+		</property>
+		<!-- 连接池最大空闲 -->
+		<!-- <property name="maxIdle"> <value>20</value> </property> -->
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle">
+			<value>3</value>
+		</property>
+		<!-- 自动清除无用连接 -->
+		<property name="removeAbandoned">
+			<value>true</value>
+		</property>
+		<!-- 清除无用连接的等待时间 -->
+		<property name="removeAbandonedTimeout">
+			<value>180</value>
+		</property>
+		<!-- 连接属性 -->
+		<property name="connectionProperties">
+			<value>clientEncoding=UTF-8</value>
+		</property>
+
+		<!-- 监控统计拦截的filters,日志记录 start -->
+		<!-- 并在filters属性中配置了log4j -->
+		<!-- <property name="proxyFilters"> <list> <ref bean="stat-filter" /> <ref 
+			bean="log-filter" /> </list> </property> 监控统计拦截的filters,日志记录 end <property 
+			name="filters"> <value>stat,wall,log4j</value> </property> -->
+
+	</bean>
+
+	<!-- 自动扫描并注入Spring Data JPA -->
+	<jpa:repositories base-package="com.qlz.dao"
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager">
+	</jpa:repositories>
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"
+		mode="proxy" proxy-target-class="false" />
+
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="update*" propagation="REQUIRED" />
+			<!-- <tx:method name="*" read-only="true" /> -->
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- <import resource="classpath*:/spring-mybatis.xml" /> -->
+	<!-- <import resource="classpath*:/spring-redis.xml" /> -->
+
+	<!-- <import resource="classpath*:/spring-shiro.xml" /> -->
+</beans>
