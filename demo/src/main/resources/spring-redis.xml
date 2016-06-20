@@ -1,0 +1,98 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+        http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+
+
+	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<!-- redis缓存bean start -->
+	<bean id="redisCache" class="com.qlz.redis.RedisCache">
+		<property name="redisTemplate" ref="redisTemplate" />
+		<!-- 既注解中的value -->
+		<property name="name" value="mlx" />
+		<property name="expireTime" value="${redis_expireTime}" />
+	</bean>
+	<!-- spring自己的换管理器，这里定义了两个缓存位置名称 ，既注解中的value -->
+
+	<!-- generic cache manager -->
+	<bean id="simpleCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<ref bean="redisCache" />
+				<!-- <bean  class="com.mlx.redis.RedisCache">
+					<property name="redisTemplate" ref="redisTemplate" />
+					既注解中的value
+					<property name="name" value="appInfo" />
+				</bean> -->
+			<!-- 	<bean  class="com.mlx.redis.RedisCache">
+					<property name="redisTemplate" ref="redisTemplate" />
+					既注解中的value
+					<property name="name" value="role" />
+				</bean> -->
+				<!-- 可以加入多个template -->
+				<!-- <bean class="org.cpframework.cache.redis.RedisCache"> <property 
+					name="redisTemplate" ref="redisTemplate02" /> <property name="name" value="commonCache"/> 
+					</bean> -->
+			</set>
+		</property>
+	</bean>
+
+	<!-- dummy cacheManager -->
+	<bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager">
+		<property name="cacheManagers">
+			<list>
+				<ref bean="simpleCacheManager" />
+			</list>
+		</property>
+		<!-- 防止没有找到 mlxCache，且没有将 fallbackToNoOpCache 设置为 true 的情况下，系统会抛出异常。 -->
+		<property name="fallbackToNoOpCache" value="true" />
+	</bean>
+
+	<!-- redis缓存bean start -->
+
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis_maxIdle}" />
+		<property name="maxTotal" value="${redis_maxTotal}" />
+		<property name="maxWaitMillis" value="${redis_maxWait}" />
+		<property name="testOnBorrow" value="${redis_testOnBorrow}" />
+		<property name="minEvictableIdleTimeMillis" value="${redis_minEvictableIdleTimeMillis}" />
+		<property name="numTestsPerEvictionRun" value="${redis_numTestsPerEvictionRun}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${redis_timeBetweenEvictionRunsMillis}" />
+	</bean>
+
+
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="jedisPoolConfig" />
+
+		<property name="hostName" value="${redis_host}" />
+		<property name="port" value="${redis_port}" />
+		<property name="password" value="${redis_pass}" />
+		<property name="timeout" value="${redis_timeout}"></property>
+		<property name="usePool" value="${redis_usepool}"></property>
+	</bean>
+	<bean id="stringSerializer"
+		class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	<!-- 开启事务，可以通过transcational注解控制 -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer" ref="stringSerializer" />
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+
+
+
+
+
+</beans>

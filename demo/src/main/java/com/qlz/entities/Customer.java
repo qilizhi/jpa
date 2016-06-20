@@ -13,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
  
-@Cacheable(true)
+@Cacheable
 @Table(name="JPA_CUTOMERS")
 @Entity
 public class Customer {

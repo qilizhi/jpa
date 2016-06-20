@@ -29,18 +29,20 @@
 			<list>
 				<value>classpath:jdbc.properties</value>
 				<!-- <value>classpath:log4j.properties</value> -->
-				<!-- <value>classpath:conf.properties</value> <value>classpath:redis.properties</value> -->
+
+				<value>classpath:conf.properties</value>
+				<value>classpath:redis.properties</value>
 				<!-- 可以适当增加个数据库 -->
 			</list>
 		</property>
 	</bean>
-
+	<!-- <import resource="classpath*:/spring-redis.xml" /> -->
 	<context:component-scan base-package="com.qlz" />
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.qlz.entities"></property>
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
 		<property name="persistenceProvider" ref="persistenceProvider" />
 		<property name="persistenceUnitName" value="demo"></property>
 		<property name="jpaProperties">
@@ -63,16 +65,24 @@
 				<prop key="javax.persistence.validation.mode">none</prop>
 				<!-- 二级缓存相关 -->
 
-				<!-- <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
-					</prop> -->
-			<!-- 	<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop> -->
 
+				<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory  </prop>
+				<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
 				<!-- <prop key="hibernate.generate_statistics">true</prop> -->
-				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop> <prop 
-					key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
-					</prop> <prop key="hibernate.cache.provider_class ">org.hibernate.cache.EhCacheProvider</prop> 
-					<prop key="hibernate.cache.use_query_cache">true</prop> <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop> -->
+				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop> -->
+		<!-- 		 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
+					</prop> -->
 
+				<!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
+				<!-- <prop key="hibernate.cache.provider_class ">org.hibernate.cache.ehcache.StrategyRegistrationProvider 
+					</prop> -->
+
+				<!--  <prop key="hibernate.cache.use_query_cache">true</prop>  -->
+				<!-- <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop> -->
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">/ehcache.xml</prop>
 			</props>
 		</property>
 		<!-- <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"></property> -->
@@ -82,7 +92,7 @@
 	<!-- 用于指定持久化实现厂商类 -->
 	<bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
 	<!-- 用于设置JPA实现厂商的特定属性 -->
-	<bean id="jpaVendorAdapter"
+	<bean id="hibernateJpaVendorAdapter"
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="showSql" value="true"></property>
 		<property name="database" value="MYSQL"></property>
@@ -159,7 +169,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"
-		mode="proxy" proxy-target-class="false" />
+		mode="proxy" proxy-target-class="true" />
 
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">

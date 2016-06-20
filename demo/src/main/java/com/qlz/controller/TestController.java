@@ -1,10 +1,16 @@
 package com.qlz.controller;
 
+import static org.springframework.data.domain.ExampleMatcher.matching;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.persistence.jpa.jpql.parser.StartWithClause;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +35,7 @@ public class TestController {
 	private CustomerDao customerDao;
 	@Autowired
 	private CustomerService customerService;
+
 	@RequestMapping
 	public String test() {
 
@@ -44,74 +51,78 @@ public class TestController {
 		System.out.println("testController ok");
 		return maps;
 	}
-	
+
 	@RequestMapping("/customers/{lastName}")
 	@ResponseBody
-	public List<Customer> getCustomers(@PathVariable ("lastName")String lastName,Integer page,Integer size){
-		Pageable pages =new PageRequest(page, size,new Sort(Direction.DESC, "id","lastName"));
-		Page<Customer> customers=customerDao.findByLastName(lastName, pages);
+	public List<Customer> getCustomers(@PathVariable("lastName") String lastName, Integer page, Integer size) {
+		Pageable pages = new PageRequest(page, size, new Sort(Direction.DESC, "id", "lastName"));
+		Page<Customer> customers = customerDao.findByLastName(lastName, pages);
 		return customers.getContent();
 	}
-	
+
 	@RequestMapping("/customers")
 	@ResponseBody
-	public List<Customer> listCustomer(@PageableDefault(page=0,size=2,sort="id",direction=Direction.ASC)Pageable page){
-		Page<Customer> customers=customerDao.findAll(page);
+	public List<Customer> listCustomer(
+			@PageableDefault(page = 0, size = 2, sort = "id", direction = Direction.ASC) Pageable page) {
+		Page<Customer> customers = customerDao.findAll(page);
 		return customers.getContent();
 	}
-	
+
 	@RequestMapping("/customer/all")
 	@ResponseBody
-	public List<Customer> listAll(){
-		
-		List<Customer> customers=(List<Customer>) customerDao.findAll();
+	public List<Customer> listAll() {
+
+		List<Customer> customers = (List<Customer>) customerDao.findAll();
 		return customers;
-		
+
 	}
-	
+
 	@RequestMapping("/customer/email")
 	@ResponseBody
-	public List<Customer> getCustomerByEmail(String email){
-		List<Customer> cs=customerDao.getListByEmail(email);
+	public List<Customer> getCustomerByEmail(String email) {
+		List<Customer> cs = customerDao.getListByEmail(email);
 		return cs;
 	}
+
 	@RequestMapping("/customerOne/email")
 	@ResponseBody
-	public Customer getCustomerOneByEmail(@RequestParam("email")String email){
-		Customer c=customerDao.findOneByEmail(email);
+	public Customer getCustomerOneByEmail(@RequestParam("email") String email) {
+		Customer c = customerDao.findOneByEmail(email);
 		return c;
 	}
+
 	@RequestMapping("/customer")
 	@ResponseBody
-	public List<Customer> getCustomerOneByEmailAndlastName(@RequestParam("email")String email,String lastName){
-		List<Customer> c=customerDao.getListByEmailAndLastName(email, lastName);
+	public List<Customer> getCustomerOneByEmailAndlastName(@RequestParam("email") String email, String lastName) {
+		List<Customer> c = customerDao.getListByEmailAndLastName(email, lastName);
 		return c;
 	}
 
 	@RequestMapping("/customer/{id}/{lastName}")
 	@ResponseBody
-	public String  updateLastNameById(@PathVariable("id")Integer id,@PathVariable("lastName")String lastName){
+	public String updateLastNameById(@PathVariable("id") Integer id, @PathVariable("lastName") String lastName) {
 		customerDao.updateByLastNameById(id, lastName);
 		return "OK";
 	}
-	
-	/*@RequestMapping("/customer/{id}/{lastName}")
-	@ResponseBody
-	public String  updateLastNameById(@PathVariable("id")Integer id,@PathVariable("lastName")String lastName){
-		customerService.updateCustomer(lastName, id);
-		return "OK";
-	}*/
 
-	
-	/*@RequestMapping("/customer")
+	@RequestMapping("/customer/example")
 	@ResponseBody
-	public List<Customer> listByExample(Customer customer){
-		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("email",endsWith("qq.com"))
-			    .withMatcher("lastname", startsWith().ignoreCase());
+	public List<Customer> listByExample(Customer customer) {
 
-			Example<Person> example = Example.of(new Person("Jon", "Snow"), matcher); 
-		Example<Customer> customerExample=Example.of(customer,);
-		return (List<Customer>) customerDao.findAll(customerExample);
-		
-	}*/
+		Example<Customer> example = Example.of(customer, matching().withIgnorePaths("age").//
+				withMatcher("lastname", ignoreCase()).withMatcher("email", ExampleMatcher.GenericPropertyMatchers.endsWith()));
+				/*
+				 * ExampleMatcher matcher =
+				 * ExampleMatcher.matching().withMatcher("email",
+				 * endsWith()).withMatcher("lastname", startsWith());
+				 */
+
+		// Example<Customer> example = Example.of(new Customer("Jon", "Snow"),
+		// matcher);
+		// Example<Customer> customerExample = Example.of(customer, matcher);
+		List<Customer> list = (List<Customer>) customerDao.findAll(example);
+		return list;
+		// return null;
+
+	}
 }

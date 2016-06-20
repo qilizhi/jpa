@@ -15,6 +15,11 @@
       http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
       ">
 
+	<!-- 开始切面代理 -->
+	<context:component-scan base-package="com.qlz.aop" />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	
+	<!-- <bean class="com.qlz.aop.LogAspect"></bean> -->
 	<!-- 自动读取。适配文件 用于 注解决加载 配置 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
