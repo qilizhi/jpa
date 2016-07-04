@@ -1,0 +1,82 @@
+/**
+ *
+ * Apply your custom CSS here
+ *
+*/
+
+@font-face {
+  font-family: 'Arimo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arimo'), url("./fonts/meteocons/font/meteocons.woff") format('woff');
+}
+@font-face {
+  font-family: 'Arimo';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Arimo Bold'), local('Arimo-Bold'), url("./fonts/meteocons/font/meteocons.woff") format('woff');
+}
+@font-face {
+  font-family: 'Arimo';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Arimo Italic'), local('Arimo-Italic'), url("./fonts/meteocons/font/meteocons.woff") format('woff');
+}
+
+body {	
+}
+
+a {
+}
+
+.table-scrollable table.table>thead>tr>th:first-child {
+	text-align: center;
+}
+.table-scrollable table.table>tbody>tr.child {
+    padding: 0.5em 1em;
+    display: none;
+}
+.table-scrollable table.table>tbody>tr>td:first-child{
+    position: relative;
+    padding-left: 15px;
+    cursor: pointer;
+}
+.table-scrollable table.table>tbody>tr.child ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.table-scrollable table.table>tbody>tr.child ul li {
+    padding: 0.5em 0;
+}
+.table-scrollable table.table>tbody>tr.child span.dtr-title {
+    display: inline-block;
+    min-width: 75px;
+    font-weight: bold;
+}
+.table-scrollable table.table>tbody>tr.expand>td:first-child:before {
+    content: '+';
+    background-color: #b0c1d2;
+    box-shadow: none!important;
+    font-weight: 300;
+    vertical-align: middle;
+    line-height: 16px;
+    border: 0;    
+    top: 8px;
+    left: 4px;
+    height: 16px;
+    width: 16px;
+    display: block;
+    position: absolute;
+    color: white;
+    border: 2px solid white;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 0 3px #444;
+    box-sizing: content-box;    
+}
+.table-scrollable table.table>tbody>tr.parent>td:first-child:before {
+    content: '-';
+    background-color: #d33333;
+}

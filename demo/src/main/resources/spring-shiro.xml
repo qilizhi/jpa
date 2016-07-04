@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	"
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>	
+	
+	
+
+	<!-- 用户授权信息Cache -->
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+	<!-- 項目自定义的Realm, 所有userInfoService依赖的dao都需要用depends-on声明  -->
+	<bean id="shiroDbRealm" class="com.mlx.guide.shiro.ShiroDbRealm" depends-on="userInfoMapper">
+		<property name="userInfoService" ref="userInfoService"/>
+	</bean>
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="path" value="/"/>
+        <property name="domain" value=".mlxing.com"/>
+        <property name="maxAge" value="604800"/><!--  2592000 = 30天 -->
+    </bean>
+
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
+        <property name="cipherKey"
+                  value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+	
+	<!-- 配置权限管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- ref对应我们写的realm  shiroDbRealm --> 
+		<property name="realm" ref="shiroDbRealm" />
+		<!-- 使用下面配置的缓存管理器 -->
+		<property name="cacheManager" ref="shiroCacheManager" />
+		<!-- 使用rememberMe管理器 -->
+		<property name="rememberMeManager" ref="rememberMeManager"/>
+	</bean>
+
+	
+	
+	<!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/>
+    </bean>
+
+
+    
+    	<!-- 自定义角色验证过滤器 -->
+    <bean id="roleAuthorizationFilter" class="com.mlx.guide.shiro.RoleAuthorizationFilter" />
+    <bean id="uRLPermissionsFilter" class="com.mlx.guide.shiro.URLPermissionsFilter"></bean>
+    <bean id="myPermissionsFilter" class="com.mlx.guide.shiro.MyPermissionsAuthorizationFilter"></bean>
+	
+	<!-- 自定义对 shiro的连接约束,结合shiroFilter实现动态获取资源 -->
+    <bean id="chainDefinitionSectionMetaSource" class="com.mlx.guide.shiro.ChainDefinitionSectionMetaSource">
+    <!-- 默认的连接配置 -->
+    <property name="filterChainDefinitions">
+        <value>
+      
+              
+            /login = anon
+            /platformLogin** = anon
+            /guideLogin**= anon
+            /guideAdmin* = role[guideAdmin]
+           /guideAdmin/** =role[guideAdmin]
+             /static/** = anon 
+        	/admin* = role[admin]
+        	/admin/resource/refreshGlobal = role[admin]
+            <!-- /admin/** = role[admin],perms -->
+            <!-- /** = anon -->
+			<!-- anon表示此地址不需要任何权限即可访问 -->  
+			<!--/acct/login = authc
+			/bookPlay/** = authc
+			/acctOwner = user 
+			/acct/file/** = user -->
+            <!-- /index = perms[security:index] -->
+        </value>
+    </property>
+    </bean>
+    	
+	<!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 --> 
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"> 
+	    <property name="filters">
+        <map>
+            <entry key="role" value-ref="roleAuthorizationFilter" />
+            <entry key="perms" value-ref="myPermissionsFilter" />
+          <!--   <entry key="perms" value-ref="uRLPermissionsFilter" /> -->
+        </map>
+        </property>
+	    <!-- 调用我们配置的权限管理器 -->   
+		<property name="securityManager" ref="securityManager" />
+		<!-- 配置我们的登录请求地址 -->   
+		<property name="loginUrl" value="/platformLogin" />
+		<!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->  
+		<property name="successUrl" value="/admin" />
+		 <!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址-->
+        <property name="unauthorizedUrl" value="/error/403"/> 
+        <!-- shiro连接约束配置,在这里使用自定义的动态获取资源类 -->
+        <property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />
+	</bean>
+	 	
+	<!-- 
+			支持 Shiro对Controller的方法级AOP安全控制 begin -->
+		<bean
+			class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+			depends-on="lifecycleBeanPostProcessor">
+			<property name="proxyTargetClass" value="true" />
+		</bean>
+
+		<bean
+			class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+			<property name="securityManager" ref="securityManager" />
+		</bean>
+		<!-- end -->	
+	
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>使用Spring Scheduled的定时任务配置</description>
+
+	<task:scheduler id="springScheduler" pool-size="10" />
+	<!-- <task:scheduled-tasks scheduler="springScheduler"> -->
+		<!--发红包检查 每隔2个小时执行一次 -->
+		<!-- <task:scheduled ref="sendRedpackScheduler" method="reSendRedPack"
+			cron="0 0 0/2 * * ?" /> -->
+		<!--导游资料完整度检查并返回条件就发红包每隔10分钟执行一次 -->
+		<!--<task:scheduled ref="sendRedpackTwoScheduler" method="sendRedPackTwo" 
+			cron="0 */10 * * * ?"/> -->
+	<!-- </task:scheduled-tasks> -->
+</beans>

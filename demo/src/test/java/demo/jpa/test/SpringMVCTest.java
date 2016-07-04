@@ -237,5 +237,23 @@ public class SpringMVCTest {
 		logger.info("结果："+ (a==b));
 	
 	}
+	@Test
+	public void QueryCacheTest(){  
+        //无效的spring-data-jpa实现的接口方法  
+        //输出两条sql语句  
+		customerDao.findAll();  
+		customerDao.findAll();  
+        System.out.println("================test 1 finish======================");  
+        //自己实现的dao方法可以被查询缓存  
+        //输出一条sql语句  
+        customerDao.findAllCached();  
+        customerDao.findAllCached();  
+        System.out.println("================test 2 finish======================");  
+        //自己实现的dao方法可以被查询缓存  
+        //输出一条sql语句  
+        customerDao.findCustomerByName("a");  
+        customerDao.findCustomerByName("a");  
+        System.out.println("================test 3 finish======================");  
+    }  
 
 }

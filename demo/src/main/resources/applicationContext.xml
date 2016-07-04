@@ -65,22 +65,25 @@
 				<prop key="javax.persistence.validation.mode">none</prop>
 				<!-- 二级缓存相关 -->
 
-
-				<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
+				<!-- ALL DISABLE_SELECTIVE NONE ENABLE_SELECTIVE -->
+				<prop key="javax.persistence.sharedCache.mode">ALL</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
-
-				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory  </prop>
-				<prop key="javax.persistence.sharedCache.mode">ENABLE_SELECTIVE</prop>
-				<!-- <prop key="hibernate.generate_statistics">true</prop> -->
-				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop> -->
-		<!-- 		 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
-					</prop> -->
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory 
+					</prop> 
+				<prop key="hibernate.cache.use_second_level_cache">
+					true
+				</prop>
+				<prop key="hibernate.cache.region.factory_class">
+					org.hibernate.cache.ehcache.EhCacheRegionFactory
+				</prop>
+		
 
 				<!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
 				<!-- <prop key="hibernate.cache.provider_class ">org.hibernate.cache.ehcache.StrategyRegistrationProvider 
 					</prop> -->
 
-				<!--  <prop key="hibernate.cache.use_query_cache">true</prop>  -->
+				<!-- <prop key="hibernate.cache.use_query_cache">true</prop> -->
 				<!-- <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop> -->
 				<prop key="hibernate.cache.provider_configuration_file_resource_path">/ehcache.xml</prop>
 			</props>
@@ -170,8 +173,6 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"
 		mode="proxy" proxy-target-class="true" />
-
-
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="update*" propagation="REQUIRED" />

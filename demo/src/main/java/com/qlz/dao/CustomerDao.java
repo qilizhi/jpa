@@ -2,12 +2,15 @@ package com.qlz.dao;
 
 import java.util.List;
 
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -31,8 +34,7 @@ import com.qlz.entities.Customer;
  *
  */
 
-public interface CustomerDao extends JpaRepository<Customer, Integer>, JpaSpecificationExecutor<Customer>,QueryByExampleExecutor<Customer>
-{
+public interface CustomerDao extends BaseDao<Customer, Integer> {
 	public List<Customer> findByLastName(String lastName);
 
 	public Page<Customer> findByLastName(String lastName, Pageable page);
@@ -49,7 +51,7 @@ public interface CustomerDao extends JpaRepository<Customer, Integer>, JpaSpecif
 	@Query("select c from Customer c where c.email=:email or c.lastName like %:lastName%")
 	public List<Customer> getListByEmailAndLastName(@Param("email") String email, @Param("lastName") String lastName);
 
-	//调用本地语句 直接操作表。
+	// 调用本地语句 直接操作表。
 	@Query(value = "SELECT count(id) FROM jpa_customer", nativeQuery = true)
 	long getTotalCount();
 
@@ -64,5 +66,19 @@ public interface CustomerDao extends JpaRepository<Customer, Integer>, JpaSpecif
 	@Modifying
 	@Query(value = "update Customer c set c.lastName=:lastName where c.id=:id")
 	public int updateByLastNameById(@Param("id") Integer id, @Param("lastName") String lastName);
+
+	// spring-data-jpa默认继承实现的一些方法，实现类为
+	// SimpleJpaRepository。
+	// 该类中的方法不能通过@QueryHint来实现查询缓存。
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Customer> findAll();
+
+	@Query("from Customer")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<Customer> findAllCached();
+
+	@Query("select t from Customer t where t.name = ?1")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	Customer findCustomerByName(String name);
 
 }

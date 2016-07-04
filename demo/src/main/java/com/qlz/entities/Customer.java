@@ -13,14 +13,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
  
-@Cacheable
+/*@Cacheable*/
 @Table(name="JPA_CUTOMERS")
 @Entity
 public class Customer {
 
 	private Integer id;
 	private String lastName;
-
+    private String name;
 	private String email;
 	private int age;
 	
@@ -129,6 +129,14 @@ public class Customer {
 		return "Customer [id=" + id + ", lastName=" + lastName + ", email="
 				+ email + ", age=" + age + ", createdTime=" + createdTime
 				+ ", birth=" + birth + "]";
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

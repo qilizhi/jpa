@@ -1,0 +1,39 @@
+.lowprice_box { position: relative; overflow: hidden; zoom: 1; z-index: 5; background-color: #E6E6E6; }
+.lowprice_box h4 { padding: 13px 0 10px 140px; line-height: 14px; color: #999; }
+.lowprice_box h4 span { float: left; width: 112px;  font-size: 14px; font-weight: normal; text-align: center; line-height: 16px; }
+.lowprice_box .prev, .lowprice_box .next { position: absolute; left: 50px; width: 32px; height: 32px; background-image: url(CalendarBtn.png); }
+.lowprice_box .prev { top: 52px; background-position: 0 0; }
+.lowprice_box .prev:hover { background-position: -64px 0; }
+.lowprice_box .prev_disable, .lowprice_box .next_disable { cursor: default; }
+.lowprice_box .prev_disable { background-position: -128px 0; }
+.lowprice_box .prev_disable:hover { background-position: -128px 0; }
+.lowprice_box .next { bottom: 37px; background-position: -32px 0; }
+.lowprice_box .next:hover { background-position: -96px 0; }
+.lowprice_box .next_disable { background-position: -160px 0; }
+.lowprice_box .next_disable:hover { background-position: -160px 0; }
+
+.calendar { color: #999; }
+.calendar span { line-height: 34px; font-size: 14px; }
+.calendar .search { display: block; text-align: center; }
+.calendar th { width: 140px; padding: 5px 0; color: #666; vertical-align: middle; text-align: center; font-size: 28px; font-weight: normal; line-height: 32px; }
+.calendar th i { font-style: normal; font-family: Arial,sans-serif; }
+.calendar th span { display: block; font-size: 16px; color: #999; line-height: 16px; }
+.calendar td { width: 110px; height: 73px; border-right: 2px solid #EBEBEB; border-bottom: 2px solid #EBEBEB; text-align: right; overflow: hidden; cursor: pointer; background-color: #FFF; vertical-align: top; }
+.calendar td:hover { background-color: #4B9CED; color: #FFF; }
+.calendar .prevmonth td { border-bottom-color: #CCC; }
+.calendar .nextmonth td { border-top-color: #CCC; }
+.calendar .date { display: block; height: 22px; padding-right: 7px; text-align: right; font-family: Tahoma; overflow: hidden; *zoom: 1; line-height: 22px; font-size: 12px; }
+.calendar .today { color: #666; }
+.calendar .festival { color: #BB0000; }
+.calendar .ico_package { float: left; width: 33px; height: 18px; text-align: center; line-height: 18px; background-color: #FCA62B; color: #FFF; font-style: normal; font-weight: normal; }
+.calendar .price { font-size: 24px; font-family: Tahoma; color: #666; padding-right: 7px; }
+.calendar dfn { margin-right: 3px; font-size: 14px; font-style: normal; font-family: Arial;}
+.calendar td:hover .search { text-decoration: underline; }
+.calendar td:hover .price, .calendar td:hover .today, .calendar td:hover .festival { color: #FFF; }
+.calendar .lowest .price { color: #b00; }
+.calendar .noneData { cursor: default; }
+.calendar .noneData span { display: block; text-align: center; }
+.calendar .noneData .date { text-align: right; }
+.calendar .noneData:hover { background-color: #FFF; }
+.calendar .noneData:hover span { color: #999; }
+.calendar .noneData:hover .festival { color: #BB0000; }

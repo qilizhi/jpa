@@ -1,0 +1,33 @@
+.lowprice_box { position: relative; overflow: hidden; zoom: 1; z-index: 99; background-color: #E6E6E6; width:470px }
+.lowprice_box h4 { padding: 6px 0 5px 70px; line-height: 14px; color: #999; }
+.lowprice_box h4 span { float: left; width: 56px;  font-size: 12px; font-weight: normal; text-align: center; line-height: 16px; }
+.lowprice_box .prev, .lowprice_box .next { position: absolute; left: 20px; width: 32px; height: 32px; background-image: url(CalendarBtn.png); }
+.lowprice_box .prev { top: 32px; background-position: 0 0; }
+.lowprice_box .prev:hover { background-position: -64px 0; }
+.lowprice_box .prev_disable, .lowprice_box .next_disable { cursor: default; }
+.lowprice_box .prev_disable { background-position: -128px 0; }
+.lowprice_box .prev_disable:hover { background-position: -128px 0; }
+.lowprice_box .next { bottom: 12px; background-position: -32px 0; }
+.lowprice_box .next:hover { background-position: -96px 0; }
+.lowprice_box .next_disable { background-position: -160px 0; }
+.lowprice_box .next_disable:hover { background-position: -160px 0; }
+
+.calendar { color: #999; }
+.calendar tr { height: 45px; overflow: hidden; }
+.calendar span { line-height: 17px; font-size: 12px; }
+.calendar .search { display: block; text-align: center; }
+.calendar th { width: 70px; padding: 5px 0; color: #666; vertical-align: middle; text-align: center; font-size: 16px; font-weight: normal; line-height: 17px; }
+.calendar th i { font-style: normal; font-family: Arial,sans-serif; }
+.calendar th span { display: block; font-size: 16px; color: #999; line-height: 16px; }
+.calendar td { width: 55px; height: 36px; border-right: 2px solid #ddd; border-bottom: 2px solid #ddd; text-align: right; overflow: hidden; cursor: pointer; background-color: #eef9e4; vertical-align: top; }
+.calendar .prevmonth td { border-bottom-color: #CCC; }
+.calendar .nextmonth td { border-top-color: #CCC; }
+.calendar .date { display: block; height: 22px; padding-right: 7px; text-align: right; font-family: Tahoma; overflow: hidden; *zoom: 1; line-height: 22px; font-size: 12px; }
+.calendar .price { font-size: 18px; font-family: Tahoma; color: #666; padding-right: 7px; }
+.calendar dfn { margin-right: 3px; font-size: 14px; font-style: normal; font-family: Arial; }
+.calendar .lowest .price { color: #b00; display:none }
+.calendar .noneData { cursor: default; background:#fff; color:#fff }
+.calendar .nonePrice { cursor: default; background:#ffe7ec; color:#ffe7ec }
+.calendar .noneData span { display: block; text-align: center; }
+.calendar .noneData .date { text-align: right; color:#ddd }
+.calendar .nonePrice .date { color:#999 }

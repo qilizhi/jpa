@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/jsp/commons/">
+	<excludes>
+		<pattern>/static/**</pattern>
+		<pattern>/cxf/*</pattern>
+		<pattern>/api/*</pattern>
+		<pattern>/css/*</pattern>
+		<pattern>/js/*</pattern>
+		<pattern>/inc*</pattern>
+		<pattern>/acct/login*</pattern>
+		<pattern>/*.html</pattern>
+		<pattern>/*.htm</pattern>
+		<pattern>/My97DatePicker*</pattern>
+		<pattern>/guideAdmin/login*</pattern>
+		<pattern>/admin/login*</pattern>
+		<pattern>/admin/logout*</pattern>
+		<pattern>/admin/authority/loadResource*</pattern>
+		
+		
+	</excludes>
+	<decorator name="default" page="admin_default.jsp">
+	<pattern>/*	</pattern>
+	<!--     <pattern>/admin*</pattern>
+		<pattern>/admin/*</pattern> -->
+	</decorator>
+	<decorator name="guide_admin_default" page="guide_admin_default.jsp">
+		<pattern>/guideAdmin*</pattern>
+		<pattern>/guideAdmin/*</pattern>
+	</decorator>
+</decorators>
