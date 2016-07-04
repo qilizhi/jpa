@@ -41,6 +41,7 @@
 
 		<!-- shiro 相关版本配置 -->
 		<shiro.version>[1.2,)</shiro.version>
+		<jstl.version>[1.2,)</jstl.version>
 
 	</properties>
 
@@ -168,7 +169,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 		</dependency>
 		<!-- jstl 标签库 end -->
 		<!-- sitemesh 页面装色器 start -->
@@ -289,6 +290,14 @@
 		<!-- redis end -->
 		<!-- 缓存相关 end -->
 
+		<!-- servlet-api 相关 start -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- servlet-api 相关 end -->
 
 
 		<!-- 测试相关的依赖（junit、hamcrest、mockito、spring-test） -->
@@ -327,6 +336,24 @@
 		<!-- 测试用例相关 end -->
 
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>springsource-milestones</id>
+			<name>SpringSource Milestones Proxy</name>
+			<url>https://oss.sonatype.org/content/repositories/springsource-milestones</url>
+		</repository>
+		<repository>
+			<id>nexus</id>
+			<name>local private nexus</name>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<build>
 		<finalName>demo</finalName>

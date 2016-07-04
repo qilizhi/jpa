@@ -24,9 +24,9 @@ public class RoleToAuthority implements Serializable {
 
 	private Long id;
 
-    private Integer roleId;
+    private Long roleId;
 
-    private Integer authorityId;
+    private Long authorityId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,20 +39,20 @@ public class RoleToAuthority implements Serializable {
     }
 
     @Column(name="role_id")
-    public Integer getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
     @Column(name="authority_id")
-    public Integer getAuthorityId() {
+    public Long getAuthorityId() {
         return authorityId;
     }
 
-    public void setAuthorityId(Integer authorityId) {
+    public void setAuthorityId(Long authorityId) {
         this.authorityId = authorityId;
     }
 }
