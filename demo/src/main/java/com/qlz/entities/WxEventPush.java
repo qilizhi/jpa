@@ -1,5 +1,6 @@
 package com.qlz.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,7 +13,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="wx_event_push")
-public class WxEventPush{
+public class WxEventPush implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;

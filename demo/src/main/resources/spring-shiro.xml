@@ -14,8 +14,7 @@ xmlns:context="http://www.springframework.org/schema/context"
 	<!-- 用户授权信息Cache -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
 	<!-- 項目自定义的Realm, 所有userInfoService依赖的dao都需要用depends-on声明  -->
-	<bean id="shiroDbRealm" class="com.mlx.guide.shiro.ShiroDbRealm" depends-on="userInfoMapper">
-		<property name="userInfoService" ref="userInfoService"/>
+	<bean id="shiroDbRealm" class="com.qlz.shiro.ShiroDbRealm" >
 	</bean>
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
@@ -57,12 +56,12 @@ xmlns:context="http://www.springframework.org/schema/context"
 
     
     	<!-- 自定义角色验证过滤器 -->
-    <bean id="roleAuthorizationFilter" class="com.mlx.guide.shiro.RoleAuthorizationFilter" />
-    <bean id="uRLPermissionsFilter" class="com.mlx.guide.shiro.URLPermissionsFilter"></bean>
-    <bean id="myPermissionsFilter" class="com.mlx.guide.shiro.MyPermissionsAuthorizationFilter"></bean>
+    <bean id="roleAuthorizationFilter" class="com.qlz.shiro.RoleAuthorizationFilter" />
+   <!--  <bean id="uRLPermissionsFilter" class="com.mlx.guide.shiro.URLPermissionsFilter"></bean> -->
+   <bean id="myPermissionsFilter" class="com.qlz.shiro.MyPermissionsAuthorizationFilter"></bean> 
 	
 	<!-- 自定义对 shiro的连接约束,结合shiroFilter实现动态获取资源 -->
-    <bean id="chainDefinitionSectionMetaSource" class="com.mlx.guide.shiro.ChainDefinitionSectionMetaSource">
+    <bean id="chainDefinitionSectionMetaSource" class="com.qlz.shiro.ChainDefinitionSectionMetaSource">
     <!-- 默认的连接配置 -->
     <property name="filterChainDefinitions">
         <value>

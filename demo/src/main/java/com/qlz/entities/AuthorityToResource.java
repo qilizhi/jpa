@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Table(name="authority_to_resource")
 public class AuthorityToResource {
 	private Long id;
-	private Integer authorityId;
-	private Integer resourceId;
+	private Long authorityId;
+	private Long resourceId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,20 +25,20 @@ public class AuthorityToResource {
 	}
 
 	@Column(name="authority_id")
-	public Integer getAuthorityId() {
+	public Long getAuthorityId() {
 		return authorityId;
 	}
 
-	public void setAuthorityId(Integer authorityId) {
+	public void setAuthorityId(Long authorityId) {
 		this.authorityId = authorityId;
 	}
 
-	public Integer getResourceId() {
+	public Long getResourceId() {
 		return resourceId;
 	}
 
 	@Column(name="resource_id")
-	public void setResourceId(Integer resourceId) {
+	public void setResourceId(Long resourceId) {
 		this.resourceId = resourceId;
 	}
 }

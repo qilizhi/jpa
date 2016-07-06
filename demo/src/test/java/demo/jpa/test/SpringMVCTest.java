@@ -38,7 +38,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.qlz.dao.CustomerDao;
+import com.qlz.dao.ResourceDao;
+import com.qlz.entities.Authority;
 import com.qlz.entities.Customer;
+import com.qlz.entities.Resource;
 import com.qlz.service.CustomerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,8 +50,8 @@ import com.qlz.service.CustomerService;
 		@ContextConfiguration(locations = { "classpath:spring-mvc.xml", "classpath:applicationContext.xml" }) })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SpringMVCTest {
-	
-	Logger logger =LoggerFactory.getLogger(SpringMVCTest.class);
+
+	Logger logger = LoggerFactory.getLogger(SpringMVCTest.class);
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -57,7 +60,9 @@ public class SpringMVCTest {
 
 	@Autowired
 	private CustomerDao customerDao;
-	
+	@Autowired
+	private ResourceDao resourceDao;
+
 	@Autowired
 	private CustomerService customerService;
 
@@ -90,7 +95,9 @@ public class SpringMVCTest {
 		cust.setCreatedTime(new Date());
 		cust.setEmail("8145970004@qq.com");
 		cust.setLastName("qilizhi");
-		customerDao.save(cust);
+		Customer c = customerDao.save(cust);
+		c.setLastName("更新更梳妆打扮");
+		customerDao.saveAndFlush(c);
 		List<Customer> cs = (List<Customer>) customerDao.findAll();
 		System.out.println("testwwwwwww" + cs.toString());
 
@@ -188,8 +195,8 @@ public class SpringMVCTest {
 				Path path = root.get("id");
 
 				Predicate idPredicate = cb.gt(root.get("id").as(Integer.class), 2);
-				Predicate emailpredicate=cb.equal(root.get("email").as(String.class),"814597006@qq.com");
-				query.where(cb.and(idPredicate,emailpredicate));
+				Predicate emailpredicate = cb.equal(root.get("email").as(String.class), "814597006@qq.com");
+				query.where(cb.and(idPredicate, emailpredicate));
 
 				return query.getRestriction();
 			}
@@ -225,35 +232,44 @@ public class SpringMVCTest {
 		System.out.println("当前页面的 List: " + page.getContent());
 		System.out.println("当前页面的记录数: " + page.getNumberOfElements());
 	}
-	
+
 	@Test
-	public void testCache(){
-		
-		List<Customer>ll=customerDao.findAll();
-		List<Customer> l2=customerDao.findAll();
-		logger.info("结果："+ (ll==l2));
-		Customer a=customerDao.getOne(1);
-		Customer b=customerDao.getOne(1);
-		logger.info("结果："+ (a==b));
-	
+	public void testCache() {
+
+		List<Customer> ll = customerDao.findAll();
+		List<Customer> l2 = customerDao.findAll();
+		logger.info("结果：" + (ll == l2));
+		Customer a = customerDao.getOne(1);
+		Customer b = customerDao.getOne(1);
+		logger.info("结果：" + (a == b));
+
 	}
+
 	@Test
-	public void QueryCacheTest(){  
-        //无效的spring-data-jpa实现的接口方法  
-        //输出两条sql语句  
-		customerDao.findAll();  
-		customerDao.findAll();  
-        System.out.println("================test 1 finish======================");  
-        //自己实现的dao方法可以被查询缓存  
-        //输出一条sql语句  
-        customerDao.findAllCached();  
-        customerDao.findAllCached();  
-        System.out.println("================test 2 finish======================");  
-        //自己实现的dao方法可以被查询缓存  
-        //输出一条sql语句  
-        customerDao.findCustomerByName("a");  
-        customerDao.findCustomerByName("a");  
-        System.out.println("================test 3 finish======================");  
-    }  
+	public void QueryCacheTest() {
+		// 无效的spring-data-jpa实现的接口方法
+		// 输出两条sql语句
+		customerDao.findAll();
+		customerDao.findAll();
+		System.out.println("================test 1 finish======================");
+		// 自己实现的dao方法可以被查询缓存
+		// 输出一条sql语句
+		customerDao.findAllCached();
+		customerDao.findAllCached();
+		System.out.println("================test 2 finish======================");
+		// 自己实现的dao方法可以被查询缓存
+		// 输出一条sql语句
+		customerDao.findCustomerByName("a");
+		customerDao.findCustomerByName("a");
+		System.out.println("================test 3 finish======================");
+	}
+
+	@Test
+	public void TestQuery() {
+		Authority a = new Authority();
+		a.setId((long) 1);
+		List<Resource> l = resourceDao.findById((long) 1);
+		System.out.println(l);
+	}
 
 }

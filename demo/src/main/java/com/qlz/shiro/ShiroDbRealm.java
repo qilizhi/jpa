@@ -40,6 +40,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.qlz.constant.Const;
+import com.qlz.entities.Resource;
+import com.qlz.entities.Role;
 import com.qlz.entities.User;
 import com.qlz.service.UserService;
 import com.qlz.util.Digests;
@@ -50,17 +53,6 @@ import com.qlz.util.StringUtil;
 public class ShiroDbRealm extends AuthorizingRealm {
 
 	private static Logger logger = LoggerFactory.getLogger(ShiroDbRealm.class);
-
-	/**
-	 * 平台用户登录接口地址
-	 */
-	private static final String PLATFORM_LOGIN = "http://passport.mlxing.com/api/platformUser/login";
-
-	/**
-	 * 平台用户信息地址
-	 */
-	private static final String PLATFORM_USERINFO_LOGIN = "http://passport.mlxing.com/api/platformUser/getUserInfo";
-
 	@Autowired
 	private UserService userService;
 
@@ -75,46 +67,21 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		CaptchaUsernamePasswordToken token = (CaptchaUsernamePasswordToken) authcToken;
 		String password = token.getPassword() == null ? null : String.valueOf(token.getPassword());
 		try {
-	/*		if (token.getUserType() == EUserType.PLATFORM_USER) {
-				ParamUtil paramUtil = ParamUtil.getNewInstance();
-				paramUtil.addParam(Const.API_LOGIN_NAME, token.getUsername());
-				paramUtil.addParam(Const.TOKEN_PARAM, token.getAccessToken());
-				paramUtil.addParam(Const.API_PARAM_PASSWORD, password);
-				PlatformUser platformUser = null;
-				if (StringUtil.empty(token.getAccessToken())) {
-					platformUser = MlxingAPIUtil.getAPIDataT(PLATFORM_LOGIN, paramUtil, PlatformUser.class);
-				} else {
-					platformUser = MlxingAPIUtil.getAPIDataT(PLATFORM_USERINFO_LOGIN, paramUtil, PlatformUser.class);
-				}
-				if (platformUser != null) {
-					ShiroUser user1 = new ShiroUser(token.getUsername(), platformUser.getName(),
-							platformUser.getUserNo(), null, token.getUserType());
-					HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,
-							user1.getName());
-					return ai;
-				}
-				return null;
-			}*/
-
+	
 			User userInfo = new User();
 			userInfo.setMobile(token.getUsername());
-			List<User> lsUserInfos = userService.getUserInfoPageList(userInfo);
+			List<User> lsUserInfos = userService.findByExample(userInfo);
 			if (lsUserInfos == null || lsUserInfos.isEmpty()) {
 				return null;
 			}
 			userInfo = lsUserInfos.get(0);
-		//	GuideInfo guideInfo = guideInfoService.getGuideInfoByUserNo(Long.parseLong(userInfo.getUserNo()));
-
-		/*	if (guideInfo == null || guideInfo.getRealName() == null) {
-				logger.error("验证登录错误: 非导游账号");
-				return null;
-			}*/
+	
 			if (!checkPwd(userInfo.getSalt(), password, userInfo.getPassword())) {
 				return null;
 			}
 			// TODO:需要进行密码加密处理进行验证
-			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),
-					userInfo.getOpenId(), token.getUserType());
+			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), userInfo.getName(), userInfo.getUserNo(),
+					userInfo.getOpenId());
 			HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,
 					user1.getName());
 			return ai;
@@ -140,7 +107,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			Set<String> roles = new HashSet<String>();
 			roles.add(shiroUser.role);
 			// 查找系统给用户分配的角色。
-			List<Role> rolesList = userInfoService.getRolesByUserNo(shiroUser.getUserNo());
+			List<Role> rolesList = userService.getRolesByUserNo(shiroUser.getUserNo());
 			for (Role r : rolesList) {
 				roles.add(r.getName());
 			}
@@ -155,7 +122,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 				perms.add("undefined:*");// 无权限时默认给个权限
 			}
 			perms.add("supplierAdmin:view");
-			List<Resource> resources = userInfoService.getResourcesByUserNo(shiroUser.getUserNo());
+			List<Resource> resources = userService.getResourcesByUserNo(shiroUser.getUserNo());
 			for (Resource r : resources) {
 				perms.add(r.getPath());
 			}
@@ -233,11 +200,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
 		public String role;
 
-		public ShiroUser(String loginName, String name, String userNo, String openid, EUserType userType) {
+		public ShiroUser(String loginName, String name, String userNo, String openid) {
 			this.loginName = loginName;
 			this.name = name;
 			this.userNo = userNo;
-			this.role = userType == EUserType.PLATFORM_USER ? "admin" : "guideAdmin";
+		
 			this.openid = openid;
 		}
 
@@ -255,10 +222,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
 		public String getOpenid() {
 			return openid;
-		}
-
-		public EUserType getUserType() {
-			return userType;
 		}
 
 		/**

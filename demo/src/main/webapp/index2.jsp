@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%
-	session.setAttribute(Constants.SESSION_USERNAME, "qilizhi");
+	session.setAttribute(Constants.SESSION_USERNAME, "qilizhi2");
 %>
 <html>
 <script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js"></script>

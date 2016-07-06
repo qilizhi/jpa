@@ -1,11 +1,7 @@
 package com.qlz.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.criteria.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,11 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.qlz.constant.Const;
 import com.qlz.constant.ExceptionCode;
 import com.qlz.entities.Authority;
-import com.qlz.entities.AuthorityToResource;
 import com.qlz.entities.Resource;
 import com.qlz.model.JsonResult;
+import com.qlz.model.Tree;
 import com.qlz.service.AuthorityService;
 import com.qlz.service.AuthorityToResourceService;
+import com.qlz.service.ResourceService;
 import com.qlz.util.StringUtil;
 
 /**
@@ -46,6 +43,8 @@ public class AuthorityAdminController {
 
 	@Autowired
 	private AuthorityToResourceService atrService;
+	@Autowired
+	private ResourceService resourceService;
 	
 	
 	/**
@@ -70,11 +69,11 @@ public class AuthorityAdminController {
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public String list(Integer authorityId ,@RequestParam(defaultValue = "1") Integer pageNo,
+	public String list(Long authorityId ,@RequestParam(defaultValue = "1") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
 
 		PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.ASC,"id"));
-		Page<Resource> list = atrService.selectResourceByExample(authorityId, pageBounds);
+		Page<Resource> list = resourceService.selectResourceByExample(authorityId, pageBounds);
 		model.addAttribute("list", list);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNo", pageNo);
@@ -107,7 +106,7 @@ public class AuthorityAdminController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult delete(Integer id) {
+	public JsonResult delete(Long id) {
 
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "Id不能为空！");
@@ -151,11 +150,11 @@ public class AuthorityAdminController {
 	 * @return
 	 */
 	@RequestMapping("/loadResource")
-	public String loadResource(Integer authorityId, @RequestParam(defaultValue = "1") Integer pageNo,
+	public String loadResource(Long authorityId, @RequestParam(defaultValue = "1") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
-		PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
-		PageList<Resource> list = atrService. selectResourceByExample(authorityId, pageBounds);
-		model.addAttribute("paginator", list != null ? list.getPaginator() : null);
+		PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
+		Page<Resource> list = resourceService.selectResourceByExample(authorityId, pageBounds);
+		//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
 		model.addAttribute("authorityId", authorityId);
 		model.addAttribute("pageSize", pageSize);
@@ -171,21 +170,19 @@ public class AuthorityAdminController {
 	 */
 	@RequestMapping("/setResource")
 	@ResponseBody
-	public JsonResult setResourceByAuthority(String resourceIds, Integer authorityId) {
-		AuthorityToResource atr = new AuthorityToResource();
-		atr.setAuthorityId(authorityId);
+	public JsonResult setResourceByAuthority(String resourceIds, Long authorityId) {
 		if(authorityId==null){
 			return new JsonResult(ExceptionCode.FAIL,"authorityId为空！");
 			
 		}
-		Map<String,Object> params=new HashMap<String,Object>();
-		List<Integer> idsList = StringUtil.generateListInteger(resourceIds);
-		params.put("resourceIds", idsList);
-		params.put("authorityId", authorityId);
+	
+		List<Long> resourceIdsList = StringUtil.generateListLong(resourceIds);
+		
 		try {
 		/*	先删后插入*/
-			atrService.deleteBySelective(atr);	
-			atrService.batInsert(params);
+			//atrService.deleteBySelective(atr);	
+			//atrService.batInsert(params);
+			atrService.updateBydelete(authorityId,resourceIdsList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

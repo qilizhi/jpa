@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mlx.guide.constant.Const;
-import com.mlx.guide.constant.ExceptionCode;
-import com.mlx.guide.constant.JsonResult;
-import com.mlx.guide.entity.Role;
-import com.mlx.guide.entity.RoleToAuthority;
-import com.mlx.guide.model.Tree;
-import com.mlx.guide.service.AuthorityService;
-import com.mlx.guide.service.RoleService;
-import com.mlx.guide.service.RoleToAuthorityService;
-import com.mlx.guide.shiro.ChainDefinitionSectionMetaSource;
-import com.mlx.guide.util.StringUtil;
+import com.qlz.constant.Const;
+import com.qlz.constant.ExceptionCode;
+import com.qlz.entities.Role;
+import com.qlz.entities.RoleToAuthority;
+import com.qlz.model.JsonResult;
+import com.qlz.model.Tree;
+import com.qlz.service.AuthorityService;
+import com.qlz.service.RoleService;
+import com.qlz.service.RoleToAuthorityService;
+import com.qlz.shiro.ChainDefinitionSectionMetaSource;
+import com.qlz.util.StringUtil;
 
 /**
- * 瑙掕壊Controller
+ * 角色Controller
  * 
  * @author QiQi-04-PC
  *
@@ -46,7 +46,7 @@ public class RoleAdminController {
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 
 	/**
-	 * 璇诲彇鍏叡鐨勫弬鏁板?煎拰璁剧疆,鏍规嵁鐣岄潰璁剧疆鐨勫弬鏁板?兼潵閫夋嫨椤甸潰鑿滃崟閫変腑鏁堟灉
+	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -58,7 +58,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鏂板
+	 * 新增
 	 * 
 	 * @param authority
 	 * @return
@@ -77,17 +77,17 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鍒犻櫎
+	 * 删除
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult delete(Integer id) {
+	public JsonResult delete(Long id) {
 
 		if (id == null) {
-			return new JsonResult(ExceptionCode.FAIL, "Id涓嶈兘涓虹┖锛?");
+			return new JsonResult(ExceptionCode.FAIL, "Id不能为空！");
 		}
 		try {
 			roleService.deleteByPrimaryKey(id);
@@ -100,7 +100,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鏇存柊
+	 * 更新
 	 * 
 	 * @param auth
 	 * @return
@@ -109,7 +109,7 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult update(Role role) {
 		if (role.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "id涓虹┖锛?");
+			return new JsonResult(ExceptionCode.FAIL, "id为空！");
 		}
 		try {
 			roleService.updateByPrimaryKeySelective(role);
@@ -123,7 +123,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 椤甸潰鍒楄〃璺宠浆
+	 * 页面列表跳转
 	 * 
 	 * @param model
 	 * @return
@@ -134,17 +134,17 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鏍规嵁roleID 鍔犺浇鏉冮檺鏍? ,骞舵墦缁欐爲涓奵hecked
+	 * 根据roleID 加载权限树 ,并打给树上checked
 	 * 
 	 * @return
 	 */
 	@RequestMapping("/authorityTree")
 	@ResponseBody
-	public JsonResult loadTreeByRoleId(@RequestParam("roleId") Integer roleId) {
+	public JsonResult loadTreeByRoleId(@RequestParam("roleId") Long roleId) {
 
 		List<Tree> authorityTree;
 		List<Tree> AT;
-		// 鏌ユ壘宸叉巿鏉冪殑鏍戝苟娣诲姞鏍囪瘑
+		// 查找已授权的树并添加标识
 		List<RoleToAuthority> rts;
 		try {
 			authorityTree = authorityService.getAllTree();
@@ -159,7 +159,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鍔犺浇瑙掕壊鏍?
+	 * 加载角色树
 	 * 
 	 */
 	@RequestMapping("/roleTree")
@@ -179,7 +179,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * 鏍规嵁鐢ㄦ埛瑙掕壊ID鍙婃潈闄怚D鎻掑叆鎺堟潈
+	 * 根据用户角色ID及权限ID插入授权
 	 * 
 	 * @param roleId
 	 * @param authorityIds
@@ -187,26 +187,24 @@ public class RoleAdminController {
 	 */
 	@RequestMapping("/insertByRoleIdAndAuthIds")
 	@ResponseBody
-	public JsonResult insertAuthorityToRole(Integer roleId, String authorityIds) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		List<Integer> idsList = StringUtil.generateListInteger(authorityIds);
-		params.put("authorityIds", idsList);
-		params.put("roleId", roleId);
+	public JsonResult insertAuthorityToRole(Long roleId, String authorityIds) {
+		List<Long> authorityIdsList = StringUtil.generateListLong(authorityIds);
 		try {
-			/* 鍏堝垹闄ゅ悗鎻掑叆 */
-			roleToAuthorityService.batDelete(params);
-			roleToAuthorityService.batInsert(params);
+			/* 先删除后插入 */
+		//	roleToAuthorityService.batDelete(params);
+		//	roleToAuthorityService.batInsert(params);
+			roleToAuthorityService.updateByDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		// 鍒锋柊璧勬簮shiro chain
+		// 刷新资源shiro chain
 		chainDefinitionSectionMetaSource.reLoad();
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
 	/**
-	 * 鏍规嵁鐢ㄦ埛瑙掕壊Id鍙婃潈闄怚D 鍒犻櫎
+	 * 根据用户角色Id及权限ID 删除
 	 * 
 	 * @param roleId
 	 * @param authorityIds
@@ -214,13 +212,13 @@ public class RoleAdminController {
 	 */
 	@RequestMapping("/deleteByRoleIdAndAuthIds")
 	@ResponseBody
-	public JsonResult deleteAuthorityToRole(Integer roleId, String authorityIds) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		List<Integer> idsList = StringUtil.generateListInteger(authorityIds);
-		params.put("authorityIds", idsList);
-		params.put("roleId", roleId);
+	public JsonResult deleteAuthorityToRole(Long roleId, String authorityIds) {
+	//	Map<String, Object> params = new HashMap<String, Object>();
+		List<Long> authorityIdsList = StringUtil.generateListLong(authorityIds);
+		//params.put("authorityIds", idsList);
+	//	params.put("roleId", roleId);
 		try {
-			roleToAuthorityService.batDelete(params);
+			roleToAuthorityService.batDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);

@@ -28,7 +28,7 @@ public class Authority implements Serializable{
 
     private String description;
 
-    private Integer parentId;
+    private Long parentId;
 
     private String uri;
 
@@ -58,11 +58,11 @@ public class Authority implements Serializable{
         this.description = description;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

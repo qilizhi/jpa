@@ -28,11 +28,6 @@ public class AuthorityService {
 	@Autowired
 	private AuthorityDao authorityDao;
 	
-	
-	public List<Authority> getAuhtoritysByUserNo(String userNo) {
-
-		return authorityDao.findAuhtoritysByUserNo(userNo);
-	}
 
 	/**
 	 * 递 归生成结构树
@@ -65,7 +60,7 @@ public class AuthorityService {
 	 * 
 	 */
 
-	public List<com.qlz.model.Tree> getAllTree() {
+	public List<Tree> getAllTree() {
 
 		List<Tree> ATs = new ArrayList<Tree>();
 		List<Authority> authoritys = authorityDao.findByParentIdIsNull();
@@ -123,7 +118,15 @@ public class AuthorityService {
 	 * @param auth
 	 */
 	public void updateByPrimaryKeySelective(Authority auth) {
-		authorityDao.updateByIdExample(auth);
+		authorityDao.updateExample(auth);
+		
+	}
+
+	/**
+	 * @param id
+	 */
+	public void deleteByPrimaryKey(Long id) {
+		authorityDao.delete(id);
 		
 	}
 

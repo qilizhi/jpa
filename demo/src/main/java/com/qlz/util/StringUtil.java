@@ -1141,6 +1141,7 @@ public class StringUtil {
 		return null;
 	}
 
+
 	/**
 	 * 将字符串转为数组
 	 * 

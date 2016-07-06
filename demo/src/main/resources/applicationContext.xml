@@ -69,15 +69,15 @@
 				<prop key="javax.persistence.sharedCache.mode">ALL</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory 
-					</prop> 
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory
+				</prop>
 				<prop key="hibernate.cache.use_second_level_cache">
 					true
 				</prop>
 				<prop key="hibernate.cache.region.factory_class">
 					org.hibernate.cache.ehcache.EhCacheRegionFactory
 				</prop>
-		
+
 
 				<!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
 				<!-- <prop key="hibernate.cache.provider_class ">org.hibernate.cache.ehcache.StrategyRegistrationProvider 
@@ -161,7 +161,7 @@
 	<!-- 自动扫描并注入Spring Data JPA -->
 	<jpa:repositories base-package="com.qlz.dao"
 		entity-manager-factory-ref="entityManagerFactory"
-		transaction-manager-ref="transactionManager">
+		transaction-manager-ref="transactionManager" query-lookup-strategy="create-if-not-found">
 	</jpa:repositories>
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
@@ -183,5 +183,5 @@
 	<!-- <import resource="classpath*:/spring-mybatis.xml" /> -->
 	<!-- <import resource="classpath*:/spring-redis.xml" /> -->
 
-	<!-- <import resource="classpath*:/spring-shiro.xml" /> -->
+	<import resource="classpath*:/spring-shiro.xml" />
 </beans>

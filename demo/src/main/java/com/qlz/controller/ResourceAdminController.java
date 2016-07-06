@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,17 +23,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.miemiedev.mybatis.paginator.domain.Order;
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.mlx.guide.constant.Const;
-import com.mlx.guide.constant.ExceptionCode;
-import com.mlx.guide.constant.JsonResult;
-import com.mlx.guide.dao.AuthorityToResourceMapper;
-import com.mlx.guide.entity.AuthorityToResource;
-import com.mlx.guide.entity.Resource;
-import com.mlx.guide.service.ResourceService;
-import com.mlx.guide.shiro.ChainDefinitionSectionMetaSource;
+import com.qlz.constant.Const;
+import com.qlz.constant.ExceptionCode;
+import com.qlz.entities.AuthorityToResource;
+import com.qlz.entities.Resource;
+import com.qlz.model.JsonResult;
+import com.qlz.service.AuthorityToResourceService;
+import com.qlz.service.ResourceService;
+import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 
 /**
  * 璧勬簮controller
@@ -44,14 +46,13 @@ public class ResourceAdminController {
 	@Autowired
 	private ResourceService resourceService;
 	@Autowired
-	private AuthorityToResourceMapper authorityToResourceMapper;
+	private AuthorityToResourceService authorityToResourceService;
 	
 	@Autowired
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 	
-
 	/**
-	 * 璇诲彇鍏叡鐨勫弬鏁板?煎拰璁剧疆,鏍规嵁鐣岄潰璁剧疆鐨勫弬鏁板?兼潵閫夋嫨椤甸潰鑿滃崟閫変腑鏁堟灉
+	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -63,7 +64,7 @@ public class ResourceAdminController {
 	}
 	
 	/**
-	 * 鍒锋柊鍏ㄥ眬鏉冮檺璧勬簮
+	 * 刷新全局权限资源
 	 * @return
 	 * @throws Exception
 	 */
@@ -80,9 +81,9 @@ public class ResourceAdminController {
 			HttpServletRequest request, Model model, Resource resource) {
 
 		try {
-			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
-			PageList<Resource> list = resourceService.getResourcePageList(resource, pageBounds);
-			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
+			PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
+			Page<Resource> list = resourceService.getResourcePageList(resource, pageBounds);
+			//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("resource", resource);
 			model.addAttribute("pageSize", pageSize);
@@ -92,9 +93,8 @@ public class ResourceAdminController {
 		return "admin/resource/list";
 
 	}
-
 	/**
-	 * 鏉冮檺涓庤祫婧愭爲
+	 * 权限与资源树
 	 * @param request
 	 * @param model
 	 * @param resource
@@ -110,12 +110,12 @@ public class ResourceAdminController {
 		List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
 		try {
 			list = resourceService.getResourceList(resource);
-			atrlist = authorityToResourceMapper.selectByExample(authorityToResource);
+			atrlist = authorityToResourceService.selectByExample(authorityToResource);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		//resource鏄惁鏈夐?夊垎閰嶄簡
+		//resource是否有选分配了
 		for (AuthorityToResource at : atrlist) {
 			for (Resource r : list) {
 				if (r.getId() != null && at.getResourceId() != null && r.getId() == at.getResourceId()) {
@@ -131,9 +131,10 @@ public class ResourceAdminController {
 
 	}
 
+
 	/**
 	 * 
-	 * 鏍规嵁id 鑾峰彇 璧勬簮
+	 * 根据id 获取 资源
 	 * 
 	 * @param request
 	 * @param id
@@ -142,7 +143,7 @@ public class ResourceAdminController {
 
 	@RequestMapping("/{id}")
 	@ResponseBody
-	public JsonResult get(HttpServletRequest request, @PathVariable("id") Integer id) {
+	public JsonResult get(HttpServletRequest request, @PathVariable("id") Long id) {
 		JsonResult ajaxResult = null;
 		try {
 
@@ -154,15 +155,14 @@ public class ResourceAdminController {
 		}
 		return ajaxResult;
 	}
-
 	/**
-	 * 璇︽儏
+	 * 详情
 	 * 
 	 * @param actInfo
 	 * @return
 	 */
 	@RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Integer id, Model model) {
+	public String detail(@PathVariable Long id, Model model) {
 		try {
 			Resource resource = resourceService.selectByPrimaryKey(id);
 			model.addAttribute("actInfo", resource);
@@ -173,7 +173,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * 鏇存柊
+	 * 更新
 	 * 
 	 * @param actInfo
 	 * @return
@@ -195,8 +195,9 @@ public class ResourceAdminController {
 		return ajaxResult;
 	}
 
+
 	/**
-	 * 鍒涘缓
+	 * 创建
 	 * 
 	 * @param resource
 	 * @return
@@ -217,10 +218,10 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * 鎵归噺鍒犻櫎
+	 * 批量删除
 	 * 
 	 * @param ids
-	 *            id闆嗗悎,渚嬪:1,2,3,4
+	 *            id集合,例如:1,2,3,4
 	 * @return
 	 */
 	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -242,14 +243,14 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * 鍒犻櫎
+	 * 删除
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public JsonResult delete(@PathVariable Integer id) {
+	public JsonResult delete(@PathVariable Long id) {
 		JsonResult ajaxResult = null;
 		try {
 

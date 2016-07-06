@@ -12,7 +12,7 @@ public class Tree {
 
 	private Long id;// objectId
 	private String text;// objectName
-	private Integer parentId;
+	private Long parentId;
 	List<Tree> children = new ArrayList<Tree>();
 	private State state;
 
@@ -24,11 +24,11 @@ public class Tree {
 		this.text = text;
 	}
 
-	public Integer getParentId() {
+	public Long getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(Integer parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 
