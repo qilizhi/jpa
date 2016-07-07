@@ -62,7 +62,7 @@ return null;
 	 * @param resource
 	 */
 	public void updateByPrimaryKeySelective(Resource resource) {
-		resourceDao.update(resource);
+		resourceDao.save(resource);
 		
 	}
 

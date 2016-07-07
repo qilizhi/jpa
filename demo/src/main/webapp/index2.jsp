@@ -7,6 +7,9 @@
 	session.setAttribute(Constants.SESSION_USERNAME, "qilizhi2");
 %>
 <html>
+<title>
+socketTest
+</title>
 <script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>

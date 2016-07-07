@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.Resource;
 import com.qlz.entities.Role;
 import com.qlz.entities.User;
 
-public interface UserDao extends BaseDao<User, Long> {
+public interface UserDao extends BaseRepository<User, Long> {
 
 	/**
 	 * @param userNo

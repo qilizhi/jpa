@@ -1,11 +1,15 @@
 package com.qlz.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Table
@@ -25,6 +29,8 @@ public class Resource  implements Serializable{
     private String description;
 
     private String name;
+    
+    private Set<Authority> authorities=new HashSet<Authority>();
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -68,4 +74,13 @@ public class Resource  implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    @ManyToMany(fetch=FetchType.LAZY,mappedBy="resources")
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
 }

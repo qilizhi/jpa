@@ -1,21 +1,14 @@
 package com.qlz.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="authority_to_resource")
+/*@Entity
+@Table(name="authority_to_resource")*/
 public class AuthorityToResource {
 	private Long id;
 	private Long authorityId;
 	private Long resourceId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+/*	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)*/
 	public Long getId() {
 		return id;
 	}
@@ -24,7 +17,7 @@ public class AuthorityToResource {
 		this.id = id;
 	}
 
-	@Column(name="authority_id")
+/*	@Column(name="authority_id")*/
 	public Long getAuthorityId() {
 		return authorityId;
 	}
@@ -36,8 +29,8 @@ public class AuthorityToResource {
 	public Long getResourceId() {
 		return resourceId;
 	}
-
-	@Column(name="resource_id")
+/*
+	@Column(name="resource_id")*/
 	public void setResourceId(Long resourceId) {
 		this.resourceId = resourceId;
 	}

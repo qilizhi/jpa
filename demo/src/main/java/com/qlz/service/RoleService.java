@@ -122,7 +122,7 @@ public class RoleService {
 	 * @param role
 	 */
 	public void updateByPrimaryKeySelective(Role role) {
-		roleDao.update(role);
+		roleDao.saveAndFlush(role);
 
 	}
 

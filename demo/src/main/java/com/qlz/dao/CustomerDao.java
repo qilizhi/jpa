@@ -6,14 +6,12 @@ import javax.persistence.QueryHint;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
 
+import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.Customer;
 
 /**
@@ -34,7 +32,7 @@ import com.qlz.entities.Customer;
  *
  */
 
-public interface CustomerDao extends BaseDao<Customer, Integer> {
+public interface CustomerDao extends BaseRepository<Customer, Integer> {
 	public List<Customer> findByLastName(String lastName);
 
 	public Page<Customer> findByLastName(String lastName, Pageable page);
@@ -43,6 +41,16 @@ public interface CustomerDao extends BaseDao<Customer, Integer> {
 	@Query("select c from Customer c where c.email=?1")
 	/* 使用参数名。 */
 	public List<Customer> getListByEmail(String email);
+
+	 @Query("select c from Customer c where c.email=?1")
+	/* 使用参数名。 */
+	//@Query(name = "select r from Resource r where r.id=?1")
+	public List<Customer> getListByEa(String email);
+
+	/*
+	 * @Query(name = "select r from Resource r where r.id=:roleId") public
+	 * List<Resource> getListByR(@Param("roleId")Long roleId);
+	 */
 
 	// WHERE lastName LIKE %? AND id < ?
 	List<Customer> getByLastNameEndingWithAndIdLessThan(String lastName, Integer id);

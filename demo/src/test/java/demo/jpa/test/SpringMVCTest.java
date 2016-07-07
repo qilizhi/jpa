@@ -29,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,6 +50,8 @@ import com.qlz.service.CustomerService;
 @ContextHierarchy({
 		@ContextConfiguration(locations = { "classpath:spring-mvc.xml", "classpath:applicationContext.xml" }) })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+/** 声明事务回滚，要不测试一个方法数据就没有了岂不很杯具，注意：插入数据时可注掉，不让事务回滚 **/
+@Rollback(value=true)
 public class SpringMVCTest {
 
 	Logger logger = LoggerFactory.getLogger(SpringMVCTest.class);
@@ -96,7 +99,7 @@ public class SpringMVCTest {
 		cust.setEmail("8145970004@qq.com");
 		cust.setLastName("qilizhi");
 		Customer c = customerDao.save(cust);
-		c.setLastName("更新更梳妆打扮");
+		c.setLastName("DDDDDDDDDD");
 		customerDao.saveAndFlush(c);
 		List<Customer> cs = (List<Customer>) customerDao.findAll();
 		System.out.println("testwwwwwww" + cs.toString());
@@ -268,8 +271,10 @@ public class SpringMVCTest {
 	public void TestQuery() {
 		Authority a = new Authority();
 		a.setId((long) 1);
-		List<Resource> l = resourceDao.findById((long) 1);
-		System.out.println(l);
+		// List<Resource> l = resourceDao.getListByR((long) 1);
+		List<Resource> ll = resourceDao.getListByEa((long) 1);
+		// List<Customer>l=customerDao.getListByEa("ee");
+	//	System.out.println(ll);
 	}
 
 }

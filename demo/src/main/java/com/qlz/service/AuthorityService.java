@@ -118,7 +118,7 @@ public class AuthorityService {
 	 * @param auth
 	 */
 	public void updateByPrimaryKeySelective(Authority auth) {
-		authorityDao.updateExample(auth);
+		authorityDao.saveAndFlush(auth);
 		
 	}
 

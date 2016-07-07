@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.AuthorityToResource;
 import com.qlz.entities.Resource;
 
@@ -17,7 +18,7 @@ import com.qlz.entities.Resource;
  * @author qilizhi
  * @date 2016年7月4日 下午4:42:28
  */
-public interface AuthorityToResourceDao extends BaseDao<AuthorityToResource, Long> {
+public interface AuthorityToResourceDao extends BaseRepository<AuthorityToResource, Long> {
 
 
 

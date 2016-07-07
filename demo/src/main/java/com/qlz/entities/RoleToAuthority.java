@@ -14,8 +14,8 @@ import javax.persistence.Table;
  * @author qilizhi
  * @date 2016年7月4日 下午4:19:57
  */
-@Entity
-@Table(name="role_to_authority")
+/*@Entity
+@Table(name="role_to_authority")*/
 public class RoleToAuthority implements Serializable {
     /**
 	 * 
@@ -28,8 +28,8 @@ public class RoleToAuthority implements Serializable {
 
     private Long authorityId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+/*	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)*/
     public Long getId() {
         return id;
     }

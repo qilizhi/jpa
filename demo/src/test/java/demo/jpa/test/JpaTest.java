@@ -1,14 +1,9 @@
 package demo.jpa.test;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 
-import org.hibernate.ejb.QueryHints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.qlz.dao.CustomerDao;
 import com.qlz.entities.Customer;
 
 public class JpaTest {
@@ -36,17 +30,18 @@ public class JpaTest {
 		tx = new ClassPathXmlApplicationContext("applicationContext.xml");
 		entityManagerFactory = tx.getBean(EntityManagerFactory.class);
 		entityManager = entityManagerFactory.createEntityManager();
-		/*
-		 * transaction = entityManager.getTransaction(); transaction.begin();
-		 */
+		transaction = entityManager.getTransaction();
+		transaction.begin();
+
 	}
 
 	@After
 	public void destroy() {
-		/*
-		 * transaction.commit(); entityManager.close();
-		 * entityManagerFactory.close();
-		 */
+
+		transaction.commit();
+		entityManager.close();
+		entityManagerFactory.close();
+
 	}
 
 	// 可以使用 JPQL 完成 UPDATE 和 DELETE 操作.
@@ -92,7 +87,23 @@ public class JpaTest {
 		EntityManager em2 = entityManagerFactory.createEntityManager();
 		Customer d2 = em2.find(Customer.class, 1); // find id为1的对象
 		logger.info(d2.getLastName());
+
+		d2.setLastName("QQQQQ");
+		em2.merge(d2);
 		em2.close();
+
+	}
+
+	@Test
+	public void testUpdate() {
+
+	
+		Customer d2 = entityManager.find(Customer.class, 1); // find id为1的对象
+		logger.info(d2.getLastName());
+
+		d2.setLastName("QQQQQ");
+		entityManager.merge(d2);
+	
 
 	}
 

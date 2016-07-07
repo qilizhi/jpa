@@ -121,21 +121,23 @@
 		</property>
 		<!-- 连接池最大使用连接数 -->
 		<property name="maxActive">
-			<value>20</value>
+			<value>1000</value>
 		</property>
 		<!-- 初始化连接大小 -->
 		<property name="initialSize">
-			<value>1</value>
+			<value>100</value>
 		</property>
 		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait">
 			<value>60000</value>
 		</property>
 		<!-- 连接池最大空闲 -->
-		<!-- <property name="maxIdle"> <value>20</value> </property> -->
+		<property name="maxIdle">
+			<value>20</value>
+		</property>
 		<!-- 连接池最小空闲 -->
 		<property name="minIdle">
-			<value>3</value>
+			<value>30</value>
 		</property>
 		<!-- 自动清除无用连接 -->
 		<property name="removeAbandoned">
@@ -143,25 +145,42 @@
 		</property>
 		<!-- 清除无用连接的等待时间 -->
 		<property name="removeAbandonedTimeout">
-			<value>180</value>
+			<value>180000</value>
 		</property>
 		<!-- 连接属性 -->
 		<property name="connectionProperties">
 			<value>clientEncoding=UTF-8</value>
 		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>60000</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
 
 		<!-- 监控统计拦截的filters,日志记录 start -->
 		<!-- 并在filters属性中配置了log4j -->
-		<!-- <property name="proxyFilters"> <list> <ref bean="stat-filter" /> <ref 
-			bean="log-filter" /> </list> </property> 监控统计拦截的filters,日志记录 end <property 
-			name="filters"> <value>stat,wall,log4j</value> </property> -->
+<!-- 		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property> -->
+		<!-- 监控统计拦截的filters,日志记录 end -->
+		<property name="druid.filters">
+			<value>stat,wall,log4j</value>
+		</property>
 
 	</bean>
 
 	<!-- 自动扫描并注入Spring Data JPA -->
+	<!-- 自定义beanfactory -->
 	<jpa:repositories base-package="com.qlz.dao"
 		entity-manager-factory-ref="entityManagerFactory"
-		transaction-manager-ref="transactionManager" query-lookup-strategy="create-if-not-found">
+		transaction-manager-ref="transactionManager" query-lookup-strategy="create-if-not-found"
+
+		factory-class="com.qlz.dao.repository.BaseRepositoryFactoryBean">
+
 	</jpa:repositories>
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

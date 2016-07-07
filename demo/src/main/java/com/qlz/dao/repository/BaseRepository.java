@@ -1,4 +1,4 @@
-package com.qlz.dao;
+package com.qlz.dao.repository;
 
 import java.io.Serializable;
 
@@ -14,6 +14,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @param <ID>
  */
 @NoRepositoryBean
-public interface BaseDao<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+public interface BaseRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+	//public int saveOrUpdate(T entity);
 
 }

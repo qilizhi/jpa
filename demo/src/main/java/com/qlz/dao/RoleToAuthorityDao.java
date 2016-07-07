@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.RoleToAuthority;
 
 /**
@@ -13,7 +14,7 @@ import com.qlz.entities.RoleToAuthority;
  * @author qilizhi
  * @date 2016年7月4日 下午4:44:57
  */
-public interface RoleToAuthorityDao extends BaseDao<RoleToAuthority, Long> {
+public interface RoleToAuthorityDao extends BaseRepository<RoleToAuthority, Long> {
 
 	/**
 	 * @param roleId

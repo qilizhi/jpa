@@ -9,8 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="user_to_role")
+/*@Entity
+@Table(name="user_to_role")*/
 public class UserToRole implements Serializable {
     /**
 	 * 
@@ -23,8 +23,8 @@ public class UserToRole implements Serializable {
 
     private Long roleId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+/*	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)*/
     public Long getId() {
         return id;
     }
@@ -33,7 +33,7 @@ public class UserToRole implements Serializable {
         this.id = id;
     }
 
-    @Column(name="user_no")
+/*    @Column(name="user_no")*/
     public String getUserNo() {
         return userNo;
     }
@@ -42,7 +42,7 @@ public class UserToRole implements Serializable {
         this.userNo = userNo;
     }
 
-    @Column(name="role_id")
+ /*   @Column(name="role_id")*/
     public Long getRoleId() {
         return roleId;
     }
