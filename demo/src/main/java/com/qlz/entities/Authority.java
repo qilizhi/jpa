@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -85,6 +86,7 @@ public class Authority implements Serializable {
 	}
 
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST,mappedBy="authorities")
+	//@Transient
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -92,10 +94,12 @@ public class Authority implements Serializable {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinTable(name = "authority_resource", joinColumns = {
 			@JoinColumn(name = "authority_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "resource_id", referencedColumnName = "id") })
+	//@Transient
 	public Set<Resource> getResources() {
 		return resources;
 	}

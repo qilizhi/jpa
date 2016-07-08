@@ -4,33 +4,38 @@
 package com.qlz.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qlz.dao.AuthorityDao;
+import com.qlz.dao.ResourceDao;
 import com.qlz.entities.Authority;
+import com.qlz.entities.Resource;
 import com.qlz.entities.RoleToAuthority;
 import com.qlz.model.State;
 import com.qlz.model.Tree;
 
 /**
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç10:53:39
+ * @date 2016ï¿½ï¿½7ï¿½ï¿½4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½10:53:39
  */
 @Service
 @Transactional
 public class AuthorityService {
-	
-	
+
 	@Autowired
 	private AuthorityDao authorityDao;
-	
+
+	@Autowired
+	private ResourceDao resourceDao;
 
 	/**
-	 * µİ ¹éÉú³É½á¹¹Ê÷
+	 * è·å–æƒé™æ ‘
 	 * 
 	 */
 
@@ -42,7 +47,7 @@ public class AuthorityService {
 				AT.setId(aut.getId());
 				AT.setText(aut.getName());
 				AT.setParentId(aut.getParentId());
-				// ²éÑ¯ ×ÓNode
+				// ï¿½ï¿½Ñ¯ ï¿½ï¿½Node
 				List<Authority> authoritys = authorityDao.findByParentId(aut.getId());
 				if (authoritys != null && authoritys.size() > 0) {
 					AT.setChildren(getTree(authoritys));
@@ -56,7 +61,7 @@ public class AuthorityService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓĞÊ÷½á¹¹
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹
 	 * 
 	 */
 
@@ -72,7 +77,7 @@ public class AuthorityService {
 	}
 
 	/**
-	 * µİ¹é±êÊ¶ÒÑÊÜÈ¨µÄÊ÷
+	 * æ ‡è®°å·²æˆæƒçš„æ ‘
 	 * 
 	 * 
 	 */
@@ -111,7 +116,7 @@ public class AuthorityService {
 	 * @param authority
 	 */
 	public void insertSelective(Authority authority) {
-		authorityDao.saveAndFlush(authority);		
+		authorityDao.saveAndFlush(authority);
 	}
 
 	/**
@@ -119,7 +124,7 @@ public class AuthorityService {
 	 */
 	public void updateByPrimaryKeySelective(Authority auth) {
 		authorityDao.saveAndFlush(auth);
-		
+
 	}
 
 	/**
@@ -127,7 +132,19 @@ public class AuthorityService {
 	 */
 	public void deleteByPrimaryKey(Long id) {
 		authorityDao.delete(id);
-		
+
+	}
+
+	/**
+	 * @param authorityId
+	 * @param resourceIdsList
+	 */
+	public void updateBydelete(Long authorityId, List<Long> resourceIdsList) {
+		Set<Resource> resources = new HashSet<Resource>();
+		resources = resourceDao.findByIdIn(resourceIdsList);
+		Authority authority = authorityDao.findOne(authorityId);
+		authority.setResources(resources);
+		authorityDao.save(authority);
 	}
 
 }

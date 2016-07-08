@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import com.qlz.entities.Resource;
 
 /**
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç6:07:31
+ * @date 2016ï¿½ï¿½7ï¿½ï¿½4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½6:07:31
  */
 @Service
 @Transactional
@@ -25,12 +26,6 @@ public class ResourceService {
 
 	@Autowired
 	private ResourceDao resourceDao;
-
-	public List<Resource> findResourceByRoleId(Long id) {
-
-		//return resourceDao.find(id);
-return null;
-	}
 
 	/**
 	 * @param resource
@@ -92,15 +87,23 @@ return null;
 		return resourceDao.findAll(Example.of(resource));
 	}
 
+
 	/**
-	 * @param authorityId
-	 * @param pageBounds
+	 * @param id
 	 * @return
 	 */
-	public Page<Resource> selectResourceByExample(Long authorityId, PageRequest pageBounds) {
+	public List<Resource> getResourceByRoleId(Long roleId) {
 		// TODO Auto-generated method stub
-		//return resourceDao.find(authorityId, pageBounds);
-		return null;
+		return resourceDao.getResourceByRoleId(roleId);
 	}
 
+	public List<Resource> getResourceByAuthorityId(Long authorityId){
+		return resourceDao.getResourceByAuthoriytId(authorityId);
+		
+	};
+	public Page<Resource> getResourceByAuthorityId(Long authorityId,Pageable page){
+		return resourceDao.getResourceByAuthoriytId(authorityId,page);
+		
+	};
+	
 }

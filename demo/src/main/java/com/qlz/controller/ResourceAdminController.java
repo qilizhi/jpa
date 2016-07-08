@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,6 @@ import com.qlz.constant.ExceptionCode;
 import com.qlz.entities.AuthorityToResource;
 import com.qlz.entities.Resource;
 import com.qlz.model.JsonResult;
-import com.qlz.service.AuthorityToResourceService;
 import com.qlz.service.ResourceService;
 import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 
@@ -45,8 +43,8 @@ public class ResourceAdminController {
 
 	@Autowired
 	private ResourceService resourceService;
-	@Autowired
-	private AuthorityToResourceService authorityToResourceService;
+	//@Autowired
+	//private AuthorityToResourceService authorityToResourceService;
 	
 	@Autowired
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
@@ -110,7 +108,7 @@ public class ResourceAdminController {
 		List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
 		try {
 			list = resourceService.getResourceList(resource);
-			atrlist = authorityToResourceService.selectByExample(authorityToResource);
+			//atrlist = authorityToResourceService.selectByExample(authorityToResource);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);

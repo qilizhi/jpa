@@ -23,13 +23,12 @@ import com.qlz.entities.Resource;
 import com.qlz.model.JsonResult;
 import com.qlz.model.Tree;
 import com.qlz.service.AuthorityService;
-import com.qlz.service.AuthorityToResourceService;
 import com.qlz.service.ResourceService;
 import com.qlz.util.StringUtil;
 
 /**
  * 
- * È¨ÏŞcontroller
+ * È¨ï¿½ï¿½controller
  * 
  * @author QiQi-04-PC
  *
@@ -41,14 +40,14 @@ public class AuthorityAdminController {
 	@Autowired
 	private AuthorityService authorityService;
 
-	@Autowired
-	private AuthorityToResourceService atrService;
+	//@Autowired
+	//private AuthorityToResourceService atrService;
 	@Autowired
 	private ResourceService resourceService;
 	
 	
 	/**
-	 * ¶ÁÈ¡¹«¹²µÄ²ÎÊıÖµºÍÉèÖÃ,¸ù¾İ½çÃæÉèÖÃµÄ²ÎÊıÖµÀ´Ñ¡ÔñÒ³Ãæ²Ëµ¥Ñ¡ÖĞĞ§¹û
+	 * å…¬å…±å±æ€§
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -61,10 +60,10 @@ public class AuthorityAdminController {
 
 
 	/**
-	 * ÁĞ±í
+	 * ï¿½Ğ±ï¿½
 	 * 
 	 * @param name
-	 *            ²éÑ¯Ìõ¼ş
+	 *            ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 	 * @param model
 	 * @return
 	 */
@@ -73,7 +72,7 @@ public class AuthorityAdminController {
 			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
 
 		PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.ASC,"id"));
-		Page<Resource> list = resourceService.selectResourceByExample(authorityId, pageBounds);
+		Page<Resource> list = resourceService.getResourceByAuthorityId(authorityId, pageBounds);
 		model.addAttribute("list", list);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNo", pageNo);
@@ -81,7 +80,7 @@ public class AuthorityAdminController {
 		return "/admin/authority/list";
 	}
 	
-	/** ĞÂÔö
+	/** ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param authority
 	 * @return
@@ -99,7 +98,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * É¾³ı
+	 * É¾ï¿½ï¿½
 	 * 
 	 * @param id
 	 * @return
@@ -109,7 +108,7 @@ public class AuthorityAdminController {
 	public JsonResult delete(Long id) {
 
 		if (id == null) {
-			return new JsonResult(ExceptionCode.FAIL, "Id²»ÄÜÎª¿Õ£¡");
+			return new JsonResult(ExceptionCode.FAIL, "Idï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
 		}
 		try {
 			authorityService.deleteByPrimaryKey(id);
@@ -122,7 +121,7 @@ public class AuthorityAdminController {
 
 
 	/**
-	 * ¸üĞÂ
+	 * æ›´æ–°
 	 * 
 	 * @param auth
 	 * @return
@@ -131,7 +130,7 @@ public class AuthorityAdminController {
 	@ResponseBody
 	public JsonResult update(Authority auth) {
 		if (auth.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "idÎª¿Õ£¡");
+			return new JsonResult(ExceptionCode.FAIL, "idÎªï¿½Õ£ï¿½");
 		}
 		try {
 			authorityService.updateByPrimaryKeySelective(auth);
@@ -144,7 +143,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * ¸ú¾İÈ¨ÏŞ¼ÓÔØ×ÊÔ´ÁĞ±í
+	 * åŠ è½½èµ„æºæ ‘
 	 * 
 	 * @param authorityId
 	 * @return
@@ -153,7 +152,7 @@ public class AuthorityAdminController {
 	public String loadResource(Long authorityId, @RequestParam(defaultValue = "1") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
 		PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
-		Page<Resource> list = resourceService.selectResourceByExample(authorityId, pageBounds);
+		Page<Resource> list = resourceService.getResourceByAuthorityId(authorityId, pageBounds);
 		//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
 		model.addAttribute("authorityId", authorityId);
@@ -163,7 +162,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * ¸øÈ¨ÏŞÉèÖÃ×ÊÔ´
+	 * è®¾ç½®èµ„æºæ ‘
 	 * @param resourceIds
 	 * @param authorityId
 	 * @return
@@ -172,17 +171,15 @@ public class AuthorityAdminController {
 	@ResponseBody
 	public JsonResult setResourceByAuthority(String resourceIds, Long authorityId) {
 		if(authorityId==null){
-			return new JsonResult(ExceptionCode.FAIL,"authorityIdÎª¿Õ£¡");
+			return new JsonResult(ExceptionCode.FAIL,"authorityIdÎªï¿½Õ£ï¿½");
 			
 		}
 	
 		List<Long> resourceIdsList = StringUtil.generateListLong(resourceIds);
 		
 		try {
-		/*	ÏÈÉ¾ºó²åÈë*/
-			//atrService.deleteBySelective(atr);	
-			//atrService.batInsert(params);
-			atrService.updateBydelete(authorityId,resourceIdsList);
+
+			authorityService.updateBydelete(authorityId,resourceIdsList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -193,7 +190,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * È¨ÏŞÊ÷½á¹¹
+	 * È¨ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹
 	 * 
 	 * @return
 	 */

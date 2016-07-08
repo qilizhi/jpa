@@ -16,7 +16,7 @@ public class District {
 	private Integer cityId;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "DistrictID")
 	public Long getDistrictId() {
 		return districtId;

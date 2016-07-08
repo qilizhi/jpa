@@ -14,7 +14,7 @@ public class Province {
 	private Long  provinceId;
 	private String provinceName;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ProvinceID")
 	public Long getProvinceId() {
 		return provinceId;

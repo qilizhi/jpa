@@ -25,9 +25,10 @@ import com.qlz.entities.Resource;
 import com.qlz.entities.Role;
 import com.qlz.service.ResourceService;
 import com.qlz.service.RoleService;
+import com.qlz.service.UserService;
 
 /**
- * ½èÖúspring {@link FactoryBean} ¶Ôapache shiroµÄpremission½øĞĞ¶¯Ì¬´´½¨
+ * å€ŸåŠ©spring {@link FactoryBean} å¯¹apache shiroçš„premissionè¿›è¡ŒåŠ¨ï¿½?åˆ›å»º
  * 
  * @author quan
  * 
@@ -35,7 +36,10 @@ import com.qlz.service.RoleService;
 @Component
 public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section> {
 
-	private static Logger logger = LoggerFactory.getLogger(ChainDefinitionSectionMetaSource.class);
+	private static Logger logger = LoggerFactory.getLogger( ChainDefinitionSectionMetaSource.class );
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private RoleService roleService;
@@ -43,7 +47,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	@Autowired
 	private ResourceService resourceService;
 
-	// shiroÄ¬ÈÏµÄÁ´½Ó¶¨Òå
+	// shiroé»˜è®¤çš„é“¾æ¥å®šï¿½?
 	private String filterChainDefinitions;
 
 	@Autowired
@@ -52,54 +56,55 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	// private static final String CRLF= "\r\n";
 
 	/**
-	 * ÖØĞÂ¹¹½¨È«¾ÖÈ¨ÏŞ×ÊÔ´
+	 * é‡æ–°æ„å»ºå…¨å±€æƒé™èµ„æº
 	 */
 	public void reLoad() {
 		AbstractShiroFilter shiroFilter = null;
 		try {
-			shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean.getObject();
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			shiroFilter = (AbstractShiroFilter)shiroFilterFactoryBean.getObject();
+		}
+		catch( Exception e ) {
+			logger.error( e.getMessage(), e );
 		}
 
-		// »ñÈ¡¹ıÂË¹ÜÀíÆ÷
-		PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
-				.getFilterChainResolver();
-		DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver.getFilterChainManager();
+		// è·å–è¿‡æ»¤ç®¡ç†ï¿½?
+		PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver)shiroFilter.getFilterChainResolver();
+		DefaultFilterChainManager manager = (DefaultFilterChainManager)filterChainResolver.getFilterChainManager();
 
-		// Çå¿Õ³õÊ¼È¨ÏŞÅäÖÃ
+		// æ¸…ç©ºåˆå§‹æƒé™é…ç½®
 		manager.getFilterChains().clear();
 		shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
 		Map<String, Filter> mapFilters = manager.getFilters();
-		if (!CollectionUtils.isEmpty(mapFilters)) {
-			for (Map.Entry<String, Filter> entry : mapFilters.entrySet()) {
+		if( !CollectionUtils.isEmpty( mapFilters ) ) {
+			for( Map.Entry<String, Filter> entry : mapFilters.entrySet() ) {
 				Filter filter = entry.getValue();
-				if (filter instanceof MyPermissionsAuthorizationFilter) {
-					((MyPermissionsAuthorizationFilter) filter).clearAppliedPaths();
+				if( filter instanceof MyPermissionsAuthorizationFilter ) {
+					((MyPermissionsAuthorizationFilter)filter).clearAppliedPaths();
 				}
 			}
 		}
 
-		// ÖØĞÂ¹¹½¨Éú³É
+		// é‡æ–°æ„å»ºç”Ÿæˆ
 		// String _filterChainDefinitions = getDefinitions();
 		// System.out.println(_filterChainDefinitions);
 		// shiroFilterFactoryBean.setFilterChainDefinitions(_filterChainDefinitions);
 		try {
-			shiroFilterFactoryBean.setFilterChainDefinitionMap(getObject());
+			shiroFilterFactoryBean.setFilterChainDefinitionMap( getObject() );
 			Map<String, String> chains = shiroFilterFactoryBean.getFilterChainDefinitionMap();
-			for (Map.Entry<String, String> entry : chains.entrySet()) {
+			for( Map.Entry<String, String> entry : chains.entrySet() ) {
 				String url = entry.getKey();
-				String chainDefinition = entry.getValue().trim().replace(" ", "");
-				manager.createChain(url, chainDefinition);
+				String chainDefinition = entry.getValue().trim().replace( " ", "" );
+				manager.createChain( url, chainDefinition );
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+		}
+		catch( Exception e ) {
+			logger.error( e.getMessage(), e );
 		}
 
 	}
 
 	// /**
-	// * »ñÈ¡È¨ÏŞ¹æÔòÉèÖÃÁ´
+	// * è·å–æƒé™è§„åˆ™è®¾ç½®ï¿½?
 	// * @return
 	// */
 	// private String getDefinitions() {
@@ -107,13 +112,13 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	// sb.append( filterChainDefinitions ).append( CRLF );
 	// List<Role> rolesList = roleService.list(null);
 	//
-	// // Ñ­»·Êı¾İ¿â×ÊÔ´µÄurl
+	// // å¾ªç¯æ•°æ®åº“èµ„æºçš„url
 	// if (rolesList != null && rolesList.size() > 0) {
 	// logger.info("loaded role menu finish! result = " + rolesList.size(),
 	// this);
 	// for (Role role : rolesList) {
 	// if (role != null && !role.equals("")) {
-	// // ²éÕÒ½ÇÉ«ÏÂµÄ×Ê Ô´
+	// // æŸ¥æ‰¾è§’è‰²ä¸‹çš„ï¿½?ï¿½?
 	// List<Resource> resources =
 	// resourceService.getResourceByRoleId(role.getId());
 	//
@@ -125,8 +130,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	// if (matcher.find()) {
 	// sb.append(resource.getPath()).append("=").append( "role[" ).append(
 	// role.getName()
-	// ).append("],
-	// perms[").append(resource.getPath()).append("]").append(CRLF);
+	// ).append("], perms[").append(resource.getPath()).append("]").append(CRLF);
 	// }
 	// }
 	// }
@@ -141,12 +145,11 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	// }
 
 	/**
-	 * Í¨¹ıfilterChainDefinitions¶ÔÄ¬ÈÏµÄÁ´½Ó¹ıÂË¶¨Òå
+	 * é€šè¿‡filterChainDefinitionså¯¹é»˜è®¤çš„é“¾æ¥è¿‡æ»¤å®šä¹‰
 	 * 
-	 * @param filterChainDefinitions
-	 *            Ä¬ÈÏµÄ½Ó¹ıÂË¶¨Òå
+	 * @param filterChainDefinitions é»˜è®¤çš„æ¥è¿‡æ»¤å®šä¹‰
 	 */
-	public void setFilterChainDefinitions(String filterChainDefinitions) {
+	public void setFilterChainDefinitions( String filterChainDefinitions ) {
 		this.filterChainDefinitions = filterChainDefinitions;
 	}
 
@@ -154,38 +157,37 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 	public Section getObject() throws Exception {
 		// TODO Auto-generated method stub
 		Ini ini = new Ini();
-		// ¼ÓÔØÄ¬ÈÏµÄurl
-		ini.load(filterChainDefinitions);
-		logger.info(filterChainDefinitions);
-		Ini.Section section = ini.getSection(IniFilterChainResolverFactory.URLS);
-		if (CollectionUtils.isEmpty(section)) {
-			section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
+		// åŠ è½½é»˜è®¤çš„url
+		ini.load( filterChainDefinitions );
+		logger.info( filterChainDefinitions );
+		Ini.Section section = ini.getSection( IniFilterChainResolverFactory.URLS );
+		if( CollectionUtils.isEmpty( section ) ) {
+			section = ini.getSection( Ini.DEFAULT_SECTION_NAME );
 		}
 
 		// section.put("/acct/scene","authc,user, perms[scene:*]");
 		// test/* = role[admin],perms[test:view]
 
 		List<Role> rolesList = roleService.findAll();
-		// Ñ­»·Êı¾İ¿â×ÊÔ´µÄurl
-		if (rolesList != null && rolesList.size() > 0) {
-			logger.info("loaded role menu finish! result = " + rolesList.size(), this);
-			for (Role role : rolesList) {
-				if (role != null && !role.equals("")) {
-					// ²éÕÒ½ÇÉ«ÏÂµÄ×Ê Ô´
-					List<Resource> resources = resourceService.findResourceByRoleId(role.getId());
-
-					for (Resource resource : resources) {
-						if (resource != null) {
+		// å¾ªç¯æ•°æ®åº“èµ„æºçš„url
+		if( rolesList != null && rolesList.size() > 0 ) {
+			logger.info( "loaded role menu finish! result = " + rolesList.size(), this );
+			for( Role role : rolesList ) {
+				if( role != null && !role.equals( "" ) ) {
+					// æŸ¥æ‰¾è§’è‰²ä¸‹çš„ï¿½?ï¿½?
+					List<Resource> resources = resourceService.getResourceByRoleId( role.getId() );
+					if( resources != null && resources.size() > 0 ) {
+					for( Resource resource : resources ) {
+						if( resource != null ) {
 							String[] _strRegexs = new String[] { "\\/admin|\\/admin\\/" };
-							Pattern pattern = Pattern.compile(_strRegexs[0]);
-							Matcher matcher = pattern.matcher(resource.getPath());
-							if (matcher.find()) {
-								section.put(resource.getPath(),
-										"role[" + role.getName() + "],perms[" + resource.getPath() + "]");
+							Pattern pattern = Pattern.compile( _strRegexs[0] );
+							Matcher matcher = pattern.matcher( resource.getPath() );
+							if( matcher.find() ) {
+								section.put( resource.getPath(), "role[" + role.getName() + "],perms[" + resource.getPath() + "]" );
 							}
 						}
 					}
-
+					}
 					/*
 					 * System.out.println( cmlMenu.getActionUrl() + " = role[" +
 					 * cmlMenu.getAppRoleName() + "], perms[" +
@@ -194,11 +196,12 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 				}
 			}
 			// admin/** = role[admin],perms
-			section.put("/admin/**", "role[admin],perms[admin:*:view:x]");
-			logger.info("È¨ÏŞÀ¹½Ø±í£º" + section.values().toString());
-			logger.info("È¨ÏŞÀ¹½Ø±í£º" + ini.toString());
-		} else {
-			logger.info("loaded resource menu finish !,but it's null", this);
+			section.put( "/admin/**", "role[admin],perms[admin:*:view:x]" );
+			logger.info( "æƒé™æ‹¦æˆªè¡¨ï¼š" + section.values().toString() );
+			logger.info( "æƒé™æ‹¦æˆªè¡¨ï¼š" + ini.toString() );
+		}
+		else {
+			logger.info( "loaded resource menu finish !,but it's null", this );
 		}
 
 		return section;

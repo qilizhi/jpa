@@ -3,6 +3,7 @@ package demo.jpa.test;
 import static org.springframework.data.domain.ExampleMatcher.matching;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,16 +34,20 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.qlz.dao.CustomerDao;
 import com.qlz.dao.ResourceDao;
+import com.qlz.dao.UserDao;
 import com.qlz.entities.Authority;
 import com.qlz.entities.Customer;
-import com.qlz.entities.Resource;
+import com.qlz.entities.Role;
+import com.qlz.entities.User;
 import com.qlz.service.CustomerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,8 +55,8 @@ import com.qlz.service.CustomerService;
 @ContextHierarchy({
 		@ContextConfiguration(locations = { "classpath:spring-mvc.xml", "classpath:applicationContext.xml" }) })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-/** ÉùÃ÷ÊÂÎñ»Ø¹ö£¬Òª²»²âÊÔÒ»¸ö·½·¨Êı¾İ¾ÍÃ»ÓĞÁËÆñ²»ºÜ±­¾ß£¬×¢Òâ£º²åÈëÊı¾İÊ±¿É×¢µô£¬²»ÈÃÊÂÎñ»Ø¹ö **/
-@Rollback(value=true)
+/** å£°æ˜äº‹åŠ¡å›æ»šï¼Œè¦ä¸æµ‹è¯•ä¸€ä¸ªæ–¹æ³•æ•°æ®å°±æ²¡æœ‰äº†å²‚ä¸å¾ˆæ¯å…·ï¼Œæ³¨æ„ï¼šæ’å…¥æ•°æ®æ—¶å¯æ³¨æ‰ï¼Œä¸è®©äº‹åŠ¡å›æ»š **/
+@Transactional(transactionManager="transactionManager")
 public class SpringMVCTest {
 
 	Logger logger = LoggerFactory.getLogger(SpringMVCTest.class);
@@ -65,11 +70,13 @@ public class SpringMVCTest {
 	private CustomerDao customerDao;
 	@Autowired
 	private ResourceDao resourceDao;
+	@Autowired
+	private UserDao userDao;
 
 	@Autowired
 	private CustomerService customerService;
 
-	// æ ¹æ®å…·ä½“è¦æµ‹è¯•çš„controller æµ‹è¯•
+	// éè§„åµéèœ‚ç¶‹ç‘•ä½¹ç¥´ç’‡æ› æ®‘controller å¨´å¬­ç˜¯
 	@Before
 	public void setUp() {
 
@@ -82,25 +89,26 @@ public class SpringMVCTest {
 	// ResultActions result =
 	// mockMvc.perform(MockMvcRequestBuilders.get("/v1/guide/9"));
 	// MvcResult mrs = result.andDo(MockMvcResultHandlers.print()).andReturn();
-	// // è¿”å›çŠ¶æ?ç ?
+	// // æ©æ–¿æ´–é˜èˆµ?é®?
 	// int resultStr = mrs.getResponse().getStatus();
 	//
-	// // å¦‚æœè¿”å›çŠ¶æ?ç›¸ç­‰ å°±é?è¿?
+	// // æ¿¡å‚›ç‰æ©æ–¿æ´–é˜èˆµ?é©å“¥ç“‘ çé?æ©?
 	// Assert.assertEquals(200, resultStr);
 	// }
 
 	@Test
+	@Rollback(value = true)
 	public void testList() throws Exception {
 
 		Customer cust = new Customer();
 		cust.setAge(200);
 		cust.setBirth(new Date());
 		cust.setCreatedTime(new Date());
-		cust.setEmail("8145970004@qq.com");
+		cust.setEmail("814597001@qq.com");
 		cust.setLastName("qilizhi");
 		Customer c = customerDao.save(cust);
-		c.setLastName("DDDDDDDDDD");
-		customerDao.saveAndFlush(c);
+		c.setLastName("DDDDDDDDDDrrrr");
+		customerDao.save(c);
 		List<Customer> cs = (List<Customer>) customerDao.findAll();
 		System.out.println("testwwwwwww" + cs.toString());
 
@@ -131,11 +139,11 @@ public class SpringMVCTest {
 
 		Pageable page = new PageRequest(1, 2);
 		Page<Customer> customers = customerDao.findByLastName("qilizhi", page);
-		System.out.println("·ÖÒ³£º" + customers.getSize());
-		System.out.println("·ÖÒ³£º" + customers.getTotalPages());
-		System.out.println("·ÖÒ³£º" + customers.getNumber());
-		System.out.println("·ÖÒ³£º" + customers.getTotalElements());
-		System.out.println("·ÖÒ³£º" + customers.getContent().toString());
+		System.out.println("åˆ†é¡µï¼š" + customers.getSize());
+		System.out.println("åˆ†é¡µï¼š" + customers.getTotalPages());
+		System.out.println("åˆ†é¡µï¼š" + customers.getNumber());
+		System.out.println("åˆ†é¡µï¼š" + customers.getTotalElements());
+		System.out.println("åˆ†é¡µï¼š" + customers.getContent().toString());
 	}
 
 	@Test
@@ -149,7 +157,7 @@ public class SpringMVCTest {
 	public void testQueryByExample() {
 		Customer customer = new Customer();
 		customer.setAge(20);
-		Example<Customer> example = Example.of(customer, matching().withIgnorePaths("age").// ºöÂÔÕâ¸ö×Ö¶Î
+		Example<Customer> example = Example.of(customer, matching().withIgnorePaths("age").// å¿½ç•¥è¿™ä¸ªå­—æ®µ
 
 		withMatcher("lastname", ignoreCase()).withMatcher("email", ExampleMatcher.GenericPropertyMatchers.endsWith()));
 		/*
@@ -168,11 +176,11 @@ public class SpringMVCTest {
 	}
 
 	/**
-	 * Ä¿±ê: ÊµÏÖ´ø²éÑ¯Ìõ¼şµÄ·ÖÒ³. id > 5 µÄÌõ¼ş
+	 * ç›®æ ‡: å®ç°å¸¦æŸ¥è¯¢æ¡ä»¶çš„åˆ†é¡µ. id > 5 çš„æ¡ä»¶
 	 * 
-	 * µ÷ÓÃ JpaSpecificationExecutor µÄ Page<T> findAll(Specification<T> spec,
-	 * Pageable pageable); Specification: ·â×°ÁË JPA Criteria ²éÑ¯µÄ²éÑ¯Ìõ¼ş Pageable:
-	 * ·â×°ÁËÇëÇó·ÖÒ³µÄĞÅÏ¢: ÀıÈç pageNo, pageSize, Sort
+	 * è°ƒç”¨ JpaSpecificationExecutor çš„ Page<T> findAll(Specification<T> spec,
+	 * Pageable pageable); Specification: å°è£…äº† JPA Criteria æŸ¥è¯¢çš„æŸ¥è¯¢æ¡ä»¶ Pageable:
+	 * å°è£…äº†è¯·æ±‚åˆ†é¡µçš„ä¿¡æ¯: ä¾‹å¦‚ pageNo, pageSize, Sort
 	 */
 	@Test
 	public void testJpaSpecificationExecutor() {
@@ -180,18 +188,18 @@ public class SpringMVCTest {
 		int pageSize = 5;
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
 
-		// Í¨³£Ê¹ÓÃ Specification µÄÄäÃûÄÚ²¿Àà
+		// é€šå¸¸ä½¿ç”¨ Specification çš„åŒ¿åå†…éƒ¨ç±»
 		Specification<Customer> specification = new Specification<Customer>() {
 			/**
 			 * @param *root:
-			 *            ´ú±í²éÑ¯µÄÊµÌåÀà.
+			 *            ä»£è¡¨æŸ¥è¯¢çš„å®ä½“ç±».
 			 * @param query:
-			 *            ¿ÉÒÔ´ÓÖĞ¿Éµ½ Root ¶ÔÏó, ¼´¸æÖª JPA Criteria ²éÑ¯Òª²éÑ¯ÄÄÒ»¸öÊµÌåÀà. »¹¿ÉÒÔ
-			 *            À´Ìí¼Ó²éÑ¯Ìõ¼ş, »¹¿ÉÒÔ½áºÏ EntityManager ¶ÔÏóµÃµ½×îÖÕ²éÑ¯µÄ TypedQuery ¶ÔÏó.
+			 *            å¯ä»¥ä»ä¸­å¯åˆ° Root å¯¹è±¡, å³å‘ŠçŸ¥ JPA Criteria æŸ¥è¯¢è¦æŸ¥è¯¢å“ªä¸€ä¸ªå®ä½“ç±». è¿˜å¯ä»¥
+			 *            æ¥æ·»åŠ æŸ¥è¯¢æ¡ä»¶, è¿˜å¯ä»¥ç»“åˆ EntityManager å¯¹è±¡å¾—åˆ°æœ€ç»ˆæŸ¥è¯¢çš„ TypedQuery å¯¹è±¡.
 			 * @param *cb:
-			 *            CriteriaBuilder ¶ÔÏó. ÓÃÓÚ´´½¨ Criteria Ïà¹Ø¶ÔÏóµÄ¹¤³§. µ±È»¿ÉÒÔ´ÓÖĞ»ñÈ¡µ½
-			 *            Predicate ¶ÔÏó
-			 * @return: *Predicate ÀàĞÍ, ´ú±íÒ»¸ö²éÑ¯Ìõ¼ş.
+			 *            CriteriaBuilder å¯¹è±¡. ç”¨äºåˆ›å»º Criteria ç›¸å…³å¯¹è±¡çš„å·¥å‚. å½“ç„¶å¯ä»¥ä»ä¸­è·å–åˆ°
+			 *            Predicate å¯¹è±¡
+			 * @return: *Predicate ç±»å‹, ä»£è¡¨ä¸€ä¸ªæŸ¥è¯¢æ¡ä»¶.
 			 */
 			@Override
 			public Predicate toPredicate(Root<Customer> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -207,21 +215,21 @@ public class SpringMVCTest {
 
 		Page<Customer> page = customerDao.findAll(specification, pageable);
 
-		System.out.println("×Ü¼ÇÂ¼Êı: " + page.getTotalElements());
-		System.out.println("µ±Ç°µÚ¼¸Ò³: " + (page.getNumber() + 1));
-		System.out.println("×ÜÒ³Êı: " + page.getTotalPages());
-		System.out.println("µ±Ç°Ò³ÃæµÄ List: " + page.getContent());
-		System.out.println("µ±Ç°Ò³ÃæµÄ¼ÇÂ¼Êı: " + page.getNumberOfElements());
+		System.out.println("æ€»è®°å½•æ•°: " + page.getTotalElements());
+		System.out.println("å½“å‰ç¬¬å‡ é¡µ: " + (page.getNumber() + 1));
+		System.out.println("æ€»é¡µæ•°: " + page.getTotalPages());
+		System.out.println("å½“å‰é¡µé¢çš„ List: " + page.getContent());
+		System.out.println("å½“å‰é¡µé¢çš„è®°å½•æ•°: " + page.getNumberOfElements());
 	}
 
 	@Test
 	public void testPagingAndSortingRespository() {
-		// pageNo ´Ó 0 ¿ªÊ¼.
+		// pageNo ä» 0 å¼€å§‹.
 		int pageNo = 6 - 1;
 		int pageSize = 5;
-		// Pageable ½Ó¿ÚÍ¨³£Ê¹ÓÃµÄÆä PageRequest ÊµÏÖÀà. ÆäÖĞ·â×°ÁËĞèÒª·ÖÒ³µÄĞÅÏ¢
-		// ÅÅĞòÏà¹ØµÄ. Sort ·â×°ÁËÅÅĞòµÄĞÅÏ¢
-		// Order ÊÇ¾ßÌåÕë¶ÔÓÚÄ³Ò»¸öÊôĞÔ½øĞĞÉıĞò»¹ÊÇ½µĞò.
+		// Pageable æ¥å£é€šå¸¸ä½¿ç”¨çš„å…¶ PageRequest å®ç°ç±». å…¶ä¸­å°è£…äº†éœ€è¦åˆ†é¡µçš„ä¿¡æ¯
+		// æ’åºç›¸å…³çš„. Sort å°è£…äº†æ’åºçš„ä¿¡æ¯
+		// Order æ˜¯å…·ä½“é’ˆå¯¹äºæŸä¸€ä¸ªå±æ€§è¿›è¡Œå‡åºè¿˜æ˜¯é™åº.
 		Order order1 = new Order(Direction.DESC, "id");
 		Order order2 = new Order(Direction.ASC, "email");
 		Sort sort = new Sort(order1, order2);
@@ -229,11 +237,11 @@ public class SpringMVCTest {
 		PageRequest pageable = new PageRequest(pageNo, pageSize, sort);
 		Page<Customer> page = customerDao.findAll(pageable);
 
-		System.out.println("×Ü¼ÇÂ¼Êı: " + page.getTotalElements());
-		System.out.println("µ±Ç°µÚ¼¸Ò³: " + (page.getNumber() + 1));
-		System.out.println("×ÜÒ³Êı: " + page.getTotalPages());
-		System.out.println("µ±Ç°Ò³ÃæµÄ List: " + page.getContent());
-		System.out.println("µ±Ç°Ò³ÃæµÄ¼ÇÂ¼Êı: " + page.getNumberOfElements());
+		System.out.println("æ€»è®°å½•æ•°: " + page.getTotalElements());
+		System.out.println("å½“å‰ç¬¬å‡ é¡µ: " + (page.getNumber() + 1));
+		System.out.println("æ€»é¡µæ•°: " + page.getTotalPages());
+		System.out.println("å½“å‰é¡µé¢çš„ List: " + page.getContent());
+		System.out.println("å½“å‰é¡µé¢çš„è®°å½•æ•°: " + page.getNumberOfElements());
 	}
 
 	@Test
@@ -241,27 +249,27 @@ public class SpringMVCTest {
 
 		List<Customer> ll = customerDao.findAll();
 		List<Customer> l2 = customerDao.findAll();
-		logger.info("½á¹û£º" + (ll == l2));
+		logger.info("ç»“æœï¼š" + (ll == l2));
 		Customer a = customerDao.getOne(1);
 		Customer b = customerDao.getOne(1);
-		logger.info("½á¹û£º" + (a == b));
+		logger.info("ç»“æœï¼š" + (a == b));
 
 	}
 
 	@Test
 	public void QueryCacheTest() {
-		// ÎŞĞ§µÄspring-data-jpaÊµÏÖµÄ½Ó¿Ú·½·¨
-		// Êä³öÁ½ÌõsqlÓï¾ä
+		// æ— æ•ˆçš„spring-data-jpaå®ç°çš„æ¥å£æ–¹æ³•
+		// è¾“å‡ºä¸¤æ¡sqlè¯­å¥
 		customerDao.findAll();
 		customerDao.findAll();
 		System.out.println("================test 1 finish======================");
-		// ×Ô¼ºÊµÏÖµÄdao·½·¨¿ÉÒÔ±»²éÑ¯»º´æ
-		// Êä³öÒ»ÌõsqlÓï¾ä
+		// è‡ªå·±å®ç°çš„daoæ–¹æ³•å¯ä»¥è¢«æŸ¥è¯¢ç¼“å­˜
+		// è¾“å‡ºä¸€æ¡sqlè¯­å¥
 		customerDao.findAllCached();
 		customerDao.findAllCached();
 		System.out.println("================test 2 finish======================");
-		// ×Ô¼ºÊµÏÖµÄdao·½·¨¿ÉÒÔ±»²éÑ¯»º´æ
-		// Êä³öÒ»ÌõsqlÓï¾ä
+		// è‡ªå·±å®ç°çš„daoæ–¹æ³•å¯ä»¥è¢«æŸ¥è¯¢ç¼“å­˜
+		// è¾“å‡ºä¸€æ¡sqlè¯­å¥
 		customerDao.findCustomerByName("a");
 		customerDao.findCustomerByName("a");
 		System.out.println("================test 3 finish======================");
@@ -272,9 +280,35 @@ public class SpringMVCTest {
 		Authority a = new Authority();
 		a.setId((long) 1);
 		// List<Resource> l = resourceDao.getListByR((long) 1);
-		List<Resource> ll = resourceDao.getListByEa((long) 1);
+		// List<Resource> ll = resourceDao.getListByEa((long) 1);
 		// List<Customer>l=customerDao.getListByEa("ee");
-	//	System.out.println(ll);
+		// System.out.println(ll);
+	}
+
+	@Test
+	public void testManyToMany() {
+		Role r1 = new Role();
+		r1.setName("admin");
+		r1.setDescription("asdf");
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(r1);
+
+		User u = userDao.findOne((long) 1);
+		u.setRoles(roles);
+		userDao.save(u);
+
+	}
+
+	@Test
+	public void testmanyTomany(){
+
+		resourceDao.getResourceByRoleId((long)1);
+	}
+	@Test
+	//@Rollback(value = true)
+    public void testManaytomany2(){
+		
+		
 	}
 
 }

@@ -17,7 +17,7 @@ public class City {
 	private String zipCode;//邮编
 	private Integer provinceId;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="CityID")
 	public Long getCityId() {
 		return cityId;

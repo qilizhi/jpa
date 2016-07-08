@@ -11,71 +11,72 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table
 @Entity
-public class Resource  implements Serializable{
-    /**
+public class Resource implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
 
-    private String path;
+	private String path;
 
-    private Integer flag;
+	private Integer flag;
 
-    private String description;
+	private String description;
 
-    private String name;
-    
-    private Set<Authority> authorities=new HashSet<Authority>();
+	private String name;
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
-    }
+	private Set<Authority> authorities = new HashSet<Authority>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
 
-    public String getPath() {
-        return path;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public Integer getFlag() {
-        return flag;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public void setFlag(Integer flag) {
-        this.flag = flag;
-    }
+	public Integer getFlag() {
+		return flag;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @ManyToMany(fetch=FetchType.LAZY,mappedBy="resources")
+	// @Transient
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "resources")
 	public Set<Authority> getAuthorities() {
 		return authorities;
 	}

@@ -2,6 +2,7 @@
 package com.qlz.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import com.qlz.entities.Resource;
 
 /**
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç4:42:07
+ * @date 2016ï¿½ï¿½7ï¿½ï¿½4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:42:07
  */
 public interface ResourceDao extends BaseRepository<Resource, Long> {
 
@@ -23,30 +24,28 @@ public interface ResourceDao extends BaseRepository<Resource, Long> {
 	 * @return
 	 */
 
-	@Query(name = "select R from Resource R ,AuthorityToResource atr where atr.resourceId=R.id and atr.authorityId=:authId")
-	public Page<Resource> findById(@Param("auth") Long authority, @Param("page") Pageable pageBounds);
+	/**
+	 * @param idArray
+	 */
+	public List<Resource> findByIdIn(String[] idArray);
+	public Set<Resource> findByIdIn(List<Long> ids);
 
 	/**
 	 * @param id
 	 * @return
 	 */
-	@Query(name = "select r from Resource r,RoleToAuthority rta,AuthorityToResource atr where r.id=atr.resourceId and atr.authorityId=rta.authorityId and rta.roleId and rta.roleId=?")
-	public List<Resource> findById(Long id);
+	@Query("select R from Resource R join R.authorities RA join RA.roles AR where AR.id=:roleId")
+	public List<Resource> getResourceByRoleId(@Param("roleId")Long roleId);
 
-	@Query(name = "select r from Resource r where r.id=?1")
-	public List<Resource> getListByEa(Long roleId);
-	/*
-		*//**
-			 * @param resource
-			 *//*
-			 * @Query(
-			 * "update Resource r set r.path=:res_path,r.name=res_name,r.description=:res_description,r.flag=res_flag where r.id=:res_id"
-			 * ) public int update(@Param("res") Resource resource);
-			 */
+	@Query("select R from Resource R join R.authorities RA where RA.id=:authorityId")
+	public List<Resource> getResourceByAuthoriytId(@Param("authorityId") Long authorityId);
 
 	/**
-	 * @param idArray
+	 * @param authorityId
+	 * @param page
+	 * @return
 	 */
-	public void findByIdIn(String[] idArray);
-
+	@Query("select R from Resource R join R.authorities RA where RA.id=:authorityId")
+	public Page<Resource> getResourceByAuthoriytId(@Param("authorityId")Long authorityId, Pageable page);
+	
 }

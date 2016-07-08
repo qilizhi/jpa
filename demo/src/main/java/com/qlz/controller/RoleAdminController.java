@@ -1,9 +1,7 @@
 package com.qlz.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,6 @@ import com.qlz.model.JsonResult;
 import com.qlz.model.Tree;
 import com.qlz.service.AuthorityService;
 import com.qlz.service.RoleService;
-import com.qlz.service.RoleToAuthorityService;
 import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 import com.qlz.util.StringUtil;
 
@@ -40,8 +37,8 @@ public class RoleAdminController {
 	private RoleService roleService;
 	@Autowired
 	private AuthorityService authorityService;
-	@Autowired
-	private RoleToAuthorityService roleToAuthorityService;
+	//@Autowired
+	//private RoleToAuthorityService roleToAuthorityService;
 	@Autowired
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 
@@ -149,8 +146,8 @@ public class RoleAdminController {
 		try {
 			authorityTree = authorityService.getAllTree();
 			AT = new ArrayList<Tree>();
-			rts = roleToAuthorityService.selectByRoleId(roleId);
-			AT = authorityService.tagTree(rts, authorityTree);
+			//rts = roleToAuthorityService.selectByRoleId(roleId);
+			//AT = authorityService.tagTree(rts, authorityTree);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
@@ -193,7 +190,7 @@ public class RoleAdminController {
 			/* œ»…æ≥˝∫Û≤Â»Î */
 		//	roleToAuthorityService.batDelete(params);
 		//	roleToAuthorityService.batInsert(params);
-			roleToAuthorityService.updateByDelete(roleId,authorityIdsList);
+			//roleToAuthorityService.updateByDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
@@ -218,7 +215,7 @@ public class RoleAdminController {
 		//params.put("authorityIds", idsList);
 	//	params.put("roleId", roleId);
 		try {
-			roleToAuthorityService.batDelete(roleId,authorityIdsList);
+			//roleToAuthorityService.batDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);

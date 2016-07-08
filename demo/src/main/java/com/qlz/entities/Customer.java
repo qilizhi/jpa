@@ -48,8 +48,9 @@ public class Customer {
 //			valueColumnName="PK_VALUE",
 //			allocationSize=100)
 //	@GeneratedValue(strategy=GenerationType.TABLE,generator="ID_GENERATOR")
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable=false)
 	public Integer getId() {
 		return id;
 	}
@@ -102,12 +103,12 @@ public class Customer {
 		this.birth = birth;
 	}
 	
-	//Ó³Éäµ¥Ïò 1-n µÄ¹ØÁª¹ØÏµ
-	//Ê¹ÓÃ @OneToMany À´Ó³Éä 1-n µÄ¹ØÁª¹ØÏµ
-	//Ê¹ÓÃ @JoinColumn À´Ó³ÉäÍâ¼üÁĞµÄÃû³Æ
-	//¿ÉÒÔÊ¹ÓÃ @OneToMany µÄ fetch ÊôĞÔÀ´ĞŞ¸ÄÄ¬ÈÏµÄ¼ÓÔØ²ßÂÔ
-	//¿ÉÒÔÍ¨¹ı @OneToMany µÄ cascade ÊôĞÔÀ´ĞŞ¸ÄÄ¬ÈÏµÄÉ¾³ı²ßÂÔ. 
-	//×¢Òâ: ÈôÔÚ 1 µÄÒ»¶ËµÄ @OneToMany ÖĞÊ¹ÓÃ mappedBy ÊôĞÔ, Ôò @OneToMany ¶Ë¾Í²»ÄÜÔÙÊ¹ÓÃ @JoinColumn ÊôĞÔÁË. 
+	//Ó³ï¿½äµ¥ï¿½ï¿½ 1-n ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
+	//Ê¹ï¿½ï¿½ @OneToMany ï¿½ï¿½Ó³ï¿½ï¿½ 1-n ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
+	//Ê¹ï¿½ï¿½ @JoinColumn ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ @OneToMany ï¿½ï¿½ fetch ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½Ä¬ï¿½ÏµÄ¼ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ @OneToMany ï¿½ï¿½ cascade ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½Ä¬ï¿½Ïµï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½. 
+	//×¢ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ 1 ï¿½ï¿½Ò»ï¿½Ëµï¿½ @OneToMany ï¿½ï¿½Ê¹ï¿½ï¿½ mappedBy ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ @OneToMany ï¿½Ë¾Í²ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ @JoinColumn ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. 
 //	@JoinColumn(name="CUSTOMER_ID")
 //	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE},mappedBy="customer")
 //	public Set<Order> getOrders() {
@@ -118,7 +119,7 @@ public class Customer {
 //		this.orders = orders;
 //	}
 
-	//¹¤¾ß·½·¨. ²»ĞèÒªÓ³ÉäÎªÊı¾İ±íµÄÒ»ÁĞ. 
+	//ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ÒªÓ³ï¿½ï¿½Îªï¿½ï¿½İ±ï¿½ï¿½Ò»ï¿½ï¿½. 
 	@Transient
 	public String getInfo(){
 		return "lastName: " + lastName + ", email: " + email;

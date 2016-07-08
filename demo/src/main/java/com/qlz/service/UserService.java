@@ -22,7 +22,7 @@ import com.qlz.entities.User;
 @Service
 @Transactional
 public class UserService {
-	
+
 	@Autowired
 	private UserDao userDao;
 
@@ -41,7 +41,8 @@ public class UserService {
 	 */
 	public List<Role> getRolesByUserNo(String userNo) {
 		// TODO Auto-generated method stub
-		return userDao.findRoleByUserNo(userNo);
+		// return userDao.findRoleByUserNo(userNo);
+		return null;
 	}
 
 	/**
@@ -50,10 +51,8 @@ public class UserService {
 	 */
 	public List<Resource> getResourcesByUserNo(String userNo) {
 		// TODO Auto-generated method stub
-		return userDao.findResourcesByUserNo(userNo);
+		// return userDao.findResourcesByUserNo(userNo);
+		return null;
 	}
-	
-	
-	
 
 }
