@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
+<%-- <%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%> --%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -96,7 +96,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${list}" var="item" varStatus="index">
+								<c:forEach items="${list.content}" var="item" varStatus="index">
 									<tr role="row" >
 										<td><input type="checkbox" id="${item.id}" class="icheck" /></td>
 										<td>${item.name}</td>

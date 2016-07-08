@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.MediaType;
@@ -50,7 +51,7 @@ public class ResourceAdminController {
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 	
 	/**
-	 * ¶ÁÈ¡¹«¹²µÄ²ÎÊıÖµºÍÉèÖÃ,¸ù¾İ½çÃæÉèÖÃµÄ²ÎÊıÖµÀ´Ñ¡ÔñÒ³Ãæ²Ëµ¥Ñ¡ÖĞĞ§¹û
+	 * å…¬å…±èœå•
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -62,7 +63,7 @@ public class ResourceAdminController {
 	}
 	
 	/**
-	 * Ë¢ĞÂÈ«¾ÖÈ¨ÏŞ×ÊÔ´
+	 * Ë¢ï¿½ï¿½È«ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ô´
 	 * @return
 	 * @throws Exception
 	 */
@@ -74,25 +75,25 @@ public class ResourceAdminController {
     }
 
 	@RequestMapping("/list")
-	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize,
+	public String list(Pageable pageBounds,
 			HttpServletRequest request, Model model, Resource resource) {
+		
 
 		try {
-			PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
-			Page<Resource> list = resourceService.getResourcePageList(resource, pageBounds);
+			Page<Resource> list = resourceService.findAll(pageBounds);
+			//List<Resource> list=resourceService.findAll();
 			//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("resource", resource);
-			model.addAttribute("pageSize", pageSize);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "admin/resource/list";
+		//return "admin/resource/list";
+		return "/admin/resource/list";
 
 	}
 	/**
-	 * È¨ÏŞÓë×ÊÔ´Ê÷
+	 * È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½
 	 * @param request
 	 * @param model
 	 * @param resource
@@ -113,7 +114,7 @@ public class ResourceAdminController {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		//resourceÊÇ·ñÓĞÑ¡·ÖÅäÁË
+		//resourceï¿½Ç·ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (AuthorityToResource at : atrlist) {
 			for (Resource r : list) {
 				if (r.getId() != null && at.getResourceId() != null && r.getId() == at.getResourceId()) {
@@ -132,7 +133,7 @@ public class ResourceAdminController {
 
 	/**
 	 * 
-	 * ¸ù¾İid »ñÈ¡ ×ÊÔ´
+	 * æ–°å¢èµ„æº
 	 * 
 	 * @param request
 	 * @param id
@@ -142,7 +143,7 @@ public class ResourceAdminController {
 	@RequestMapping("/{id}")
 	@ResponseBody
 	public JsonResult get(HttpServletRequest request, @PathVariable("id") Long id) {
-		JsonResult ajaxResult = null;
+		JsonResult ajaxResult = new JsonResult();
 		try {
 
 			Resource resource = resourceService.selectByPrimaryKey(id);
@@ -154,7 +155,7 @@ public class ResourceAdminController {
 		return ajaxResult;
 	}
 	/**
-	 * ÏêÇé
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param actInfo
 	 * @return
@@ -171,7 +172,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ¸üĞÂ
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param actInfo
 	 * @return
@@ -195,7 +196,7 @@ public class ResourceAdminController {
 
 
 	/**
-	 * ´´½¨
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param resource
 	 * @return
@@ -216,10 +217,10 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
 	 * 
 	 * @param ids
-	 *            id¼¯ºÏ,ÀıÈç:1,2,3,4
+	 *            idï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½:1,2,3,4
 	 * @return
 	 */
 	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -227,7 +228,7 @@ public class ResourceAdminController {
 	public JsonResult delete(@PathVariable String ids) {
 		JsonResult ajaxResult = null;
 		if (ids == null || ids.equals("")) {
-			ajaxResult = new JsonResult(ExceptionCode.FAIL, "idsä¸ºç©ºï¼?");
+			ajaxResult = new JsonResult(ExceptionCode.FAIL, "idsä¸ºç©ºï¿½?");
 		}
 		try {
 			String[] idArray = ids.split(",");
@@ -241,7 +242,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * É¾³ı
+	 * É¾ï¿½ï¿½
 	 * 
 	 * @param id
 	 * @return

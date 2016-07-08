@@ -23,8 +23,8 @@
 	<!--     <pattern>/admin*</pattern>
 		<pattern>/admin/*</pattern> -->
 	</decorator>
-	<decorator name="guide_admin_default" page="guide_admin_default.jsp">
+<!-- 	<decorator name="guide_admin_default" page="guide_admin_default.jsp">
 		<pattern>/guideAdmin*</pattern>
 		<pattern>/guideAdmin/*</pattern>
-	</decorator>
+	</decorator> -->
 </decorators>

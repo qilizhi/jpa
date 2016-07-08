@@ -6,15 +6,16 @@ package com.qlz.service;
 import org.springframework.stereotype.Service;
 
 /**
+ * 
  * @author qilizhi
- * @date 2016Äê7ÔÂ6ÈÕ ÏÂÎç12:15:31
+ * @date 2016å¹´7æœˆ8æ—¥ ä¸‹åˆ4:11:05
  */
 @Service
 public class WebSocketService {
 	
 	public int getUnReadNews(String socketUserName){
 		
-		System.out.println("»ñÈ¡¸ÃÓÃ»§µÄĞÅÏ¢Î´¶ÁĞÅÏ¢ÌõÊı"+socketUserName);
+		System.out.println("qilizhi"+socketUserName);
 		return 2;
 	}
 

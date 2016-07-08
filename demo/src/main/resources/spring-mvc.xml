@@ -112,11 +112,11 @@
 				<!-- 设置最大的分页大小，超过则以最大值为准 -->
 				<!-- <property name="maxPageSize" value="30"></property> -->
 				<!-- 首页从1开始 -->
-				<!-- <property name="oneIndexedParameters" value="true"></property> -->
+				 <property name="oneIndexedParameters" value="true"></property>
 				<!-- 重写页的命名 -->
-				<!-- <property name="pageParameterName" value="pageNo"></property> -->
+				 <property name="pageParameterName" value="pageNo"></property>
 				<!-- 重写页大小的命名 -->
-				<!-- <property name="sizeParameterName" value="pageSize"></property> -->
+				 <property name="sizeParameterName" value="pageSize"></property>
 
 			</bean>
 		</mvc:argument-resolvers>

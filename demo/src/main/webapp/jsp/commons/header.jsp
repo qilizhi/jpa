@@ -53,12 +53,12 @@ window.g_basePath = "${ctx}";
         <!-- 美化form表单 -->
       <%--   <script src="${ctx}/static/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script> --%>
         <!-- 图表 -->
-        <script src="${ctx}/static/assets/global/plugins/morris/morris.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="${ctx}/static/assets/global/plugins/morris/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<%--         <script src="${ctx}/static/assets/global/plugins/morris/morris.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="${ctx}/static/assets/global/plugins/morris/raphael-min.js" type="text/javascript" charset="utf-8"></script> --%>
         
         <!-- 数字效果 -->
-        <script src="${ctx}/static/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
-        <script src="${ctx}/static/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+  <%--       <script src="${ctx}/static/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+        <script src="${ctx}/static/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script> --%>
         <!-- 模版引擎js -->
-        <script src="${ctx}/static/js/template.js" type="text/javascript"></script>
-        <script src="${ctx}/static/js/template-ext.js" type="text/javascript"></script>
+<%--         <script src="${ctx}/static/js/template.js" type="text/javascript"></script>
+        <script src="${ctx}/static/js/template-ext.js" type="text/javascript"></script> --%>

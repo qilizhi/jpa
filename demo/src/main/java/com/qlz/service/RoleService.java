@@ -18,7 +18,7 @@ import com.qlz.model.Tree;
 
 /**
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç5:13:44
+ * @date 2016ï¿½ï¿½7ï¿½ï¿½4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½5:13:44
  */
 @Service
 @Transactional
@@ -34,7 +34,7 @@ public class RoleService {
 	}
 
 	/**
-	 * µÝ ¹éÉú³É½á¹¹Ê÷
+	 * ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½É½á¹¹ï¿½ï¿½
 	 * 
 	 */
 
@@ -45,8 +45,8 @@ public class RoleService {
 			if (aut != null && aut.getId() != null) {
 				AT.setId(aut.getId());
 				AT.setText(aut.getName());
-				AT.setParentId(aut.getParentId());
-				// ²éÑ¯ ×ÓNode
+				AT.setParentId(aut.getParent().getId());
+				// ï¿½ï¿½Ñ¯ ï¿½ï¿½Node
 				List<Role> authoritys = roleDao.findByParentId(aut.getId());
 				if (authoritys != null && authoritys.size() > 0) {
 					AT.setChildren(getTree(authoritys));
@@ -60,7 +60,7 @@ public class RoleService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐÊ÷½á¹¹
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹
 	 * 
 	 */
 
@@ -76,7 +76,7 @@ public class RoleService {
 	}
 
 	/**
-	 * µÝ¹é±êÊ¶ÒÑÊÜÈ¨µÄÊ÷
+	 * ï¿½Ý¹ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * 
 	 */

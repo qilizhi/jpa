@@ -27,6 +27,16 @@ public class ResourceService {
 	@Autowired
 	private ResourceDao resourceDao;
 
+	
+	public List<Resource> findAll(){
+		
+		return resourceDao.findAll();
+	}
+	public Page<Resource> findAll(Pageable page){
+
+		return resourceDao.findAll(page);
+	}
+	
 	/**
 	 * @param resource
 	 * @param pageBounds
@@ -74,7 +84,6 @@ public class ResourceService {
 	 * @return
 	 */
 	public Resource selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
 		return resourceDao.findOne(id);
 	}
 

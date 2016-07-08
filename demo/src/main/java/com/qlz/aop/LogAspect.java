@@ -28,9 +28,9 @@ import com.qlz.entities.Log;
 /**
  * 
  * @ClassName: LogAspect
- * @Description: ÈÕÖ¾¼ÇÂ¼AOPÊµÏÖ
+ * @Description: ï¿½ï¿½Ö¾ï¿½ï¿½Â¼AOPÊµï¿½ï¿½
  * @author shaojian.yu
- * @date 2014Äê11ÔÂ3ÈÕ ÏÂÎç1:51:59
+ * @date 2014ï¿½ï¿½11ï¿½ï¿½3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:51:59
  *
  */
 @Aspect
@@ -38,50 +38,50 @@ import com.qlz.entities.Log;
 public class LogAspect {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private String requestPath = null; // ÇëÇóµØÖ·
-	private String userName = null; // ÓÃ»§Ãû
-	private Map<?, ?> inputParamMap = null; // ´«Èë²ÎÊý
-	private Map<String, Object> outputParamMap = null; // ´æ·ÅÊä³ö½á¹û
-	private long startTimeMillis = 0; // ¿ªÊ¼Ê±¼ä
-	private long endTimeMillis = 0; // ½áÊøÊ±¼ä
+	private String requestPath = null; // ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
+	private String userName = null; // ï¿½Ã»ï¿½ï¿½ï¿½
+	private Map<?, ?> inputParamMap = null; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private Map<String, Object> outputParamMap = null; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private long startTimeMillis = 0; // ï¿½ï¿½Ê¼Ê±ï¿½ï¿½
+	private long endTimeMillis = 0; // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 
 	@Autowired
 	private LogDao logDao;
 
 	/**
 	 * 
-	 * @Title£ºdoBeforeInServiceLayer
-	 * @Description: ·½·¨µ÷ÓÃÇ°´¥·¢ ¼ÇÂ¼¿ªÊ¼Ê±¼ä
+	 * @Titleï¿½ï¿½doBeforeInServiceLayer
+	 * @Description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¼ï¿½ï¿½Ê¼Ê±ï¿½ï¿½
 	 * @author shaojian.yu
-	 * @date 2014Äê11ÔÂ2ÈÕ ÏÂÎç4:45:53
+	 * @date 2014ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:45:53
 	 * @param joinPoint
 	 */
 	@Before("execution(* com.qlz.controller..*.*(..))")
 	public void doBeforeInServiceLayer(JoinPoint joinPoint) {
-		startTimeMillis = System.currentTimeMillis(); // ¼ÇÂ¼·½·¨¿ªÊ¼Ö´ÐÐµÄÊ±¼ä
+		startTimeMillis = System.currentTimeMillis(); // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Ö´ï¿½Ðµï¿½Ê±ï¿½ï¿½
 	}
 
 	/**
 	 * 
-	 * @Title£ºdoAfterInServiceLayer
-	 * @Description: ·½·¨µ÷ÓÃºó´¥·¢ ¼ÇÂ¼½áÊøÊ±¼ä
+	 * @Titleï¿½ï¿½doAfterInServiceLayer
+	 * @Description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãºó´¥·ï¿½ ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 	 * @author shaojian.yu
-	 * @date 2014Äê11ÔÂ2ÈÕ ÏÂÎç4:46:21
+	 * @date 2014ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:46:21
 	 * @param joinPoint
 	 */
 	@After("execution(* com.qlz.controller..*.*(..))")
 	public void doAfterInServiceLayer(JoinPoint joinPoint) {
-		endTimeMillis = System.currentTimeMillis(); // ¼ÇÂ¼·½·¨Ö´ÐÐÍê³ÉµÄÊ±¼ä
+		endTimeMillis = System.currentTimeMillis(); // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Éµï¿½Ê±ï¿½ï¿½
 		this.printOptLog();
 		saveDb();
 	}
 
 	/**
 	 * 
-	 * @Title£ºdoAround
-	 * @Description: »·ÈÆ´¥·¢
+	 * @Titleï¿½ï¿½doAround
+	 * @Description: ï¿½ï¿½ï¿½Æ´ï¿½ï¿½ï¿½
 	 * @author shaojian.yu
-	 * @date 2014Äê11ÔÂ3ÈÕ ÏÂÎç1:58:45
+	 * @date 2014ï¿½ï¿½11ï¿½ï¿½3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:58:45
 	 * @param pjp
 	 * @return
 	 * @throws Throwable
@@ -90,26 +90,26 @@ public class LogAspect {
 	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 
 		/**
-		 * 1.»ñÈ¡requestÐÅÏ¢ 2.¸ù¾Ýrequest»ñÈ¡session 3.´ÓsessionÖÐÈ¡³öµÇÂ¼ÓÃ»§ÐÅÏ¢
+		 * 1.ï¿½ï¿½È¡requestï¿½ï¿½Ï¢ 2.ï¿½ï¿½ï¿½requestï¿½ï¿½È¡session 3.ï¿½ï¿½sessionï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 		 */
 		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes sra = (ServletRequestAttributes) ra;
 		HttpServletRequest request = sra.getRequest();
-		// ´ÓsessionÖÐ»ñÈ¡ÓÃ»§ÐÅÏ¢
+		// ï¿½ï¿½sessionï¿½Ð»ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 		// String loginInfo = (String) session.getAttribute("username");
 		/*
 		 * if(loginInfo != null && !"".equals(loginInfo)){ userName =
-		 * operLoginModel.getLogin_Name(); }else{ userName = "ÓÃ»§Î´µÇÂ¼" ; }
+		 * operLoginModel.getLogin_Name(); }else{ userName = "ï¿½Ã»ï¿½Î´ï¿½ï¿½Â¼" ; }
 		 */
 		userName = "qilizhi";
-		// »ñÈ¡ÊäÈë²ÎÊý
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		inputParamMap = request.getParameterMap();
-		// »ñÈ¡ÇëÇóµØÖ·
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
 		requestPath = request.getRequestURI();
 
-		// Ö´ÐÐÍê·½·¨µÄ·µ»ØÖµ£ºµ÷ÓÃproceed()·½·¨£¬¾Í»á´¥·¢ÇÐÈëµã·½·¨Ö´ÐÐ
+		// Ö´ï¿½ï¿½ï¿½ê·½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½proceed()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·½ï¿½ï¿½Ö´ï¿½ï¿½
 		outputParamMap = new HashMap<String, Object>();
-		Object result = pjp.proceed();// resultµÄÖµ¾ÍÊÇ±»À¹½Ø·½·¨µÄ·µ»ØÖµ
+		Object result = pjp.proceed();// resultï¿½ï¿½Öµï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½Öµ
 		outputParamMap.put("result", result);
 		outputParamMap.put("controller", pjp.getSignature().getDeclaringTypeName());
 		outputParamMap.put("method", pjp.getSignature().getName());
@@ -121,24 +121,24 @@ public class LogAspect {
 
 	/**
 	 * 
-	 * @Title£ºprintOptLog
-	 * @Description: Êä³öÈÕÖ¾
+	 * @Titleï¿½ï¿½printOptLog
+	 * @Description: ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾
 	 * @author shaojian.yu
-	 * @date 2014Äê11ÔÂ2ÈÕ ÏÂÎç4:47:09
+	 * @date 2014ï¿½ï¿½11ï¿½ï¿½2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:47:09
 	 */
 	private void printOptLog() {
-		// Gson gson = new Gson(); // ÐèÒªÓÃµ½googleµÄgson½âÎö°ü
+		// Gson gson = new Gson(); // ï¿½ï¿½Òªï¿½Ãµï¿½googleï¿½ï¿½gsonï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		String optTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTimeMillis);
-		logger.info("\n user£º" + userName + "  url£º" + requestPath + "; op_time£º" + optTime + " pro_time£º"
-				+ (endTimeMillis - startTimeMillis) + "ms ;" + " param£º" + JSON.toJSONString(inputParamMap) + ";"
-				+ "\n result£º" + JSON.toJSONString(outputParamMap));
+		logger.info("ç”¨æˆ·user" + userName + "  url:" + requestPath + "; op_time:" + optTime + " pro_time:"
+				+ (endTimeMillis - startTimeMillis) + "ms ;" + " param:" + JSON.toJSONString(inputParamMap.toString()) + ";"
+				+ " result:" + JSON.toJSONString(outputParamMap.toString()));
 	}
 
 	private void saveDb() {
-		//userId Ó¦ÊÇ´Ósession ÖÐÈ¥»ñÈ¡
+		//userId Ó¦ï¿½Ç´ï¿½session ï¿½ï¿½È¥ï¿½ï¿½È¡
 		Log log = new Log(null, "qilizhi", new Date(),
 				outputParamMap.get("controller").toString() + "." + outputParamMap.get("method").toString(),
-				JSON.toJSONString(outputParamMap.get("params")));
+				JSON.toJSONString(outputParamMap.get("params").toString()));
 		logDao.save(log);
 	}
 

@@ -3,6 +3,7 @@ package com.qlz.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -27,11 +30,9 @@ public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-
-	private Long parentId;
-
+	private Role parent;
 	private String name;
-
+	private Set<Role>children =new LinkedHashSet<Role>();
 	private String description;
 	private Set<User> users = new HashSet<User>();
 	private Set<Authority> authorities = new HashSet<Authority>();
@@ -46,13 +47,8 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
+	
+	
 
 	public String getName() {
 		return name;
@@ -90,5 +86,24 @@ public class Role implements Serializable {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="parent_id")
+	public Role getParent() {
+		return parent;
+	}
+
+	public void setParent(Role parent) {
+		this.parent = parent;
+	}
+
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
+	public Set<Role> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<Role> children) {
+		this.children = children;
 	}
 }

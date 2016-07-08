@@ -2,16 +2,16 @@ package com.qlz.constant;
 
 
 /**
- * 异常错误码枚举
+ * 閿欒淇℃伅model
  * 
- * @author quan
+ * @author qilizhi
  * 
  */
 public enum ExceptionCode {
 
-	SUCCESSFUL( 200, "成功" ), 
-	AUTHORIZATION( 403, "没有权限" ), 
-	FAIL( -1, "失败" );
+	SUCCESSFUL( 200, "鎿嶄綔鎴愬姛" ), 
+	AUTHORIZATION( 403, "娌℃湁鏉冮檺璁块棶" ), 
+	FAIL( -1, "鎿嶄綔澶辫触" );
 
 	private int codeNo;
 

@@ -2,6 +2,7 @@ package com.qlz.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,21 +14,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
+ * ÊùÉÈôêÊ†ë
  * 
  * @author qilizhi
- * @date 2016ƒÍ7‘¬4»’ œ¬ŒÁ4:01:46
+ * @date 2016Âπ¥7Êúà8Êó• ‰∏ãÂçà3:34:34
  */
 @Entity
 @Table
 public class Authority implements Serializable {
-	/**
-	 * ”√ªß»®œﬁ±Ì
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -36,8 +35,8 @@ public class Authority implements Serializable {
 
 	private String description;
 
-	private Long parentId;
-
+	private Authority parent;
+	private Set<Authority> children = new LinkedHashSet<Authority>();
 	private String uri;
 	private Set<Role> roles = new HashSet<Role>();
 	private Set<Resource> resources = new HashSet<Resource>();
@@ -69,13 +68,6 @@ public class Authority implements Serializable {
 		this.description = description;
 	}
 
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
 
 	public String getUri() {
 		return uri;
@@ -85,8 +77,8 @@ public class Authority implements Serializable {
 		this.uri = uri;
 	}
 
-	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST,mappedBy="authorities")
-	//@Transient
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "authorities")
+	// @Transient
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -99,13 +91,32 @@ public class Authority implements Serializable {
 	@JoinTable(name = "authority_resource", joinColumns = {
 			@JoinColumn(name = "authority_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "resource_id", referencedColumnName = "id") })
-	//@Transient
+	// @Transient
 	public Set<Resource> getResources() {
 		return resources;
 	}
 
 	public void setResources(Set<Resource> resources) {
 		this.resources = resources;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER )
+	@JoinColumn(name="parent_id")
+	public Authority getParent() {
+		return parent;
+	}
+
+	public void setParent(Authority parent) {
+		this.parent = parent;
+	}
+
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
+	public Set<Authority> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<Authority> children) {
+		this.children = children;
 	}
 
 }

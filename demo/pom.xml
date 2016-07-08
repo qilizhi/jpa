@@ -18,7 +18,7 @@
 		<spring.version>4.3.0.RELEASE</spring.version>
 		<springside.version>4.1.0.GA</springside.version>
 		<spring-data-commons.version>[1.12.1,)</spring-data-commons.version>
-<!-- 		<spring-data-jpa.version>1.9.4.RELEASE</spring-data-jpa.version> -->
+		<!-- <spring-data-jpa.version>1.9.4.RELEASE</spring-data-jpa.version> -->
 		<spring-data-jpa.version>[1.10,)</spring-data-jpa.version>
 		<spring-data-redis.version>[1.6,)</spring-data-redis.version>
 		<spring-data-jedis.version>[2.7,)</spring-data-jedis.version>
@@ -43,6 +43,8 @@
 		<!-- shiro 相关版本配置 -->
 		<shiro.version>[1.2,)</shiro.version>
 		<jstl.version>1.2</jstl.version>
+
+		<jackson.version>[2.5,)</jackson.version>
 
 	</properties>
 
@@ -105,12 +107,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.5.1</version>
+			<version>${jackson.version}</version>
+			<!-- <version>2.5.1</version> -->
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.5.1</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<!-- spring MVC 核心包 end -->
@@ -367,21 +370,11 @@
 		<!-- 测试用例相关 end -->
 
 		<!-- socket 相关 START -->
-<!-- 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.3.3</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-annotations</artifactId> 
+			<version>2.3.0</version> </dependency> <dependency> <groupId>com.fasterxml.jackson.core</groupId> 
+			<artifactId>jackson-core</artifactId> <version>2.3.1</version> </dependency> 
+			<dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+			<version>2.3.3</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>

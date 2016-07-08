@@ -12,7 +12,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title><decorator:title default="美丽玩家后台" /></title>
+<title><decorator:title default="约车后台" /></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="" name="description" />
@@ -453,7 +453,7 @@
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
 	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script> --%>
-	<script type="text/javascript" src="${ctx}/static/js/page/common.js"></script>
+	<script type="text/javascript" src="${ctx}/static/js/common.js"></script>
 </body>
 
 </html>

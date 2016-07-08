@@ -46,8 +46,7 @@ public class AuthorityService {
 			if (aut != null && aut.getId() != null) {
 				AT.setId(aut.getId());
 				AT.setText(aut.getName());
-				AT.setParentId(aut.getParentId());
-				// ��ѯ ��Node
+				AT.setParentId(aut.getParent().getId());
 				List<Authority> authoritys = authorityDao.findByParentId(aut.getId());
 				if (authoritys != null && authoritys.size() > 0) {
 					AT.setChildren(getTree(authoritys));

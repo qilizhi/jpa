@@ -1,4 +1,4 @@
-package com.qlz.controller;
+/*package com.qlz.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,23 +18,23 @@ import com.qlz.socket.SystemWebSocketHandler;
 
 @RequestMapping("/socket")
 @Controller
-public class AdminController {
+public class SocketController {
 
-	static Logger logger = LoggerFactory.getLogger(AdminController.class);
+	static Logger logger = LoggerFactory.getLogger(SocketController.class);
 
 	 @Autowired
 	 private WebSocketService adminService;
 	 @Autowired
 	 private SystemWebSocketHandler systemWebSocketHandler;
 
-	/*
+	
 	 * @Bean public SystemWebSocketHandler systemWebSocketHandler() { return new
 	 * SystemWebSocketHandler(); }
-	 */
+	 
 	@RequestMapping("/audit")
 	@ResponseBody
 	public JsonResult auditing(String username,String msg) {
-		// 无关代码都省略了
+		// 锟睫关达拷锟诫都省锟斤拷锟斤拷
 	
 		  int unReadNewsCount = adminService.getUnReadNews(username); try {
 		 systemWebSocketHandler.sendMessageToUser(username, new
@@ -61,4 +61,4 @@ public class AdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL, "");
 	}
-}
+}*/
