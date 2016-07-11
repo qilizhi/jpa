@@ -34,29 +34,29 @@ public class RoleService {
 	}
 
 	/**
-	 * �� ����ɽṹ��
+	 * 角色树
 	 * 
 	 */
 
-	public List<Tree> getTree(List<Role> authList) {
-		List<Tree> auTrees = new ArrayList<Tree>();
-		for (Role aut : authList) {
+	public List<Tree> getTree(List<Role> roleList) {
+		List<Tree> roleTrees = new ArrayList<Tree>();
+		for (Role role : roleList) {
 			Tree AT = new Tree();
-			if (aut != null && aut.getId() != null) {
-				AT.setId(aut.getId());
-				AT.setText(aut.getName());
-				AT.setParentId(aut.getParent().getId());
-				// ��ѯ ��Node
-				List<Role> authoritys = roleDao.findByParentId(aut.getId());
-				if (authoritys != null && authoritys.size() > 0) {
-					AT.setChildren(getTree(authoritys));
+			if (role != null && role.getId() != null) {
+				AT.setId(role.getId());
+				AT.setText(role.getName());
+				AT.setParentId(role.getParent()==null?null:role.getParent().getId());
+				// 
+				List<Role> roles =  role.getChildren();
+				if (!roles.isEmpty()) {
+					AT.setChildren(getTree(roles));
 				}
-				auTrees.add(AT);
+				roleTrees.add(AT);
 			}
 
 		}
 
-		return auTrees;
+		return roleTrees;
 	}
 
 	/**

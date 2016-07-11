@@ -2,16 +2,12 @@ package com.qlz.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.Role;
 /**
  * 
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç4:44:10
+ * @date 2016ï¿½ï¿½7ï¿½ï¿½4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:44:10
  */
 public interface RoleDao extends BaseRepository<Role, Long> {
 

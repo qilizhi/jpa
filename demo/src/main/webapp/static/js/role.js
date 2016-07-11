@@ -57,7 +57,7 @@ var UITree = function() {
 						dataType:"json",
 						data : {
 							"id" : data.node.id,
-							"name" : data.text
+							"text" : data.text
 						},
 						success : function(result) {
 							// 更新成功

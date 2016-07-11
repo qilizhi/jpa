@@ -163,16 +163,15 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult loadRoleTree() {
 
-		List<Tree> authorityTree = new ArrayList<>();
+		List<Tree> roleTree = new ArrayList<Tree>();
 		try {
-			authorityTree = roleService.getAllTree();
+			roleTree = roleService.getAllTree();
 		} catch (Exception e) {
-
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
 
-		return new JsonResult(ExceptionCode.SUCCESSFUL, authorityTree);
+		return new JsonResult(ExceptionCode.SUCCESSFUL, roleTree);
 	}
 
 	/**

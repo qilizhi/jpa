@@ -108,7 +108,7 @@
 									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i> <input type="text" class="form-control"
-												name="name"  />
+												name="text"  />
 										</div>
 									</div>
 								</div>

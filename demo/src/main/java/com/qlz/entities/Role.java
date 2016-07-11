@@ -3,7 +3,6 @@ package com.qlz.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -32,7 +30,7 @@ public class Role implements Serializable {
 	private Long id;
 	private Role parent;
 	private String name;
-	private Set<Role>children =new LinkedHashSet<Role>();
+	private List<Role>children =new ArrayList<Role>();
 	private String description;
 	private Set<User> users = new HashSet<User>();
 	private Set<Authority> authorities = new HashSet<Authority>();
@@ -99,11 +97,11 @@ public class Role implements Serializable {
 	}
 
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
-	public Set<Role> getChildren() {
+	public List<Role> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<Role> children) {
+	public void setChildren(List<Role> children) {
 		this.children = children;
 	}
 }

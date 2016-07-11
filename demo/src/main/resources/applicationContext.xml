@@ -81,9 +81,9 @@
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory
 				</prop>
-				<prop key="hibernate.cache.use_second_level_cache">
+			<!-- 	<prop key="hibernate.cache.use_second_level_cache">
 					true
-				</prop>
+				</prop> -->
 				<prop key="hibernate.cache.region.factory_class">
 					org.hibernate.cache.ehcache.EhCacheRegionFactory
 				</prop>
