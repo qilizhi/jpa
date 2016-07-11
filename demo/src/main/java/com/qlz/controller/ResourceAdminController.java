@@ -13,7 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,12 +48,12 @@ public class ResourceAdminController {
 
 	@Autowired
 	private ResourceService resourceService;
-	//@Autowired
-	//private AuthorityToResourceService authorityToResourceService;
-	
+	// @Autowired
+	// private AuthorityToResourceService authorityToResourceService;
+
 	@Autowired
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
-	
+
 	/**
 	 * 公共菜单
 	 * 
@@ -57,13 +61,14 @@ public class ResourceAdminController {
 	 * @param model
 	 */
 	@ModelAttribute
-	public void common( Model model ) {
-		model.addAttribute( "systemclass", Const.MENU_FIRST );
-		model.addAttribute( "system_resourceclass", Const.MENU_SUB );
+	public void common(Model model) {
+		model.addAttribute("systemclass", Const.MENU_FIRST);
+		model.addAttribute("system_resourceclass", Const.MENU_SUB);
 	}
-	
+
 	/**
 	 * ˢ��ȫ��Ȩ����Դ
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
@@ -71,29 +76,39 @@ public class ResourceAdminController {
 	@ResponseBody
 	public JsonResult refreshShiroResources() throws Exception {
 		chainDefinitionSectionMetaSource.reLoad();
-		return new JsonResult( ExceptionCode.SUCCESSFUL );
-    }
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
+	}
 
 	@RequestMapping("/list")
-	public String list(Pageable pageBounds,
-			HttpServletRequest request, Model model, Resource resource) {
-		
+	public String list(Pageable pageBounds, HttpServletRequest request, Model model, Resource resource) {
 
 		try {
 			Page<Resource> list = resourceService.findAll(pageBounds);
-			//List<Resource> list=resourceService.findAll();
-			//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
+			// List<Resource> list=resourceService.findAll();
+			// model.addAttribute("paginator", list != null ?
+			// list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("resource", resource);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		//return "admin/resource/list";
+		// return "admin/resource/list";
 		return "/admin/resource/list";
 
 	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/persons", method = RequestMethod.GET)
+	@ResponseBody
+	Page<Resource> persons(@PageableDefault(value=10,sort={"id"},direction=Sort.Direction.ASC,page=0)Pageable pageable) {
+
+		Page<Resource> list = resourceService.findAll(pageable);
+		return list;
+	}
+
 	/**
 	 * Ȩ������Դ��
+	 * 
 	 * @param request
 	 * @param model
 	 * @param resource
@@ -109,12 +124,13 @@ public class ResourceAdminController {
 		List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
 		try {
 			list = resourceService.getResourceList(resource);
-			//atrlist = authorityToResourceService.selectByExample(authorityToResource);
+			// atrlist =
+			// authorityToResourceService.selectByExample(authorityToResource);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		//resource�Ƿ���ѡ������
+		// resource�Ƿ���ѡ������
 		for (AuthorityToResource at : atrlist) {
 			for (Resource r : list) {
 				if (r.getId() != null && at.getResourceId() != null && r.getId() == at.getResourceId()) {
@@ -129,7 +145,6 @@ public class ResourceAdminController {
 		return new JsonResult(ExceptionCode.SUCCESSFUL, list);
 
 	}
-
 
 	/**
 	 * 
@@ -154,6 +169,7 @@ public class ResourceAdminController {
 		}
 		return ajaxResult;
 	}
+
 	/**
 	 * ����
 	 * 
@@ -193,7 +209,6 @@ public class ResourceAdminController {
 		}
 		return ajaxResult;
 	}
-
 
 	/**
 	 * ����

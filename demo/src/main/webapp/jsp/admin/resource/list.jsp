@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%-- <%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%> --%>
+<%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -46,13 +46,14 @@
 							class="caption-subject font-dark bold uppercase">资源列表</span>
 					</div>
 					<div class="actions">
-						<a 	class="btn btn-sm green btn-outline addShow">新增</a>
+						<a class="btn btn-sm green btn-outline addShow">新增</a>
 						<!-- 	<a	href="javascript:;" class="btn btn-sm dark btn-outline">审核</a>  -->
 						<a class="btn btn-sm red btn-outline batDel">批量删除</a>
 					</div>
 				</div>
 				<div class="portlet-body">
-					<form id="searchForm" action="${ctx}/admin/resource/list" method="get">
+					<form id="searchForm" action="${ctx}/admin/resource/list"
+						method="get">
 						<div class="row">
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-4">
@@ -81,7 +82,7 @@
 									<i class="fa fa-search"></i> 查询
 								</button>
 							</div>
-							</div>
+						</div>
 					</form>
 					<div class="table-scrollable">
 						<table class="table table-striped table-bordered table-hover">
@@ -96,18 +97,17 @@
 								</tr>
 							</thead>
 							<tbody>
+						<%-- 	${list.hasContent()}:${list.size}:${list.number}:${list.totalPages}:${list.totalElements}:${list.sort}:${list.isLast()}:${list.getNumber()}:${list.nextPageable().getPageNumber()} --%>
 								<c:forEach items="${list.content}" var="item" varStatus="index">
-									<tr role="row" >
+									<tr role="row">
 										<td><input type="checkbox" id="${item.id}" class="icheck" /></td>
 										<td>${item.name}</td>
 										<td>${item.description}</td>
 										<td>${item.path}</td>
-										
-											<td> <a
-											class="btn yellow btn-sm btn-outline editShow"
-											id="${item.id }">编辑</a>
-											<a class="btn red btn-sm btn-outline del"
-											id="${item.id}">删除</a> 
+
+										<td><a class="btn yellow btn-sm btn-outline editShow"
+											id="${item.id }">编辑</a> <a
+											class="btn red btn-sm btn-outline del" id="${item.id}">删除</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -148,7 +148,7 @@
 									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i> <input type="text" class="form-control"
-												name="name"  />
+												name="name" />
 										</div>
 									</div>
 								</div>
@@ -159,7 +159,7 @@
 									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i> <input type="text" class="form-control"
-												name="path" placeholder="例：/admin/authority/create" />  
+												name="path" placeholder="例：/admin/authority/create" />
 										</div>
 									</div>
 								</div>
@@ -174,7 +174,7 @@
 										</div>
 									</div>
 								</div>
-															
+
 
 							</div>
 							<!-- END FORM-->
@@ -221,8 +221,8 @@
 								<div class="form-group  margin-top-20">
 									<label class="control-label col-md-6">名称: </label>
 									<div class="col-md-6">
-										<label class="control-label"><span id="name">
-										</span> </label>
+										<label class="control-label"><span id="name"> </span>
+										</label>
 
 									</div>
 								</div>
@@ -230,8 +230,8 @@
 								<div class="form-group  margin-top-20">
 									<label class="control-label col-md-6">路径: </label>
 									<div class="col-md-6">
-										<label class="control-label"><span id="path">
-										</span> </label>
+										<label class="control-label"><span id="path"> </span>
+										</label>
 
 									</div>
 								</div>
@@ -264,7 +264,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<script
 		src="${ctx}/static/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
 		type="text/javascript"></script>
@@ -272,6 +272,6 @@
 		src="${ctx}/static/assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
 		type="text/javascript"></script>
 	<script type="text/javascript" src="${ctx}/static/js/resource.js"></script>
-	<tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
+	 <tg:pagination searchFormId="searchForm" list="${list}"></tg:pagination> 
 </body>
 </html>

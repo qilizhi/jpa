@@ -24,7 +24,7 @@ import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 import com.qlz.util.StringUtil;
 
 /**
- * ½ÇÉ«Controller
+ * ï¿½ï¿½É«Controller
  * 
  * @author QiQi-04-PC
  *
@@ -32,7 +32,7 @@ import com.qlz.util.StringUtil;
 @Controller
 @RequestMapping("/admin/role")
 public class RoleAdminController {
-	private String basePath = "admin/role/";
+	private String basePath = "/admin/role/";
 	@Autowired
 	private RoleService roleService;
 	@Autowired
@@ -43,7 +43,7 @@ public class RoleAdminController {
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 
 	/**
-	 * ¶ÁÈ¡¹«¹²µÄ²ÎÊıÖµºÍÉèÖÃ,¸ù¾İ½çÃæÉèÖÃµÄ²ÎÊıÖµÀ´Ñ¡ÔñÒ³Ãæ²Ëµ¥Ñ¡ÖĞĞ§¹û
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½İ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÄ²ï¿½ï¿½ï¿½Öµï¿½ï¿½Ñ¡ï¿½ï¿½Ò³ï¿½ï¿½Ëµï¿½Ñ¡ï¿½ï¿½Ğ§ï¿½ï¿½
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -55,7 +55,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ĞÂÔö
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param authority
 	 * @return
@@ -74,7 +74,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * É¾³ı
+	 * É¾ï¿½ï¿½
 	 * 
 	 * @param id
 	 * @return
@@ -84,7 +84,7 @@ public class RoleAdminController {
 	public JsonResult delete(Long id) {
 
 		if (id == null) {
-			return new JsonResult(ExceptionCode.FAIL, "Id²»ÄÜÎª¿Õ£¡");
+			return new JsonResult(ExceptionCode.FAIL, "Idï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
 		}
 		try {
 			roleService.deleteByPrimaryKey(id);
@@ -97,7 +97,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ¸üĞÂ
+	 * ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param auth
 	 * @return
@@ -106,7 +106,7 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult update(Role role) {
 		if (role.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "idÎª¿Õ£¡");
+			return new JsonResult(ExceptionCode.FAIL, "idÎªï¿½Õ£ï¿½");
 		}
 		try {
 			roleService.updateByPrimaryKeySelective(role);
@@ -120,7 +120,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * Ò³ÃæÁĞ±íÌø×ª
+	 * è§’è‰²ç®¡ç†åˆ—è¡¨
 	 * 
 	 * @param model
 	 * @return
@@ -131,7 +131,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ¸ù¾İroleID ¼ÓÔØÈ¨ÏŞÊ÷ ,²¢´ò¸øÊ÷ÉÏchecked
+	 * ï¿½ï¿½ï¿½roleID ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ ,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½checked
 	 * 
 	 * @return
 	 */
@@ -141,7 +141,7 @@ public class RoleAdminController {
 
 		List<Tree> authorityTree;
 		List<Tree> AT;
-		// ²éÕÒÒÑÊÚÈ¨µÄÊ÷²¢Ìí¼Ó±êÊ¶
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó±ï¿½Ê¶
 		List<RoleToAuthority> rts;
 		try {
 			authorityTree = authorityService.getAllTree();
@@ -156,7 +156,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ¼ÓÔØ½ÇÉ«Ê÷
+	 * ï¿½ï¿½ï¿½Ø½ï¿½É«ï¿½ï¿½
 	 * 
 	 */
 	@RequestMapping("/roleTree")
@@ -176,7 +176,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ¸ù¾İÓÃ»§½ÇÉ«ID¼°È¨ÏŞID²åÈëÊÚÈ¨
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½É«IDï¿½ï¿½È¨ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
 	 * 
 	 * @param roleId
 	 * @param authorityIds
@@ -187,7 +187,7 @@ public class RoleAdminController {
 	public JsonResult insertAuthorityToRole(Long roleId, String authorityIds) {
 		List<Long> authorityIdsList = StringUtil.generateListLong(authorityIds);
 		try {
-			/* ÏÈÉ¾³ıºó²åÈë */
+			/* ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		//	roleToAuthorityService.batDelete(params);
 		//	roleToAuthorityService.batInsert(params);
 			//roleToAuthorityService.updateByDelete(roleId,authorityIdsList);
@@ -195,13 +195,13 @@ public class RoleAdminController {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		// Ë¢ĞÂ×ÊÔ´shiro chain
+		// Ë¢ï¿½ï¿½ï¿½ï¿½Ô´shiro chain
 		chainDefinitionSectionMetaSource.reLoad();
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
 	/**
-	 * ¸ù¾İÓÃ»§½ÇÉ«Id¼°È¨ÏŞID É¾³ı
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½É«Idï¿½ï¿½È¨ï¿½ï¿½ID É¾ï¿½ï¿½
 	 * 
 	 * @param roleId
 	 * @param authorityIds

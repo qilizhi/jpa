@@ -38,11 +38,16 @@
 	</bean>
 	<!-- <import resource="classpath*:/spring-redis.xml" /> -->
 	<context:component-scan base-package="com.qlz">
-	
-		<context:exclude-filter type="annotation"	expression="org.springframework.web.socket.config.annotation.EnableWebSocket" />
-		<context:exclude-filter type="annotation"	expression="org.springframework.web.servlet.config.annotation.EnableWebMvc" />
-			
+
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.socket.config.annotation.EnableWebSocket" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.servlet.config.annotation.EnableWebMvc" />
+
 	</context:component-scan>
+<!-- 	<bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
+	<bean
+		class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" /> -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.qlz.entities"></property>
