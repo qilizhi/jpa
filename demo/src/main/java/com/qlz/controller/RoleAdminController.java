@@ -142,7 +142,6 @@ public class RoleAdminController {
 
 		List<Tree> authorityTree;
 		List<Tree> AT;
-		// ��������Ȩ��������ӱ�ʶ
 		List<RoleToAuthority> rts;
 		try {
 			authorityTree = authorityService.getAllTree();

@@ -8,10 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="wx_jsapi_ticket")
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class WxJsapiTicket{
 	private Long id;
 	private String jsapiTicket;

@@ -8,10 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="wx_event_push_article")
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class WxEventPushArticle{
 	private Long id;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -17,11 +17,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class User implements Serializable {
 	/**
-	 * 用户实体
+	 * 锟矫伙拷实锟斤拷
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;

@@ -12,10 +12,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
  
 /*@Cacheable*/
 @Table(name="JPA_CUTOMERS")
 @Entity
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class Customer {
 
 	private Integer id;

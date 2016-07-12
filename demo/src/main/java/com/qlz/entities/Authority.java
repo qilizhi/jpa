@@ -18,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * 权限树
  * 
@@ -26,6 +29,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class Authority implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -8,8 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name="wx_public")
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class WxPublic{
 	private Long id;
 	private String name ;

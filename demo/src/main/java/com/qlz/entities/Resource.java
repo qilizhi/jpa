@@ -13,8 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 @Table
 @Entity
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class Resource implements Serializable {
 	/**
 	 * 
