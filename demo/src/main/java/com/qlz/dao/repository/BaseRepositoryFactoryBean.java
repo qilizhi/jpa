@@ -15,8 +15,13 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 /**
+ * 
+ * 
  * @author qilizhi
- * @date 2016Äê7ÔÂ7ÈÕ ÏÂÎç12:23:51
+ * @date 2016å¹´7æœˆ12æ—¥ ä¸‹åˆ4:16:20
+ * @param <T>
+ * @param <S>
+ * @param <ID>
  */
 public class BaseRepositoryFactoryBean<T extends JpaRepository<S, ID>, S, ID extends Serializable>
 		extends JpaRepositoryFactoryBean<T, S, ID> {

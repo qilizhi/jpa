@@ -36,6 +36,13 @@
 			</list>
 		</property>
 	</bean>
+	<!-- <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"> 
+		<property name="sessionFactory" ref="entityManagerFactory" /> </bean> <bean 
+		id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"> 
+		<property name="interceptors"> <list> <ref bean="openSessionInViewInterceptor" 
+		/> </list> </property> <property name="mappings"> <props> <prop key="/*">mainFrameController</prop> 
+		</props> </property> </bean> -->
+
 	<!-- <import resource="classpath*:/spring-redis.xml" /> -->
 	<context:component-scan base-package="com.qlz">
 
@@ -45,9 +52,9 @@
 			expression="org.springframework.web.servlet.config.annotation.EnableWebMvc" />
 
 	</context:component-scan>
-<!-- 	<bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
-	<bean
-		class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" /> -->
+	<!-- <bean class="org.springframework.data.web.config.SpringDataWebConfiguration" 
+		/> <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" 
+		/> -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.qlz.entities"></property>
@@ -81,9 +88,7 @@
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheRegionFactory
 				</prop>
-			<!-- 	<prop key="hibernate.cache.use_second_level_cache">
-					true
-				</prop> -->
+				<!-- <prop key="hibernate.cache.use_second_level_cache"> true </prop> -->
 				<prop key="hibernate.cache.region.factory_class">
 					org.hibernate.cache.ehcache.EhCacheRegionFactory
 				</prop>
@@ -155,7 +160,8 @@
 		entity-manager-factory-ref="entityManagerFactory"
 		transaction-manager-ref="transactionManager" query-lookup-strategy="create-if-not-found"
 
-		factory-class="com.qlz.dao.repository.BaseRepositoryFactoryBean">
+		factory-class="com.qlz.dao.repository.BaseRepositoryFactoryBean"
+		repository-impl-postfix="Impl" base-class="com.qlz.dao.repository.BaseRepositoryImpl">
 
 	</jpa:repositories>
 	<bean
@@ -171,7 +177,8 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="update*" propagation="REQUIRED" />
-			<!-- <tx:method name="*" read-only="true" /> -->
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
 

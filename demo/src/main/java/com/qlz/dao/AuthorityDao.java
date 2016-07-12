@@ -12,7 +12,7 @@ import com.qlz.entities.Authority;
 /**
  * 
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:42:24
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:42:24
  */
 public interface AuthorityDao extends BaseRepository<Authority, Long> {
 

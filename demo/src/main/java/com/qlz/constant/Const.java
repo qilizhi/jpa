@@ -1,7 +1,7 @@
 package com.qlz.constant;
 
 /**
- * ³£Á¿Àà
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public final class Const {
 
@@ -12,20 +12,23 @@ public final class Const {
 
 	public static final String PAGE_SIZE = "10";
 
-	public static final String SUCCESS = "²Ù×÷³É¹¦";
-	public static final String FAILURE = "²Ù×÷Ê§°Ü";
-	public static final String ERROR_MESSAGE = "´íÎóÏûÏ¢";
+	public static final String SUCCESS = "æ“ä½œæˆåŠŸ";
+	public static final String FAILURE = "æ“ä½œå¤±è´¥";
+	public static final String ERROR_MESSAGE = "é”™è¯¯æ¶ˆæ¯";
 
-	public static final String UNKOWN_EXCEPTION = "·¢ÉúÎ´ÖªÒì³£";
-	public static final String GET_EXCEPTION = "²éÑ¯³öÏÖÒì³£,ÇëÖØĞÂ³¢ÊÔÒ»´Î";
-	public static final String CREATE_EXCEPTION = "´´½¨³öÏÖÒì³£,ÇëÖØĞÂ³¢ÊÔÒ»´Î";
-	public static final String UPDATE_EXCEPTION = "¸üĞÂ³öÏÖÒì³£,ÇëÖØĞÂ³¢ÊÔÒ»´Î";
-	public static final String DELETE_EXCEPTION = "É¾³ı³öÏÖÒì³£,ÇëÖØĞÂ³¢ÊÔÒ»´Î";
-	public static final String APP_EXCEPTION = "±§Ç¸,³ÌĞòÄÚ²¿³öÏÖÒâÍâÒì³£´íÎó!";
+	public static final String UNKOWN_EXCEPTION = "å‘ç”ŸæœªçŸ¥å¼‚å¸¸";
+	public static final String GET_EXCEPTION = "æŸ¥è¯¢å‡ºç°å¼‚å¸¸,è¯·é‡æ–°å°è¯•ä¸€æ¬¡";
+	public static final String CREATE_EXCEPTION = "åˆ›å»ºå‡ºç°å¼‚å¸¸,è¯·é‡æ–°å°è¯•ä¸€æ¬¡";
+	public static final String UPDATE_EXCEPTION = "æ›´æ–°å‡ºç°å¼‚å¸¸,è¯·é‡æ–°å°è¯•ä¸€æ¬¡";
+	public static final String DELETE_EXCEPTION = "åˆ é™¤å‡ºç°å¼‚å¸¸,è¯·é‡æ–°å°è¯•ä¸€æ¬¡";
+	public static final String APP_EXCEPTION = "æŠ±æ­‰,ç¨‹åºå†…éƒ¨å‡ºç°æ„å¤–å¼‚å¸¸é”™è¯¯!";
 
-	/* ²Ëµ¥Ñ¡ÖĞĞ§¹ûcssÀàÉèÖÃ */
+	/* èœå•é€‰ä¸­æ•ˆæœcssç±»è®¾ç½® */
 	public static final String MENU_FIRST = "open";
 	public static final String MENU_SUB = "active";
+
+	/* é˜¿é‡Œäº‘å›¾ç‰‡å‰ç¼€ */
+	public static final String IMAGEPREFIX = "http://mlx.oss.mlxing.com/";
 
 	/**
 	 * token
@@ -33,32 +36,35 @@ public final class Const {
 	public static final String TOKEN_PARAM = "accessToken";
 
 	/**
-	 * µÇÂ¼Ãû³Æ(cookie)
+	 * ç™»å½•åç§°(cookie)
 	 */
 	public static final String LOGIN_PARAM = "_name";
 
 	/**
-	 * API½Ó¿Ú²ÎÊıµÇÂ¼ÕÊ»§Ãû³Æ
+	 * APIæ¥å£å‚æ•°ç™»å½•å¸æˆ·åç§°
 	 */
 	public static final String API_LOGIN_NAME = "loginName";
 
 	/**
-	 * API½Ó¿Ú²ÎÊıµÇÂ¼ÕÊ»§ÃÜÂë
+	 * APIæ¥å£å‚æ•°ç™»å½•å¸æˆ·å¯†ç 
 	 */
 	public static final String API_PARAM_PASSWORD = "password";
 
-	
 	/**
-	 * hash¼ÓÃÜµü´ú´ÎÊı¡£
+	 * ç¾ä¸½è¡Œç½‘ç«™çš„APIæ¥å£è¿”å›æˆåŠŸæ ‡è¯†ç 
+	 */
+	public static final int API_RESPONSE_OK = 0;
+
+	/**
+	 * hashåŠ å¯†è¿­ä»£æ¬¡æ•°ã€‚
 	 * 
 	 */
 	public static final int HASH_INTERATIONS = 1024;
 
 	/**
-	 * ÑÎµÄ³¤¶È
+	 * ç›çš„é•¿åº¦
 	 */
 	public static final int SALT_SIZE = 8;
-	// ¹şÏ£Ëã·¨ SHA-1
+	// å“ˆå¸Œç®—æ³• SHA-1
 	public static final String HASH_ALGORITHM = "SHA-1";
-
 }

@@ -8,7 +8,7 @@ import com.qlz.entities.WxAccessToken;
 
 /**
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:46:45
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:46:45
  */
 public interface WxAccessTokenDao extends BaseRepository<WxAccessToken, Long> {
 

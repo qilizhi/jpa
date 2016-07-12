@@ -6,7 +6,7 @@ import com.qlz.entities.City;
 /**
  * 
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:42:38
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:42:38
  */
 public interface CityDao extends BaseRepository<City, Long> {
 

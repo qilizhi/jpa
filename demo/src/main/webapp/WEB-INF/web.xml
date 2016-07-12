@@ -32,6 +32,30 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- 在Java Web项目中使用Hibernate经常会遇到LazyInitializationException。这是因为controller和model层（java代码）将通过JPA的一些启用了延迟加载功能的领域（如用getRefrence()方法或者在关联关系中采用fetch=FetchType.LAZY）返回给view层（jsp代码）的时候，由于加载领域对象的JPA 
+		Session已经关闭，导致这些延迟加载的数据访问异常。 这时就可以使用OpenEntityManagerInViewFilter来将一个JPAsession与一次完整的请求过程对应的线程相绑定 -->
+	<!-- <filter>
+		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+		</filter-class>
+		<init-param>
+			<param-name>entityManagerFactoryBeanName</param-name>
+			<param-value>entityManagerFactory</param-value>
+		</init-param>
+		<init-param> <param-name>persistenceUnitName</param-name> <param-value>demo</param-value> 
+			</init-param>
+		<async-supported>true</async-supported>
+	</filter>
+	org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor
+	<filter-mapping>
+		<filter-name>
+			OpenEntityManagerInViewFilter
+		</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+ -->
+
+
 	<!-- 页面字符编码 end -->
 	<!-- 装饰器 start -->
 	<filter>
@@ -75,31 +99,6 @@
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener
 		</listener-class>
 	</listener>
-
-
-	<!-- 在Java Web项目中使用Hibernate经常会遇到LazyInitializationException。这是因为controller和model层（java代码）将通过JPA的一些启用了延迟加载功能的领域（如用getRefrence()方法或者在关联关系中采用fetch=FetchType.LAZY）返回给view层（jsp代码）的时候，由于加载领域对象的JPA 
-		Session已经关闭，导致这些延迟加载的数据访问异常。 这时就可以使用OpenEntityManagerInViewFilter来将一个JPAsession与一次完整的请求过程对应的线程相绑定 -->
-	<filter>
-		<filter-name>OpenEntityManagerInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
-		</filter-class>
-		<init-param>
-			<param-name>entityManagerFactoryBeanName</param-name>
-			<param-value>entityManagerFactory</param-value>
-		</init-param>
-		<init-param>
-			<param-name>persistenceUnitName</param-name>
-			<param-value>demo</param-value>
-		</init-param>
-		<!-- <async-supported>true</async-supported> -->
-	</filter>
-	<!-- org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor -->
-	<filter-mapping>
-		<filter-name>
-			OpenEntityManagerInViewFilter
-		</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
 
 
 	<!-- 配置 Spring MVC servlet start -->

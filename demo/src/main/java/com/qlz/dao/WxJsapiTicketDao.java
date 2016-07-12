@@ -8,7 +8,7 @@ import com.qlz.entities.WxJsapiTicket;
 
 /**
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:50:46
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:50:46
  */
 public interface WxJsapiTicketDao extends BaseRepository<WxJsapiTicket, Long> {
 

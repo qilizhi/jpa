@@ -17,8 +17,9 @@ import com.qlz.model.State;
 import com.qlz.model.Tree;
 
 /**
+ * 
  * @author qilizhi
- * @date 2016��7��4�� ����5:13:44
+ * @date 2016年7月12日 下午6:15:39
  */
 @Service
 @Transactional
@@ -28,9 +29,16 @@ public class RoleService {
 	private RoleDao roleDao;
 
 	public List<Role> findAll() {
-
 		return roleDao.findAll();
-
+	}
+	public Role saveOrUpdate(Role r){
+		return roleDao.merge(r);
+		
+	}
+	
+	public Role findOne(Long id){
+		return roleDao.findOne(id);
+		
 	}
 
 	/**
@@ -122,7 +130,7 @@ public class RoleService {
 	 * @param role
 	 */
 	public void updateByPrimaryKeySelective(Role role) {
-		roleDao.saveAndFlush(role);
+		roleDao.save(role);
 
 	}
 

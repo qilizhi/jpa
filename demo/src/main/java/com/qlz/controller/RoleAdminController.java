@@ -24,7 +24,7 @@ import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 import com.qlz.util.StringUtil;
 
 /**
- * ��ɫController
+ * 角色
  * 
  * @author QiQi-04-PC
  *
@@ -43,7 +43,7 @@ public class RoleAdminController {
 	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 
 	/**
-	 * ��ȡ�����Ĳ���ֵ������,��ݽ������õĲ���ֵ��ѡ��ҳ��˵�ѡ��Ч��
+	 * 公共菜单的显示
 	 * 
 	 * @param menuBar
 	 * @param model
@@ -55,7 +55,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ����
+	 * 创建role
 	 * 
 	 * @param authority
 	 * @return
@@ -64,8 +64,10 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult insert(Role role) {
 		try {
-			roleService.insertSelective(role);
-			chainDefinitionSectionMetaSource.reLoad();
+			Role pRole=roleService.findOne(role.getParent().getId());
+			role.setParent(pRole);
+			role=roleService.saveOrUpdate(role);
+			//chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL, role);
@@ -74,8 +76,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ɾ��
-	 * 
+	 *  
 	 * @param id
 	 * @return
 	 */
@@ -84,7 +85,7 @@ public class RoleAdminController {
 	public JsonResult delete(Long id) {
 
 		if (id == null) {
-			return new JsonResult(ExceptionCode.FAIL, "Id����Ϊ�գ�");
+			return new JsonResult(ExceptionCode.FAIL,Const.FAILURE);
 		}
 		try {
 			roleService.deleteByPrimaryKey(id);
@@ -97,7 +98,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ����
+	 * 
 	 * 
 	 * @param auth
 	 * @return
@@ -106,11 +107,11 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult update(Role role) {
 		if (role.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "idΪ�գ�");
+			return new JsonResult(ExceptionCode.FAIL,Const.FAILURE);
 		}
 		try {
-			roleService.updateByPrimaryKeySelective(role);
-			chainDefinitionSectionMetaSource.reLoad();
+			roleService.saveOrUpdate(role);
+			//chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,7 +132,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ���roleID ����Ȩ���� ,���������checked
+	 * 
 	 * 
 	 * @return
 	 */

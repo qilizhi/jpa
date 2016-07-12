@@ -47,17 +47,19 @@ var UITree = function() {
 	}
 
 	var rename = function(url) {
-
+         
+	
 		$('#tree_3').on(
 				'rename_node.jstree',
 				function(e, data) {
+					console.log("rename");
 					$.ajax({
 						url : url,
 						type : 'post',
 						dataType:"json",
 						data : {
 							"id" : data.node.id,
-							"text" : data.text
+							"name" : data.text
 						},
 						success : function(result) {
 							// 更新成功
@@ -128,13 +130,13 @@ var UITree = function() {
 		$('#tree_3').on(
 				'create_node.jstree',
 				function(e, data) {
-
+					console.log("create");
 					$.ajax({
 						url : url,
 						type : 'post',
 						dataType:"json",
 						data : {
-							"parentId" : data.parent,
+							"parent.id" : data.parent,
 							"name" : data.node.text
 						},
 						success : function(result) {
@@ -142,6 +144,8 @@ var UITree = function() {
 							// 创建成功
 							if (result.code == "200") {
 								comm.showMsg('success', '消息提示', '创建成功！');
+								console.log("resetID");
+								console.log(result);
 								$.jstree.reference('#tree_3').set_id(data.node,
 										result.result.id);
 							} else {
@@ -193,7 +197,9 @@ var UITree = function() {
 
 	var move = function(url) {
 
+		console.log("move");
 		$('#tree_3').on('move_node.jstree', function(e, data) {
+			console.log("move");
 			if (data.parent != data.old_parent) {
 				$.ajax({
 					url : url,
@@ -208,10 +214,9 @@ var UITree = function() {
 						if (result.code == "200") {
 							comm.showMsg('success', '消息提示', '移动成功！');
 
-							/*
-							 * $.jstree.reference('#tree_3')
-							 * .set_id(data.node,result.result.id);
-							 */
+							 $.jstree.reference('#tree_3')
+							 .set_id(data.node,result.result.id);
+							
 						} else {
 							comm.showMsg('error', '消息提示', '移动失败！');
 							$.jstree.reference('#tree_3').refresh();

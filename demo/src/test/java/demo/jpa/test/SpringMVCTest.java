@@ -13,6 +13,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.dialect.RDMSOS2200Dialect;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -43,12 +44,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.qlz.dao.CustomerDao;
 import com.qlz.dao.ResourceDao;
+import com.qlz.dao.RoleDao;
 import com.qlz.dao.UserDao;
 import com.qlz.entities.Authority;
 import com.qlz.entities.Customer;
 import com.qlz.entities.Role;
 import com.qlz.entities.User;
 import com.qlz.service.CustomerService;
+import com.qlz.service.RoleService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration(value = "src/main/webapp,src/main/resources")
@@ -56,7 +59,7 @@ import com.qlz.service.CustomerService;
 		@ContextConfiguration(locations = { "classpath:spring-mvc.xml", "classpath:applicationContext.xml" }) })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 /** 声明事务回滚，要不测试一个方法数据就没有了岂不很杯具，注意：插入数据时可注掉，不让事务回滚 **/
-@Transactional(transactionManager="transactionManager")
+/* @Transactional(transactionManager = "transactionManager") */
 public class SpringMVCTest {
 
 	Logger logger = LoggerFactory.getLogger(SpringMVCTest.class);
@@ -72,6 +75,8 @@ public class SpringMVCTest {
 	private ResourceDao resourceDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private RoleDao roleDao;
 
 	@Autowired
 	private CustomerService customerService;
@@ -300,15 +305,32 @@ public class SpringMVCTest {
 	}
 
 	@Test
-	public void testmanyTomany(){
+	public void testmanyTomany() {
 
-		resourceDao.getResourceByRoleId((long)1);
+		resourceDao.getResourceByRoleId((long) 1);
 	}
+
 	@Test
-	//@Rollback(value = true)
-    public void testManaytomany2(){
-		
-		
+	public void testManaytone() {
+		Role r1 = new Role();
+		Role r2 = new Role();
+		r1.setId((long)2);
+		//r1.setDescription("asdf");
+		r2.setName("adminr2");
+		r2.setDescription("ppp");
+		//roleDao.save(r1);
+		Role pr = roleDao.findOne((long) 2);
+         r2.setParent(pr);
+		//pr.getChildren().add(r1);
+		try {
+			roleDao.merge(r2);
+			//roleDao.saveAndFlush(r1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// / roleDao.saveAndFlush(r1);
+
 	}
 
 }

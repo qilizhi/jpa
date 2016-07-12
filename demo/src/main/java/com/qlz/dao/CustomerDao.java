@@ -20,15 +20,15 @@ import com.qlz.entities.Customer;
  * @author QiQi-04-PC
  *
  *
- *         1. Repository йгр╩╦Ж©у╫с©з. ╪╢йгр╩╦Ж╠Й╪г╫с©з 2. хТнрцг╤╗рЕ╣д╫с©з╪лЁпак Repository, тР╦ц╫с©з╩А╠╩ IOC
- *         хщфВй╤╠Пн╙р╩╦Ж Repository Bean. дихК╣╫ IOC хщфВжп. ╫Ь╤Ь©ирттз╦ц╫с©зжп╤╗рЕбЗвЦр╩╤╗╧Ф╥╤╣д╥╫╥╗.
+ *         1. Repository О©╫О©╫р╩О©╫О©╫О©╫у╫с©О©╫. О©╫О©╫О©╫О©╫р╩О©╫О©╫О©╫О©╫г╫с©О©╫ 2. О©╫О©╫О©╫О©╫О©╫г╤О©╫О©╫О©╫д╫с©з╪лЁО©╫О©╫О©╫ Repository, О©╫О©╫ц╫с©з╩А╠╩ IOC
+ *         О©╫О©╫О©╫О©╫й╤О©╫О©╫н╙р╩О©╫О©╫ Repository Bean. О©╫О©╫О©╫К╣╫ IOC О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫О©╫О©╫О©╫О©╫О©╫з╦ц╫с©О©╫О©╫п╤О©╫О©╫О©╫О©╫О©╫О©╫О©╫р╩О©╫О©╫О©╫Ф╥╤О©╫д╥О©╫О©╫О©╫.
  * 
- *         3. й╣╪йио, р╡©иртм╗╧Щ @RepositoryDefinition в╒╫Бю╢лФ╢З╪лЁп Repository ╫с©з
+ *         3. й╣О©╫О©╫О©╫О©╫, р╡О©╫О©╫О©╫О©╫м╗О©╫О©╫ @RepositoryDefinition в╒О©╫О©╫О©╫О©╫О©╫О©╫О©╫лЁО©╫ Repository О©╫с©О©╫
  *
  * 
- *         тз Repository вс╫с©зжпиЫцВ╥╫╥╗ 1. ╡╩йгкФ╠ЦиЫцВ╣д. ╤ЬпХр╙╥Ш╨ор╩╤╗╣д╧Ф╥╤ 2. ╡Ия╞╥╫╥╗рт find | read |
- *         get ©╙м╥ 3. иФ╪╟лУ╪Ч╡Ия╞й╠ё╛лУ╪Ч╣дйТптсцлУ╪Ч╧ь╪Эвжа╛╫с 4. р╙в╒рБ╣дйгё╨лУ╪ЧйТптртйввжд╦╢Сп╢║ё 5. ж╖ЁжйТпт╣д╪╤а╙╡Ия╞.
- *         хТ╣╠г╟юЮсп╥Ш╨олУ╪Ч╣дйТпт, тРсеохй╧сц, ╤Ь╡╩й╧сц╪╤а╙йТпт. хТпХр╙й╧сц╪╤а╙йТпт, тРйТптж╝╪Дй╧сц _ ╫Ьппа╛╫с.
+ *         О©╫О©╫ Repository О©╫с╫с©О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ 1. О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫О©╫О©╫р╙О©╫О©╫О©╫р╩О©╫О©╫О©╫д╧Ф╥╤ 2. О©╫О©╫я╞О©╫О©╫О©╫О©╫О©╫О©╫ find | read |
+ *         get О©╫О©╫м╥ 3. О©╫Ф╪╟О©╫О©╫О©╫О©╫О©╫О©╫я╞й╠О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ь╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫ 4. р╙в╒О©╫О©╫О©╫О©╫гёО©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╦О©╫О©╫п╢О©╫О©╫ 5. ж╖О©╫О©╫О©╫О©╫О©╫т╣д╪О©╫О©╫О©╫О©╫О©╫я╞.
+ *         О©╫О©╫О©╫О©╫г╟О©╫О©╫О©╫п╥О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫й╧О©╫О©╫, О©╫О©╫й╧О©╫ц╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫О©╫О©╫р╙й╧О©╫ц╪О©╫О©╫О©╫О©╫О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫ж╝О©╫О©╫й╧О©╫О©╫ _ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫.
  *
  */
 
@@ -37,13 +37,13 @@ public interface CustomerDao extends BaseRepository<Customer, Integer> {
 
 	public Page<Customer> findByLastName(String lastName, Pageable page);
 
-	/* вт╤╗╨╞йЩ */
+	/* О©╫т╤О©╫О©╫О©╫О©╫О©╫ */
 	@Query("select c from Customer c where c.email=?1")
-	/* й╧сц╡нйЩцШ║ё */
+	/* й╧О©╫ц╡О©╫О©╫О©╫О©╫О©╫ */
 	public List<Customer> getListByEmail(String email);
 
 	 @Query("select c from Customer c where c.email=?1")
-	/* й╧сц╡нйЩцШ║ё */
+	/* й╧О©╫ц╡О©╫О©╫О©╫О©╫О©╫ */
 	//@Query(name = "select r from Resource r where r.id=?1")
 	public List<Customer> getListByEa(String email);
 
@@ -55,29 +55,29 @@ public interface CustomerDao extends BaseRepository<Customer, Integer> {
 	// WHERE lastName LIKE %? AND id < ?
 	List<Customer> getByLastNameEndingWithAndIdLessThan(String lastName, Integer id);
 
-	// SpringData тйпМтзу╪н╩╥ШиолМ╪с %%.
+	// SpringData О©╫О©╫О©╫О©╫О©╫О©╫у╪н╩О©╫О©╫О©╫О©╫О©╫О©╫О©╫ %%.
 	@Query("select c from Customer c where c.email=:email or c.lastName like %:lastName%")
 	public List<Customer> getListByEmailAndLastName(@Param("email") String email, @Param("lastName") String lastName);
 
-	// ╣Всц╠╬╣ьсО╬Д ж╠╫с╡ывВ╠М║ё
+	// О©╫О©╫О©╫ц╠О©╫О©╫О©╫О©╫О©╫О©╫ ж╠О©╫с╡О©╫О©╫О©╫О©╫?
 	@Query(value = "SELECT count(id) FROM jpa_customer", nativeQuery = true)
 	long getTotalCount();
 
 	public Customer findOneByEmail(String email);
 
-	// пч╦дйЩ╬щ ╪с modifying
-	// ©иртм╗╧Щвт╤╗рЕ╣д JPQL мЙЁи UPDATE ╨м DELETE ╡ывВ. в╒рБ: JPQL ╡╩ж╖Ёжй╧сц INSERT
-	// тз @Query в╒╫Бжп╠Юп╢ JPQL сО╬Д, ╣╚╠ьпКй╧сц @Modifying ╫Ьпппчйн. ртм╗ж╙ SpringData, уБйгр╩╦Ж
-	// UPDATE ╩Р DELETE ╡ывВ
-	// UPDATE ╩Р DELETE ╡ывВпХр╙й╧сцйбнЯ, ╢кй╠пХр╙╤╗рЕ Service ╡Ц. тз Service ╡Ц╣д╥╫╥╗иолМ╪сйбнЯ╡ывВ.
-	// д╛хогИ©Жоб, SpringData ╣дц©╦Ж╥╫╥╗иоспйбнЯ, ╣╚╤╪йгр╩╦Жж╩╤айбнЯ. кШцг╡╩дэмЙЁипч╦д╡ывВ!
+	// О©╫ч╦О©╫О©╫О©╫О©╫ О©╫О©╫ modifying
+	// О©╫О©╫О©╫О©╫м╗О©╫О©╫О©╫т╤О©╫О©╫О©╫О©╫ JPQL О©╫О©╫О©╫ UPDATE О©╫О©╫ DELETE О©╫О©╫О©╫О©╫. в╒О©╫О©╫: JPQL О©╫О©╫ж╖О©╫О©╫й╧О©╫О©╫ INSERT
+	// О©╫О©╫ @Query в╒О©╫О©╫О©╫п╠О©╫п╢ JPQL О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫й╧О©╫О©╫ @Modifying О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫м╗ж╙ SpringData, О©╫О©╫О©╫О©╫р╩О©╫О©╫
+	// UPDATE О©╫О©╫ DELETE О©╫О©╫О©╫О©╫
+	// UPDATE О©╫О©╫ DELETE О©╫О©╫О©╫О©╫О©╫О©╫р╙й╧О©╫О©╫О©╫О©╫О©╫О©╫, О©╫О©╫й╠О©╫О©╫р╙О©╫О©╫О©╫О©╫ Service О©╫О©╫. О©╫О©╫ Service О©╫О©╫д╥О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫.
+	// д╛О©╫О©╫О©╫О©╫О©╫О©╫О©╫, SpringData О©╫О©╫ц©О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫р╩О©╫О©╫ж╩О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫О©╫г╡О©╫О©╫О©╫О©╫О©╫О©╫О©╫ч╦д╡О©╫О©╫О©╫!
 	@Modifying
 	@Query(value = "update Customer c set c.lastName=:lastName where c.id=:id")
 	public int updateByLastNameById(@Param("id") Integer id, @Param("lastName") String lastName);
 
-	// spring-data-jpaд╛хо╪лЁпй╣ож╣др╩п╘╥╫╥╗ё╛й╣ожюЮн╙
-	// SimpleJpaRepository║ё
-	// ╦цюЮжп╣д╥╫╥╗╡╩дэм╗╧Щ@QueryHintю╢й╣ож╡Ия╞╩╨╢Ф║ё
+	// spring-data-jpaд╛О©╫о╪лЁО©╫й╣О©╫ж╣О©╫р╩п╘О©╫О©╫О©╫О©╫О©╫О©╫й╣О©╫О©╫О©╫О©╫н╙
+	// SimpleJpaRepositoryО©╫О©╫
+	// О©╫О©╫О©╫О©╫О©╫п╣д╥О©╫О©╫О©╫О©╫О©╫О©╫О©╫м╗О©╫О©╫@QueryHintО©╫О©╫й╣О©╫ж╡О©╫я╞О©╫О©╫О©╫Ф║ё
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<Customer> findAll();
 

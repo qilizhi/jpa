@@ -8,7 +8,7 @@ import com.qlz.entities.WxEventPushArticle;
 
 /**
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:49:45
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:49:45
  */
 public interface WxEventPushArticleDao extends BaseRepository<WxEventPushArticle,Long> {
 

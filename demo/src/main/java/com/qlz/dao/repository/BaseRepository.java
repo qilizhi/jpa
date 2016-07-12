@@ -9,12 +9,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 /**
  * 
  * @author qilizhi
- * @date 2016Äê7ÔÂ4ÈÕ ÏÂÎç4:42:34
+ * @date 2016å¹´7æœˆ12æ—¥ ä¸‹åˆ4:16:50
  * @param <T>
  * @param <ID>
  */
 @NoRepositoryBean
 public interface BaseRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
-	//public int saveOrUpdate(T entity);
+	<S extends T> S merge(S entity);
 
 }

@@ -6,7 +6,7 @@ import com.qlz.entities.District;
 /**
  * 
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:42:44
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:42:44
  */
 public interface DistrictDao extends BaseRepository<District, Long> {
 

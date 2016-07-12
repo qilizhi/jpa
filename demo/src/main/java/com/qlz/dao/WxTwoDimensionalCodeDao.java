@@ -8,7 +8,7 @@ import com.qlz.entities.WxTwoDimensionalCode;
 
 /**
  * @author qilizhi
- * @date 2016дЙ7тб4ху обнГ4:52:23
+ * @date 2016О©╫О©╫7О©╫О©╫4О©╫О©╫ О©╫О©╫О©╫О©╫4:52:23
  */
 public interface WxTwoDimensionalCodeDao extends BaseRepository<WxTwoDimensionalCode, Long> {
 
