@@ -32,8 +32,7 @@ public class RoleService {
 		return roleDao.findAll();
 	}
 	public Role saveOrUpdate(Role r){
-		return roleDao.merge(r);
-		
+		return roleDao.saveOrUpdate(r);		
 	}
 	
 	public Role findOne(Long id){
