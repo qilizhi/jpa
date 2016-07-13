@@ -332,5 +332,20 @@ public class SpringMVCTest {
 		// / roleDao.saveAndFlush(r1);
 
 	}
+	@Test
+	public void testdynamicUpdate(){
+		Role r = new Role();
+		//r.setName("sadf");
+		//r=roleDao.save(r);
+		r.setId((long)25);
+		//r.setName("name11");
+		r.setDescription("ddfff");
+		try {
+			roleDao.saveOrUpdate(r);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 	}
 
 }

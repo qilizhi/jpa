@@ -16,5 +16,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface BaseRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 	<S extends T> S merge(S entity);
+	<S extends T> S saveOrUpdate(S entity);
 
 }
