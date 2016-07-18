@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.qlz.constant.Const;
 import com.qlz.constant.ExceptionCode;
 import com.qlz.entities.Role;
-import com.qlz.entities.RoleToAuthority;
 import com.qlz.model.JsonResult;
 import com.qlz.model.Tree;
 import com.qlz.service.AuthorityService;
@@ -64,8 +63,8 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult insert(Role role) {
 		try {
-			Role pRole=roleService.findOne(role.getParent().getId());
-			role.setParent(pRole);
+			//Role pRole=roleService.findOne(role.getParent().getId());
+			//role.setParent(pRole);
 			role=roleService.saveOrUpdate(role);
 			//chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
@@ -142,7 +141,7 @@ public class RoleAdminController {
 
 		List<Tree> authorityTree;
 		List<Tree> AT;
-		List<RoleToAuthority> rts;
+		//List<RoleToAuthority> rts;
 		try {
 			authorityTree = authorityService.getAllTree();
 			AT = new ArrayList<Tree>();

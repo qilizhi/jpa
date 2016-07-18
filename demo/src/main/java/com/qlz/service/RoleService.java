@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.qlz.dao.RoleDao;
 import com.qlz.entities.Role;
-import com.qlz.entities.UserToRole;
+import com.qlz.entities.User;
 import com.qlz.model.State;
 import com.qlz.model.Tree;
 
@@ -88,22 +88,21 @@ public class RoleService {
 	 * 
 	 */
 
-	public List<Tree> tagTree(List<UserToRole> userToRoles, List<Tree> roleTrees) {
+	public List<Tree> tagTree(User user, List<Tree> roleTrees) {
 		List<Tree> ATs = new ArrayList<Tree>();
 		for (Tree at : roleTrees) {
 			if (at != null) {
-				for (UserToRole RT : userToRoles) {
-					if (RT != null && RT.getRoleId() != null && at.getId() != null && RT.getRoleId() == at.getId()) {
+				for (Role RT : user.getRoles()) {
+					if (RT != null && RT.getId() != null && at.getId() != null && RT.getId() == at.getId()) {
 						State st = new State();
 						st.setChecked(true);
 						at.setState(st);
-						;
-						userToRoles.remove(at);
+						user.getRoles().remove(at);
 					}
 				}
 			}
 			if (at.getChildren() != null && at.getChildren().size() > 0) {
-				at.setChildren(tagTree(userToRoles, at.getChildren()));
+				at.setChildren(tagTree(user, at.getChildren()));
 			}
 			ATs.add(at);
 		}

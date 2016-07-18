@@ -9,27 +9,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qlz.constant.Const;
 import com.qlz.constant.ExceptionCode;
-import com.qlz.entities.AuthorityToResource;
 import com.qlz.entities.Resource;
 import com.qlz.model.JsonResult;
 import com.qlz.service.ResourceService;
@@ -107,7 +100,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * Ȩ������Դ��
+	 * 加载资源
 	 * 
 	 * @param request
 	 * @param model
@@ -117,11 +110,10 @@ public class ResourceAdminController {
 	 */
 	@RequestMapping("/all")
 	@ResponseBody
-	public JsonResult list(HttpServletRequest request, Model model, Resource resource,
-			AuthorityToResource authorityToResource) {
+	public JsonResult list(HttpServletRequest request, Model model, Resource resource) {
 
 		List<Resource> list = new ArrayList<>();
-		List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
+		//List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
 		try {
 			list = resourceService.getResourceList(resource);
 			// atrlist =
@@ -131,7 +123,7 @@ public class ResourceAdminController {
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 		// resource�Ƿ���ѡ������
-		for (AuthorityToResource at : atrlist) {
+		/*for (AuthorityToResource at : atrlist) {
 			for (Resource r : list) {
 				if (r.getId() != null && at.getResourceId() != null && r.getId() == at.getResourceId()) {
 					r.setFlag(1);
@@ -140,7 +132,7 @@ public class ResourceAdminController {
 
 			}
 
-		}
+		}*/
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL, list);
 

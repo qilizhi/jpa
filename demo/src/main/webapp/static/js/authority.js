@@ -86,7 +86,7 @@ var UITree = function() {
 						type : 'post',
 						dataType:"json",
 						data : {
-							"parentId" : data.parent,
+							"parent.id" : data.parent,
 							"name" : data.node.text
 						},
 						success : function(result) {

@@ -28,7 +28,7 @@ import com.qlz.util.StringUtil;
 
 /**
  * 
- * Ȩ��controller
+ * 权限controller
  * 
  * @author QiQi-04-PC
  *
@@ -60,10 +60,10 @@ public class AuthorityAdminController {
 
 
 	/**
-	 * �б�
+	 *列表
 	 * 
 	 * @param name
-	 *            ��ѯ����
+	 *            
 	 * @param model
 	 * @return
 	 */
@@ -80,7 +80,7 @@ public class AuthorityAdminController {
 		return "/admin/authority/list";
 	}
 	
-	/** ����
+	/** 创建
 	 * 
 	 * @param authority
 	 * @return
@@ -98,7 +98,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * ɾ��
+	 * 删除
 	 * 
 	 * @param id
 	 * @return
@@ -130,7 +130,7 @@ public class AuthorityAdminController {
 	@ResponseBody
 	public JsonResult update(Authority auth) {
 		if (auth.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "idΪ�գ�");
+			return new JsonResult(ExceptionCode.FAIL, Const.FAILURE);
 		}
 		try {
 			authorityService.updateByPrimaryKeySelective(auth);
@@ -190,7 +190,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * Ȩ�����ṹ
+	 * 加载权限树
 	 * 
 	 * @return
 	 */

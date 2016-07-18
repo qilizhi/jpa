@@ -263,7 +263,7 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>1.0.9</version>
-			<exclusions>
+			<!-- <exclusions>
 				<exclusion>
 					<groupId>com.alibaba</groupId>
 					<artifactId>jconsole</artifactId>
@@ -274,7 +274,7 @@
 					<artifactId>tools</artifactId>
 					<version>1.8.0</version>
 				</exclusion>
-			</exclusions>
+			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

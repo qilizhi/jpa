@@ -16,13 +16,13 @@ import com.qlz.dao.AuthorityDao;
 import com.qlz.dao.ResourceDao;
 import com.qlz.entities.Authority;
 import com.qlz.entities.Resource;
-import com.qlz.entities.RoleToAuthority;
+import com.qlz.entities.Role;
 import com.qlz.model.State;
 import com.qlz.model.Tree;
 
 /**
  * @author qilizhi
- * @date 2016��7��4�� ����10:53:39
+ * 
  */
 @Service
 @Transactional
@@ -46,11 +46,13 @@ public class AuthorityService {
 			if (aut != null && aut.getId() != null) {
 				AT.setId(aut.getId());
 				AT.setText(aut.getName());
-				AT.setParentId(aut.getParent().getId());
-				List<Authority> authoritys = authorityDao.findByParentId(aut.getId());
-				if (authoritys != null && authoritys.size() > 0) {
+				AT.setParentId(aut.getParent()==null?null:aut.getParent().getId());
+				
+				List<Authority> authoritys =  aut.getChildren();
+				if (!authoritys.isEmpty()) {
 					AT.setChildren(getTree(authoritys));
 				}
+				
 				auTrees.add(AT);
 			}
 
@@ -60,7 +62,7 @@ public class AuthorityService {
 	}
 
 	/**
-	 * ��ȡ�������ṹ
+	 * 获取所有的根限树
 	 * 
 	 */
 
@@ -81,15 +83,15 @@ public class AuthorityService {
 	 * 
 	 */
 
-	public List<Tree> tagTree(List<RoleToAuthority> roleToAuthoritys, List<Tree> authorityTrees) {
+	public List<Tree> tagTree(Role role, List<Tree> authorityTrees) {
 		List<Tree> ATs = new ArrayList<Tree>();
 		for (Tree at : authorityTrees) {
 			if (at != null) {
 				State st = new State();
 				st.setOpened(true);
-				for (RoleToAuthority RT : roleToAuthoritys) {
-					if (RT != null && RT.getAuthorityId() != null && at.getId() != null
-							&& RT.getAuthorityId() == at.getId()) {
+				for (Authority RT : role.getAuthorities()) {
+					if (RT != null && RT.getId() != null && at.getId() != null
+							&& RT.getId() == at.getId()) {
 						/* st.setSelected(true); */
 						if (at.getChildren() != null && at.getChildren().size() > 0) {
 							st.setChecked(false);
@@ -97,13 +99,13 @@ public class AuthorityService {
 							st.setChecked(true);
 						}
 
-						roleToAuthoritys.remove(at);
+						role.getAuthorities().remove(at);
 					}
 				}
 				at.setState(st);
 			}
 			if (at.getChildren() != null && at.getChildren().size() > 0) {
-				at.setChildren(tagTree(roleToAuthoritys, at.getChildren()));
+				at.setChildren(tagTree(role, at.getChildren()));
 			}
 			ATs.add(at);
 		}
@@ -115,14 +117,14 @@ public class AuthorityService {
 	 * @param authority
 	 */
 	public void insertSelective(Authority authority) {
-		authorityDao.saveAndFlush(authority);
+		authorityDao.saveOrUpdate(authority);
 	}
 
 	/**
 	 * @param auth
 	 */
 	public void updateByPrimaryKeySelective(Authority auth) {
-		authorityDao.saveAndFlush(auth);
+		authorityDao.saveOrUpdate(auth);
 
 	}
 
