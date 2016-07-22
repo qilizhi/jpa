@@ -88,7 +88,7 @@ public class RoleAdminController {
 		}
 		try {
 			roleService.deleteByPrimaryKey(id);
-			chainDefinitionSectionMetaSource.reLoad();
+			//chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
@@ -174,7 +174,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ����û���ɫID��Ȩ��ID������Ȩ
+	 * 给角色插入授权关系
 	 * 
 	 * @param roleId
 	 * @param authorityIds
@@ -199,7 +199,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ����û���ɫId��Ȩ��ID ɾ��
+	 * 删除授权by roleId and authorityId
 	 * 
 	 * @param roleId
 	 * @param authorityIds

@@ -74,7 +74,7 @@ public class Role implements Serializable {
 		this.description = description;
 	}
 
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "role_authority", joinColumns = {
 			@JoinColumn(name = "role_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authority_id", referencedColumnName = "id") })
@@ -87,7 +87,7 @@ public class Role implements Serializable {
 		this.authorities = authorities;
 	}
 
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "roles")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roles")
 	public Set<User> getUsers() {
 		return users;
 	}
@@ -96,7 +96,7 @@ public class Role implements Serializable {
 		this.users = users;
 	}
 
-	@ManyToOne(cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	@ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
 	@JoinColumn(name="parent_id")
 	@JsonBackReference
 	public Role getParent() {
@@ -107,7 +107,7 @@ public class Role implements Serializable {
 		this.parent = parent;
 	}
 
-	@OneToMany(cascade=CascadeType.PERSIST,mappedBy="parent",fetch=FetchType.EAGER)
+	@OneToMany(cascade={CascadeType.REMOVE},mappedBy="parent",fetch=FetchType.EAGER)
 	public List<Role> getChildren() {
 		return children;
 	}
