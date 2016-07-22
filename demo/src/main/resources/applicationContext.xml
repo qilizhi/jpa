@@ -67,7 +67,7 @@
 				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop> -->
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
 				<!-- 关联查询时fetch 的深度 -->
-				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.max_fetch_depth">2</prop>
 				<!-- 关联查询时fetch 的大小 -->
 				<prop key="hibernate.jdbc.fetch_size">18</prop>
 				<!-- 批最操作的大小 -->
@@ -100,7 +100,7 @@
 
 				<!-- <prop key="hibernate.cache.use_query_cache">true</prop> -->
 				<!-- <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop> -->
-				<prop key="hibernate.cache.provider_configuration_file_resource_path">/ehcache.xml</prop>
+				<!-- <prop key="hibernate.cache.provider_configuration_file_resource_path">/ehcache.xml</prop> -->
 			</props>
 		</property>
 		<!-- <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"></property> -->

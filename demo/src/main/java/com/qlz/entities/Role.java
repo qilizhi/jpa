@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +23,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table
@@ -42,6 +46,7 @@ public class Role implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable=false,unique=true)
 	public Long getId() {
 		return id;
 	}
@@ -91,8 +96,9 @@ public class Role implements Serializable {
 		this.users = users;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
 	@JoinColumn(name="parent_id")
+	@JsonBackReference
 	public Role getParent() {
 		return parent;
 	}
@@ -101,7 +107,7 @@ public class Role implements Serializable {
 		this.parent = parent;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.PERSIST,mappedBy="parent",fetch=FetchType.EAGER)
 	public List<Role> getChildren() {
 		return children;
 	}

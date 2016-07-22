@@ -31,13 +31,19 @@ public class RoleService {
 	public List<Role> findAll() {
 		return roleDao.findAll();
 	}
-	public Role saveOrUpdate(Role r){
-		return roleDao.saveOrUpdate(r);		
+
+	public Role saveOrUpdate(Role r) {
+	/*	if (r.getParent() != null && r.getParent().getId() != null) {
+			Role rp=roleDao.getOne(r.getParent().getId());
+			if(rp!=null)
+			r.setParent(rp);
+		}*/
+		return roleDao.saveOrUpdate(r);
 	}
-	
-	public Role findOne(Long id){
+
+	public Role findOne(Long id) {
 		return roleDao.findOne(id);
-		
+
 	}
 
 	/**
@@ -52,9 +58,10 @@ public class RoleService {
 			if (role != null && role.getId() != null) {
 				AT.setId(role.getId());
 				AT.setText(role.getName());
-				AT.setParentId(role.getParent()==null?null:role.getParent().getId());
-				// 
-				List<Role> roles =  role.getChildren();
+				AT.setParentId(role.getParent() == null ? null : role
+						.getParent().getId());
+				//
+				List<Role> roles = role.getChildren();
 				if (!roles.isEmpty()) {
 					AT.setChildren(getTree(roles));
 				}
@@ -93,7 +100,8 @@ public class RoleService {
 		for (Tree at : roleTrees) {
 			if (at != null) {
 				for (Role RT : user.getRoles()) {
-					if (RT != null && RT.getId() != null && at.getId() != null && RT.getId() == at.getId()) {
+					if (RT != null && RT.getId() != null && at.getId() != null
+							&& RT.getId() == at.getId()) {
 						State st = new State();
 						st.setChecked(true);
 						at.setState(st);

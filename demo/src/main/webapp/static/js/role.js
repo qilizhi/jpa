@@ -16,7 +16,7 @@ var UITree = function() {
 		$.ajax({
 			url : url,
 			type : 'get',
-			dataType:"json",
+			dataType : "json",
 			success : function(result) {
 				var roleData = result.result;
 				$("#tree_3").jstree({
@@ -47,8 +47,7 @@ var UITree = function() {
 	}
 
 	var rename = function(url) {
-         
-	
+
 		$('#tree_3').on(
 				'rename_node.jstree',
 				function(e, data) {
@@ -56,7 +55,7 @@ var UITree = function() {
 					$.ajax({
 						url : url,
 						type : 'post',
-						dataType:"json",
+						dataType : "json",
 						data : {
 							"id" : data.node.id,
 							"name" : data.text
@@ -80,25 +79,25 @@ var UITree = function() {
 				})
 	}
 
-	//新增根Role
-	var add=function(){
+	// 新增根Role
+	var add = function() {
 		var submitData = $("#addRoleResponsive form").serialize();
 		$("#ajax").show();
 		$.ajax({
 			url : mlx.ctx + "/admin/role/create",
 			type : 'post',
-			dataType:"json",
+			dataType : "json",
 			data : submitData,
 			success : function(result) {
-				
+
 				if (result.code == "200") {
 					$("#addRoleResponsive").modal('hide');
 					$("div.modal-backdrop").remove();
-					//重设表单 
+					// 重设表单
 					$("#addRoleResponsive #modalForm").each(function() {
 						this.reset();
 					});
-					location.reload();
+					window.location.reload();
 
 				} else {
 					$("#message").html("创建失败！");
@@ -113,15 +112,15 @@ var UITree = function() {
 			}
 		});
 	}
-	
-	var addRoleShow=function() {
+
+	var addRoleShow = function() {
 
 		$("#addRoleResponsive #modalForm").each(function() {
 			this.reset();
 		});
 		$("#addRoleResponsive").modal('show');
 		$("#addRoleResponsive #ajax").hide();
-		//去除绑定update事件
+		// 去除绑定update事件
 		$("#addRoleResponsive #modalForm button[type='submit']").unbind();
 		$("#addRoleResponsive #modalForm button[type='submit']").click(add);
 	}
@@ -134,7 +133,7 @@ var UITree = function() {
 					$.ajax({
 						url : url,
 						type : 'post',
-						dataType:"json",
+						dataType : "json",
 						data : {
 							"parent.id" : data.parent,
 							"name" : data.node.text
@@ -144,8 +143,8 @@ var UITree = function() {
 							// 创建成功
 							if (result.code == "200") {
 								comm.showMsg('success', '消息提示', '创建成功！');
-								console.log("resetID");
-								console.log(result);
+								// console.log("resetID");
+								 console.log(result);
 								$.jstree.reference('#tree_3').set_id(data.node,
 										result.result.id);
 							} else {
@@ -154,6 +153,10 @@ var UITree = function() {
 
 							}
 
+						},
+						error:function(e){
+							
+							alert("服务器内部出错创建出错了")
 						}
 
 					});
@@ -168,7 +171,7 @@ var UITree = function() {
 					$.ajax({
 						url : url,
 						type : 'post',
-						dataType:"json",
+						dataType : "json",
 						data : {
 							"id" : data.node.id,
 							"name" : data.node.text
@@ -197,38 +200,40 @@ var UITree = function() {
 
 	var move = function(url) {
 
-		console.log("move");
-		$('#tree_3').on('move_node.jstree', function(e, data) {
-			console.log("move");
-			if (data.parent != data.old_parent) {
-				$.ajax({
-					url : url,
-					type : 'post',
-					dataType:"json",
-					data : {
-						"parentId" : data.parent,
-						"id" : data.node.id
-					},
-					success : function(result) {
-						// 删除成功
-						if (result.code == "200") {
-							comm.showMsg('success', '消息提示', '移动成功！');
+		//console.log("move");
+		$('#tree_3').on(
+				'move_node.jstree',
+				function(e, data) {
+					console.log("move");
+					if (data.parent != data.old_parent) {
+						$.ajax({
+							url : url,
+							type : 'post',
+							dataType : "json",
+							data : {
+								"parent.id" : data.parent,
+								"id" : data.node.id
+							},
+							success : function(result) {
+								// 删除成功
+								if (result.code == "200") {
+									comm.showMsg('success', '消息提示', '移动成功！');
 
-							 $.jstree.reference('#tree_3')
-							 .set_id(data.node,result.result.id);
-							
-						} else {
-							comm.showMsg('error', '消息提示', '移动失败！');
-							$.jstree.reference('#tree_3').refresh();
+									$.jstree.reference('#tree_3').set_id(
+											data.node, result.result.id);
 
-						}
+								} else {
+									comm.showMsg('error', '消息提示', '移动失败！');
+									$.jstree.reference('#tree_3').refresh();
 
+								}
+
+							}
+
+						});
 					}
 
-				});
-			}
-
-		})
+				})
 
 	}
 
@@ -255,15 +260,13 @@ var UITree = function() {
 
 	}
 
-
-
 	// 根据RoleId加载权限树
 	var loadAuthorityTreeByRoleId = function(roleId) {
 		var authorityUrl = mlx.ctx + "/admin/role/authorityTree"
 		$.ajax({
 			url : authorityUrl,
 			type : 'get',
-			dataType:"json",
+			dataType : "json",
 			data : {
 				'roleId' : roleId
 			},
@@ -272,7 +275,7 @@ var UITree = function() {
 				// $('#tree_2').removeData();
 				$('#tree_2').jstree('destroy');
 				// $(document).off('.jstree');
-				//console.log(authorityData);
+				// console.log(authorityData);
 				$('#tree_2').jstree({
 					'plugins' : [ "checkbox", "types" ],
 					'core' : {
@@ -311,7 +314,7 @@ var UITree = function() {
 		$.ajax({
 			url : url,
 			type : 'post',
-			dataType:"json",
+			dataType : "json",
 			data : {
 				'roleId' : roleId,
 				'authorityIds' : authorityIds
@@ -319,7 +322,7 @@ var UITree = function() {
 			success : function(result) {
 
 				if (result.code == "200") {
-					//comm.showMsg('success', '提示', '选择成功！');
+					// comm.showMsg('success', '提示', '选择成功！');
 				} else {
 					comm.showMsg('warning', '提示', '选择失败!');
 					// 刷新树
@@ -331,7 +334,7 @@ var UITree = function() {
 				// 取消选择
 				comm.showMsg('warning', '提示', '请求失败!');
 				// //刷新树
-				//$.jstree.reference('#tree_2').uncheck_node(authorityIds);
+				// $.jstree.reference('#tree_2').uncheck_node(authorityIds);
 				loadAuthorityTreeByRoleId(roleId);
 			}
 
@@ -346,18 +349,18 @@ var UITree = function() {
 		$.ajax({
 			url : url,
 			type : 'post',
-			dataType:"json",
+			dataType : "json",
 			data : {
 				'roleId' : roleId,
 				'authorityIds' : authorityIds
 			},
 			success : function(result) {
 				if (result.code == "200") {
-					//comm.showMsg('success', '提示', '取消成功!');
+					// comm.showMsg('success', '提示', '取消成功!');
 				} else {
 					// //刷新树
 					comm.showMsg('warning', '提示', '取消失败!');
-					//$.jstree.reference('#tree_2').check_node(authorityIds);
+					// $.jstree.reference('#tree_2').check_node(authorityIds);
 					loadAuthorityTreeByRoleId(roleId);
 				}
 
@@ -365,7 +368,7 @@ var UITree = function() {
 			error : function(e) {
 				comm.showMsg('warning', '提示', '请求失败!');
 				// //刷新树
-				//$.jstree.reference('#tree_2').check_node(authorityIds);
+				// $.jstree.reference('#tree_2').check_node(authorityIds);
 				loadAuthorityTreeByRoleId(roleId);
 			}
 		})
@@ -423,7 +426,7 @@ var UITree = function() {
 		// main function to initiate the module
 		init : function(url) {
 			contextualMenuSample(url);
-			$("#add").on("click",function(e){
+			$("#add").on("click", function(e) {
 				addRoleShow();
 			})
 

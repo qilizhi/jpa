@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * 权限树
  * 
@@ -105,8 +107,9 @@ public class Authority implements Serializable {
 		this.resources = resources;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER )
+	@ManyToOne(cascade=CascadeType.PERSIST,fetch=FetchType.EAGER )
 	@JoinColumn(name="parent_id")
+	@JsonBackReference
 	public Authority getParent() {
 		return parent;
 	}
@@ -115,7 +118,7 @@ public class Authority implements Serializable {
 		this.parent = parent;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.PERSIST,mappedBy="parent",fetch=FetchType.EAGER)
 	public Set<Authority> getChildren() {
 		return children;
 	}
