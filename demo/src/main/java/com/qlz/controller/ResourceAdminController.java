@@ -60,7 +60,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ˢ��ȫ��Ȩ����Դ
+	 * 刷新资源
 	 * 
 	 * @return
 	 * @throws Exception
@@ -163,7 +163,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ����
+	 * 资源详情
 	 * 
 	 * @param actInfo
 	 * @return
@@ -180,8 +180,8 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ����
 	 * 
+	 * 资源更新
 	 * @param actInfo
 	 * @return
 	 */
@@ -203,7 +203,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ����
+	 * 资源创建
 	 * 
 	 * @param resource
 	 * @return
@@ -224,7 +224,7 @@ public class ResourceAdminController {
 	}
 
 	/**
-	 * ����ɾ��
+	 * 资源删除
 	 * 
 	 * @param ids
 	 *            id����,����:1,2,3,4

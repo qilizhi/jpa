@@ -75,7 +75,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 *  
+	 *  删除
 	 * @param id
 	 * @return
 	 */
@@ -98,7 +98,7 @@ public class RoleAdminController {
 
 	/**
 	 * 
-	 * 
+	 * 更新
 	 * @param auth
 	 * @return
 	 */
@@ -132,7 +132,7 @@ public class RoleAdminController {
 
 	/**
 	 * 
-	 * 
+	 * 权限树
 	 * @return
 	 */
 	@RequestMapping("/authorityTree")
@@ -155,7 +155,7 @@ public class RoleAdminController {
 	}
 
 	/**
-	 * ���ؽ�ɫ��
+	 * 角色树
 	 * 
 	 */
 	@RequestMapping("/roleTree")

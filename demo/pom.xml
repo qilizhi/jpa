@@ -325,7 +325,7 @@
 		<!-- 缓存相关 end -->
 
 		<!-- servlet-api 相关 start -->
-		<dependency>
+		 <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>

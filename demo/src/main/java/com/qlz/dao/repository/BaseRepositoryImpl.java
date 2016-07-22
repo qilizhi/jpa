@@ -25,8 +25,8 @@ import com.qlz.util.BeanUtils;
  * 
  * @Transactional(readOnly = true)
  */
-public class BaseRepositoryImpl<T, ID extends Serializable> extends
-		SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
+public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
+		implements BaseRepository<T, ID> {
 	private final EntityManager entityManager;
 
 	private final JpaEntityInformation<T, ?> jpaEntityInformation;
@@ -36,8 +36,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends
 	 *            ormation
 	 * @param entityManager
 	 */
-	public BaseRepositoryImpl(JpaEntityInformation<T, ?> entityInformation,
-			EntityManager entityManager) {
+	public BaseRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 		this.entityManager = entityManager;
 		this.jpaEntityInformation = entityInformation;
@@ -61,15 +60,10 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends
 
 		ID id = (ID) jpaEntityInformation.getId(entity);
 		// TODO Auto-generated method stub
-		S tempEntity = null;
-		if (id != null) {
-			tempEntity = (S) entityManager.find(entity.getClass(), id);
-			BeanUtils.copyPropertiesIgnoreNull(entity, tempEntity);
-			entity = entityManager.merge(tempEntity);
-		} else {
-			entity = entityManager.merge(entity);
-		}
-		// entityManager.flush();
+		S tempEntity = (S) entityManager.find(entity.getClass(), id);
+		BeanUtils.copyPropertiesIgnoreNull(entity, tempEntity);
+		entity = entityManager.merge(tempEntity);
+		//entityManager.flush();
 		return entity;
 	}
 

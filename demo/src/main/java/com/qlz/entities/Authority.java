@@ -1,10 +1,8 @@
 package com.qlz.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,9 +41,9 @@ public class Authority implements Serializable {
 	private String description;
 
 	private Authority parent;
-	private List<Authority> children = new ArrayList<Authority>();
+	private Set<Authority> children = new LinkedHashSet<Authority>();
 	private String uri;
-	private List<Role> roles = new ArrayList<Role>();
+	private Set<Role> roles = new HashSet<Role>();
 	private Set<Resource> resources = new HashSet<Resource>();
 
 	@Id
@@ -86,11 +84,11 @@ public class Authority implements Serializable {
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "authorities")
 	// @Transient
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -118,11 +116,11 @@ public class Authority implements Serializable {
 	}
 
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="parent",fetch=FetchType.EAGER)
-	public List<Authority> getChildren() {
+	public Set<Authority> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Authority> children) {
+	public void setChildren(Set<Authority> children) {
 		this.children = children;
 	}
 
