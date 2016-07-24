@@ -2,7 +2,6 @@
 package com.qlz.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +27,7 @@ public interface ResourceDao extends BaseRepository<Resource, Long> {
 	 * @param idArray
 	 */
 	public List<Resource> findByIdIn(String[] idArray);
-	public Set<Resource> findByIdIn(List<Long> ids);
+	public List<Resource> findByIdIn(List<Long> ids);
 
 	/**
 	 * @param id

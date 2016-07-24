@@ -2,17 +2,14 @@ package com.qlz.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import com.qlz.dao.repository.BaseRepository;
 import com.qlz.entities.Authority;
+import com.qlz.entities.Resource;
 
 /**
  * 
  * @author qilizhi
- * @date 2016��7��4�� ����4:42:24
+ * @date 2016年7月24日 下午5:43:58
  */
 public interface AuthorityDao extends BaseRepository<Authority, Long> {
 
@@ -26,6 +23,8 @@ public interface AuthorityDao extends BaseRepository<Authority, Long> {
 	 * @return
 	 */
 	public List<Authority> findByParentIdIsNull();
+	public List<Authority> findByIdIn(String[] idArray);
+	public List<Authority> findByIdIn(List<Long> ids);
 
 
 

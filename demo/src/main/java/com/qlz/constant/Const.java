@@ -1,7 +1,7 @@
 package com.qlz.constant;
 
 /**
- * ������
+ * 常量设置
  */
 public final class Const {
 

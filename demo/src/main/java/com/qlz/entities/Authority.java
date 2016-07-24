@@ -1,8 +1,10 @@
 package com.qlz.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,10 +45,10 @@ public class Authority implements Serializable {
 	private String description;
 
 	private Authority parent;
-	private Set<Authority> children = new LinkedHashSet<Authority>();
+	private List<Authority> children = new ArrayList<Authority>();
 	private String uri;
-	private Set<Role> roles = new HashSet<Role>();
-	private Set<Resource> resources = new HashSet<Resource>();
+	private List<Role> roles = new ArrayList<Role>();
+	private List<Resource> resources = new ArrayList<Resource>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,11 +88,11 @@ public class Authority implements Serializable {
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "authorities")
 	// @Transient
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -99,11 +101,11 @@ public class Authority implements Serializable {
 			@JoinColumn(name = "authority_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "resource_id", referencedColumnName = "id") })
 	// @Transient
-	public Set<Resource> getResources() {
+	public List<Resource> getResources() {
 		return resources;
 	}
 
-	public void setResources(Set<Resource> resources) {
+	public void setResources(List<Resource> resources) {
 		this.resources = resources;
 	}
 
@@ -118,12 +120,12 @@ public class Authority implements Serializable {
 		this.parent = parent;
 	}
 
-	@OneToMany(cascade=CascadeType.PERSIST,mappedBy="parent",fetch=FetchType.EAGER)
-	public Set<Authority> getChildren() {
+	@OneToMany(cascade=CascadeType.REMOVE,mappedBy="parent",fetch=FetchType.EAGER)
+	public List<Authority> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<Authority> children) {
+	public void setChildren(List<Authority> children) {
 		this.children = children;
 	}
 

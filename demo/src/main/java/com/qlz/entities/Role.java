@@ -42,7 +42,7 @@ public class Role implements Serializable {
 	private List<Role>children =new ArrayList<Role>();
 	private String description;
 	private Set<User> users = new HashSet<User>();
-	private Set<Authority> authorities = new HashSet<Authority>();
+	private List<Authority> authorities = new ArrayList<Authority>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,11 +79,11 @@ public class Role implements Serializable {
 			@JoinColumn(name = "role_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authority_id", referencedColumnName = "id") })
 	//@Transient
-	public Set<Authority> getAuthorities() {
+	public List<Authority> getAuthorities() {
 		return authorities;
 	}
 
-	public void setAuthorities(Set<Authority> authorities) {
+	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
 

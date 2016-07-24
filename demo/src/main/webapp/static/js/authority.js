@@ -48,6 +48,7 @@ var UITree = function() {
 		$('#tree_3').on(
 				'rename_node.jstree',
 				function(e, data) {
+					//console.log(data);
 					$.ajax({
 						url : url,
 						type : 'post',
@@ -86,7 +87,7 @@ var UITree = function() {
 						type : 'post',
 						dataType:"json",
 						data : {
-							"parentId" : data.parent,
+							"parent.id" : data.parent,
 							"name" : data.node.text
 						},
 						success : function(result) {
@@ -185,7 +186,7 @@ var UITree = function() {
 					type : 'post',
 					dataType:"json",
 					data : {
-						"parentId" : data.parent,
+						"parent.id" : data.parent,
 						"id" : data.node.id
 					},
 					success : function(result) {
@@ -590,7 +591,8 @@ var UImultiSelect = function() {
 								+ option.name + "</option>";
 
 					})
-
+					//console.log(options);
+					$('#my_multi_select1').empty();
 					$('#my_multi_select1').append(options);
 				} else {
 					return false;

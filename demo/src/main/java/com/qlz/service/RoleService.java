@@ -4,13 +4,16 @@
 package com.qlz.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.qlz.dao.AuthorityDao;
 import com.qlz.dao.RoleDao;
+import com.qlz.entities.Authority;
 import com.qlz.entities.Role;
 import com.qlz.entities.User;
 import com.qlz.model.State;
@@ -27,17 +30,19 @@ public class RoleService {
 
 	@Autowired
 	private RoleDao roleDao;
+	@Autowired
+	private AuthorityDao authorityDao;
 
 	public List<Role> findAll() {
 		return roleDao.findAll();
 	}
 
 	public Role saveOrUpdate(Role r) {
-	/*	if (r.getParent() != null && r.getParent().getId() != null) {
-			Role rp=roleDao.getOne(r.getParent().getId());
-			if(rp!=null)
-			r.setParent(rp);
-		}*/
+		/*
+		 * if (r.getParent() != null && r.getParent().getId() != null) { Role
+		 * rp=roleDao.getOne(r.getParent().getId()); if(rp!=null)
+		 * r.setParent(rp); }
+		 */
 		return roleDao.saveOrUpdate(r);
 	}
 
@@ -74,7 +79,7 @@ public class RoleService {
 	}
 
 	/**
-	 * ��ȡ�������ṹ
+	 * 获取所有角色树
 	 * 
 	 */
 
@@ -90,7 +95,7 @@ public class RoleService {
 	}
 
 	/**
-	 * �ݹ��ʶ����Ȩ����
+	 * 标记树
 	 * 
 	 * 
 	 */
@@ -137,6 +142,42 @@ public class RoleService {
 	 */
 	public void updateByPrimaryKeySelective(Role role) {
 		roleDao.save(role);
+
+	}
+
+	public void updateByDelete(Long roleId, List<Long> authorityIds) {
+		List<Authority> authoritys = new ArrayList<Authority>();
+		authoritys = authorityDao.findByIdIn(authorityIds);
+		Role role = roleDao.findOne(roleId);
+		role.setAuthorities(authoritys);
+		roleDao.saveOrUpdate(role);
+
+	}
+
+	/**
+	 * @param roleId
+	 * @param authorityIdsList
+	 */
+	public void batDelete(Long roleId, List<Long> authorityIdsList) {
+		Role role = roleDao.findOne(roleId);
+		List<Authority> authoritys = new ArrayList<Authority>();
+		authoritys = authorityDao.findByIdIn(authorityIdsList);
+		try {
+			for (Authority authority : authoritys) {
+				Iterator<Authority> authorityst = role.getAuthorities()
+						.iterator();
+				while (authorityst.hasNext()) {
+					if (authority.getId() == authorityst.next().getId()) {
+						authorityst.remove();
+						continue;
+					}
+				}
+			}
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
+
+		roleDao.saveOrUpdate(role);
 
 	}
 

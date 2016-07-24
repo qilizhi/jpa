@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ import com.qlz.util.StringUtil;
 
 /**
  * 
- * Ȩ��controller
+ * 权限授权
  * 
  * @author QiQi-04-PC
  *
@@ -60,10 +61,10 @@ public class AuthorityAdminController {
 
 
 	/**
-	 * �б�
+	 * 权限列表
 	 * 
 	 * @param name
-	 *            ��ѯ����
+	 *            
 	 * @param model
 	 * @return
 	 */
@@ -80,7 +81,7 @@ public class AuthorityAdminController {
 		return "/admin/authority/list";
 	}
 	
-	/** ����
+	/** 创建 
 	 * 
 	 * @param authority
 	 * @return
@@ -89,7 +90,7 @@ public class AuthorityAdminController {
 	@ResponseBody
 	public JsonResult insert(Authority authority) {
 		try {
-			authorityService.insertSelective(authority);
+			authority=authorityService.insertSelective(authority);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL, authority);
@@ -98,7 +99,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * ɾ��
+	 * 删除
 	 * 
 	 * @param id
 	 * @return
@@ -108,7 +109,7 @@ public class AuthorityAdminController {
 	public JsonResult delete(Long id) {
 
 		if (id == null) {
-			return new JsonResult(ExceptionCode.FAIL, "Id����Ϊ�գ�");
+			return new JsonResult(ExceptionCode.FAIL, "id为空");
 		}
 		try {
 			authorityService.deleteByPrimaryKey(id);
@@ -130,7 +131,7 @@ public class AuthorityAdminController {
 	@ResponseBody
 	public JsonResult update(Authority auth) {
 		if (auth.getId() == null) {
-			return new JsonResult(ExceptionCode.FAIL, "idΪ�գ�");
+			return new JsonResult(ExceptionCode.FAIL, "id不能为空");
 		}
 		try {
 			authorityService.updateByPrimaryKeySelective(auth);
@@ -149,15 +150,14 @@ public class AuthorityAdminController {
 	 * @return
 	 */
 	@RequestMapping("/loadResource")
-	public String loadResource(Long authorityId, @RequestParam(defaultValue = "1") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
-		PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
+	public String loadResource(Long authorityId,Pageable pageBounds,Model model) {
+		//PageRequest pageBounds = new PageRequest(pageNo, pageSize,new Sort(Direction.DESC,"id"));
 		Page<Resource> list = resourceService.getResourceByAuthorityId(authorityId, pageBounds);
 		//model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
 		model.addAttribute("authorityId", authorityId);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("pageNo", pageNo);
+		//model.addAttribute("pageSize", pageSize);
+		//model.addAttribute("pageNo", pageNo);
 		return "/admin/authority/table";
 	}
 
@@ -190,7 +190,7 @@ public class AuthorityAdminController {
 	}
 
 	/**
-	 * Ȩ�����ṹ
+	 * 权限树
 	 * 
 	 * @return
 	 */

@@ -7,7 +7,7 @@ import com.qlz.entities.Role;
 /**
  * 
  * @author qilizhi
- * @date 2016��7��4�� ����4:44:10
+ * @date 2016年7月24日 下午5:43:23
  */
 public interface RoleDao extends BaseRepository<Role, Long> {
 
@@ -23,11 +23,5 @@ public interface RoleDao extends BaseRepository<Role, Long> {
 	 */
 	List<Role> findByParentIdIsNull();
 
-	/**
-	 * @param role
-	 */
-/*	@Modifying
-	@Query("update Role r set r.parentId=:role_parentId ,r.name=:role_name ,r_description=:role_description where r.id=:role_id")
-	int update(@Param("role")Role role);*/
 
 }

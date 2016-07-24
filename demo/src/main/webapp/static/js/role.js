@@ -51,7 +51,7 @@ var UITree = function() {
 		$('#tree_3').on(
 				'rename_node.jstree',
 				function(e, data) {
-					console.log("rename");
+				//	console.log("rename");
 					$.ajax({
 						url : url,
 						type : 'post',
@@ -129,7 +129,7 @@ var UITree = function() {
 		$('#tree_3').on(
 				'create_node.jstree',
 				function(e, data) {
-					console.log("create");
+					//console.log("create");
 					$.ajax({
 						url : url,
 						type : 'post',
@@ -144,7 +144,7 @@ var UITree = function() {
 							if (result.code == "200") {
 								comm.showMsg('success', '消息提示', '创建成功！');
 								// console.log("resetID");
-								 console.log(result);
+								// console.log(result);
 								$.jstree.reference('#tree_3').set_id(data.node,
 										result.result.id);
 							} else {
@@ -204,7 +204,7 @@ var UITree = function() {
 		$('#tree_3').on(
 				'move_node.jstree',
 				function(e, data) {
-					console.log("move");
+					//console.log("move");
 					if (data.parent != data.old_parent) {
 						$.ajax({
 							url : url,

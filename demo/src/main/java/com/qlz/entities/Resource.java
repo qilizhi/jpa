@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Table
 @Entity
 @DynamicInsert(true)
@@ -30,7 +32,7 @@ public class Resource implements Serializable {
 
 	private String path;
 
-	private Integer flag;
+	private Integer flag;//用于前端输出展示用
 
 	private String description;
 
@@ -56,6 +58,7 @@ public class Resource implements Serializable {
 		this.path = path;
 	}
 
+	@Transient
 	public Integer getFlag() {
 		return flag;
 	}
@@ -81,7 +84,8 @@ public class Resource implements Serializable {
 	}
 
 	// @Transient
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "resources")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "resources")
+	@JsonBackReference
 	public Set<Authority> getAuthorities() {
 		return authorities;
 	}

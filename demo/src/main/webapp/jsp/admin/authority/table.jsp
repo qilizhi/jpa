@@ -44,7 +44,7 @@
 		</thead>
 		<tbody>
 			<!-- 异步加载表 -->
-			<c:forEach items="${list}" var="item" varStatus="index">
+			<c:forEach items="${list.content}" var="item" varStatus="index">
 				<tr role="row">
 					<%-- <td><input type="checkbox" id="${item.id}" class="icheck" /></td> --%>
 					<td>${item.name}</td>

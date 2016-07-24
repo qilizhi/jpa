@@ -132,7 +132,7 @@ public class RoleAdminController {
 
 	/**
 	 * 
-	 * 权限树
+	 * 权限树并标记
 	 * @return
 	 */
 	@RequestMapping("/authorityTree")
@@ -141,12 +141,11 @@ public class RoleAdminController {
 
 		List<Tree> authorityTree;
 		List<Tree> AT;
-		//List<RoleToAuthority> rts;
 		try {
 			authorityTree = authorityService.getAllTree();
 			AT = new ArrayList<Tree>();
-			//rts = roleToAuthorityService.selectByRoleId(roleId);
-			//AT = authorityService.tagTree(rts, authorityTree);
+			Role role = roleService.findOne(roleId);
+			AT = authorityService.tagTree(role, authorityTree);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
@@ -185,10 +184,7 @@ public class RoleAdminController {
 	public JsonResult insertAuthorityToRole(Long roleId, String authorityIds) {
 		List<Long> authorityIdsList = StringUtil.generateListLong(authorityIds);
 		try {
-			/* ��ɾ������ */
-		//	roleToAuthorityService.batDelete(params);
-		//	roleToAuthorityService.batInsert(params);
-			//roleToAuthorityService.updateByDelete(roleId,authorityIdsList);
+			roleService.updateByDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
@@ -208,17 +204,14 @@ public class RoleAdminController {
 	@RequestMapping("/deleteByRoleIdAndAuthIds")
 	@ResponseBody
 	public JsonResult deleteAuthorityToRole(Long roleId, String authorityIds) {
-	//	Map<String, Object> params = new HashMap<String, Object>();
 		List<Long> authorityIdsList = StringUtil.generateListLong(authorityIds);
-		//params.put("authorityIds", idsList);
-	//	params.put("roleId", roleId);
 		try {
-			//roleToAuthorityService.batDelete(roleId,authorityIdsList);
+			roleService.batDelete(roleId,authorityIdsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		chainDefinitionSectionMetaSource.reLoad();
+		//chainDefinitionSectionMetaSource.reLoad();
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 

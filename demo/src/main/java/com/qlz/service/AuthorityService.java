@@ -4,9 +4,7 @@
 package com.qlz.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +36,17 @@ public class AuthorityService {
 	 * 获取权限树
 	 * 
 	 */
+	
+	
+	public Authority getOne(Long id){
+		return authorityDao.getOne(id);
+		
+	}
+	
+	public Authority findByOne(Long id){
+		
+		return authorityDao.findOne(id);
+	}
 
 	public List<Tree> getTree(List<Authority> authList) {
 		List<Tree> auTrees = new ArrayList<Tree>();
@@ -46,10 +55,11 @@ public class AuthorityService {
 			if (aut != null && aut.getId() != null) {
 				AT.setId(aut.getId());
 				AT.setText(aut.getName());
-				AT.setParentId(aut.getParent().getId());
-				List<Authority> authoritys = authorityDao.findByParentId(aut.getId());
-				if (authoritys != null && authoritys.size() > 0) {
-					AT.setChildren(getTree(authoritys));
+				AT.setParentId(aut.getParent() == null ? null : aut
+						.getParent().getId());
+				List<Authority> auths =aut.getChildren();
+				if (!auths.isEmpty()) {
+					AT.setChildren(getTree(auths));
 				}
 				auTrees.add(AT);
 			}
@@ -114,8 +124,8 @@ public class AuthorityService {
 	/**
 	 * @param authority
 	 */
-	public void insertSelective(Authority authority) {
-		authorityDao.saveOrUpdate(authority);
+	public Authority insertSelective(Authority authority) {
+		return authorityDao.saveOrUpdate(authority);
 	}
 
 	/**
@@ -139,7 +149,7 @@ public class AuthorityService {
 	 * @param resourceIdsList
 	 */
 	public void updateBydelete(Long authorityId, List<Long> resourceIdsList) {
-		Set<Resource> resources = new HashSet<Resource>();
+		List<Resource> resources = new ArrayList<Resource>();
 		resources = resourceDao.findByIdIn(resourceIdsList);
 		Authority authority = authorityDao.findOne(authorityId);
 		authority.setResources(resources);

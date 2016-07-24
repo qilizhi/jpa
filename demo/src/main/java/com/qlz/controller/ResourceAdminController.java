@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qlz.constant.Const;
 import com.qlz.constant.ExceptionCode;
+import com.qlz.entities.Authority;
 import com.qlz.entities.Resource;
 import com.qlz.model.JsonResult;
+import com.qlz.service.AuthorityService;
 import com.qlz.service.ResourceService;
 import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 
@@ -37,10 +39,13 @@ import com.qlz.shiro.ChainDefinitionSectionMetaSource;
 @Controller
 @RequestMapping("/admin/resource")
 public class ResourceAdminController {
-	private static Logger logger = LoggerFactory.getLogger(ResourceAdminController.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(ResourceAdminController.class);
 
 	@Autowired
 	private ResourceService resourceService;
+	@Autowired
+	private AuthorityService authorityService;
 	// @Autowired
 	// private AuthorityToResourceService authorityToResourceService;
 
@@ -73,7 +78,8 @@ public class ResourceAdminController {
 	}
 
 	@RequestMapping("/list")
-	public String list(Pageable pageBounds, HttpServletRequest request, Model model, Resource resource) {
+	public String list(Pageable pageBounds, HttpServletRequest request,
+			Model model, Resource resource) {
 
 		try {
 			Page<Resource> list = resourceService.findAll(pageBounds);
@@ -93,7 +99,8 @@ public class ResourceAdminController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/persons", method = RequestMethod.GET)
 	@ResponseBody
-	Page<Resource> persons(@PageableDefault(value=10,sort={"id"},direction=Sort.Direction.ASC,page=0)Pageable pageable) {
+	Page<Resource> persons(
+			@PageableDefault(value = 10, sort = { "id" }, direction = Sort.Direction.ASC, page = 0) Pageable pageable) {
 
 		Page<Resource> list = resourceService.findAll(pageable);
 		return list;
@@ -110,31 +117,40 @@ public class ResourceAdminController {
 	 */
 	@RequestMapping("/all")
 	@ResponseBody
-	public JsonResult list(HttpServletRequest request, Model model, Resource resource) {
+	public JsonResult list(HttpServletRequest request, Model model,
+			Long authorityId) {
 
-		List<Resource> list = new ArrayList<>();
-		//List<AuthorityToResource> atrlist = new ArrayList<AuthorityToResource>();
+		List<Resource> listAll = new ArrayList<>();
+		List<Resource> listFlag = new ArrayList<>();
+
+		// List<AuthorityToResource> atrlist = new
+		// ArrayList<AuthorityToResource>();
 		try {
-			list = resourceService.getResourceList(resource);
-			// atrlist =
-			// authorityToResourceService.selectByExample(authorityToResource);
+			if (authorityId != null) {
+				Authority auth = authorityService.findByOne(authorityId);
+				if (auth != null&&!auth.getResources().isEmpty())
+					listFlag = auth.getResources();
+
+			}
+			listAll = resourceService.findAll();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-		// resource�Ƿ���ѡ������
-		/*for (AuthorityToResource at : atrlist) {
-			for (Resource r : list) {
-				if (r.getId() != null && at.getResourceId() != null && r.getId() == at.getResourceId()) {
+		// 资源标记
+		for (Resource r : listAll) {
+			for (Resource rf : listFlag) {
+				if (r.getId() != null && rf.getId() != null
+						&& r.getId() == rf.getId()) {
 					r.setFlag(1);
 					continue;
 				}
 
 			}
 
-		}*/
+		}
 
-		return new JsonResult(ExceptionCode.SUCCESSFUL, list);
+		return new JsonResult(ExceptionCode.SUCCESSFUL, listAll);
 
 	}
 
@@ -149,7 +165,8 @@ public class ResourceAdminController {
 
 	@RequestMapping("/{id}")
 	@ResponseBody
-	public JsonResult get(HttpServletRequest request, @PathVariable("id") Long id) {
+	public JsonResult get(HttpServletRequest request,
+			@PathVariable("id") Long id) {
 		JsonResult ajaxResult = new JsonResult();
 		try {
 
@@ -182,6 +199,7 @@ public class ResourceAdminController {
 	/**
 	 * 
 	 * 资源更新
+	 * 
 	 * @param actInfo
 	 * @return
 	 */
